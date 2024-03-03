@@ -6,10 +6,9 @@
        <div id="game-menu" class="none" style="position:fixed ;z-index:3; top:0;left:0;height:50vh;width:50vw;background : #CACACA6B ;color:white  ;font-size:24px; top:50vh; left :50vw; transform:translate(-50%,-50%);" >
          
 <pre style="white-space :pre-wrap ">
-  
-  menu
-  
-  there is nothing to do
+ Workbench Classic Minecraft
+ by: kashumyGithub
+ orginal: mojang Minecraft 
 </pre>
 <script>
   
@@ -511,7 +510,7 @@ scale :2.0
       height :50px;
       position :absolute ;
       bottom :30px;
-      left:50vw;
+      left:70vw;
       background :#1E1E1E2E;
       transform:translate(-50%,0%);
       z-index :1;
@@ -740,7 +739,7 @@ function updateFPS() {
         scene.add(light);
 //renaderer.shadowMap.enabled = true;
 //renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-scene.fog = new THREE.FogExp2(0xffffff, 0.06);
+scene.fog = new THREE.FogExp2(0xffffff, 0.09);
 
 light.shadow.mapSize.width = 524;
 light.shadow.mapSize.height = 524;
@@ -804,7 +803,7 @@ stone3.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
 
 
 
-var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.8});
+var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.6});
 var stone = new THREE.MeshStandardMaterial({ map: stone1, });
 
 var planken = new THREE.MeshStandardMaterial ({ map: plank,flatShading: true , });
@@ -833,13 +832,52 @@ materials[2].reflectivity = 0;
 
 
 var blocks = [];
-
+var renderingdist=100
 
 // Tablica przechowująca chunki
 var chunks = [];
 var rdist = 40
 // Funkcja do generowania nowego chunka
+function checkAndRemoveDuplicateBlocks() {
+ // const camera = yourCamera; // Podstaw swoją kamerę Three.js
+  const radius = 100; // Promień w jakim chcesz sprawdzać bloki
+
+  const blocksToRemove = [];
+
+  for (let i = 0; i < blocks.length; i++) {
+    const blockA = blocks[i];
+
+    // Sprawdź odległość bloku od kamery
+    const distance = camera.position.distanceTo(blockA.position);
+
+    if (distance <= radius) {
+      for (let j = i + 1; j < blocks.length; j++) {
+        const blockB = blocks[j];
+
+        // Jeśli bloki są na tej samej pozycji, dodaj drugi blok do listy do usunięcia
+        if (
+          blockA.position.x === blockB.position.x &&
+          blockA.position.y === blockB.position.y &&
+          blockA.position.z === blockB.position.z
+        ) {
+          blocksToRemove.push(blockB);
+        }
+      }
+    }
+  }
+
+  // Usuń zduplikowane bloki
+  blocksToRemove.forEach((block) => {
+    scene.remove(block);
+    const index = blocks.indexOf(block);
+    if (index !== -1) {
+      blocks.splice(index, 1);
+    }
+  });
+}
+
 function generateChunk(x, z) {
+  renderingdist=100
     const chunk = new THREE.Group();
     
     // Generowanie bloków w chunku
@@ -979,16 +1017,27 @@ for (let x2 = 0; x2 < rdist; x2++) { // Zakres w osi X
         scene.add(block);
         blocks.push(block);
     }else {
-      const block = new THREE.Mesh(blockGeometry, materials );
+      if(Math.floor(Math.random()*20)==3){
+      const block = new THREE.Mesh(blockGeometry, water2 );
      // block.material[1].visible = false;
      // block.material[1].visible = false;
       block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
       //block.castShadow = true; // Enable shadow casting for the cube
       //block.receiveShadow = true;
       scene.add(block);
-      block.name='grass'
+      block.name='water'
       blocks.push(block);
-    }
+    }else{
+      const block = new THREE.Mesh(blockGeometry, materials);
+      // block.material[1].visible = false;
+      // block.material[1].visible = false;
+      block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
+      //block.castShadow = true; // Enable shadow casting for the cube
+      //block.receiveShadow = true;
+      scene.add(block);
+      block.name = 'grass'
+      blocks.push(block);
+    }}
     }
     
     
@@ -1018,6 +1067,10 @@ scene.add(chunk);
 chunks.push({ x, z, chunk });
 generateChunkinprocess_Cave(x,z)
 
+checkAndRemoveDuplicateBlocks()
+setTimeout(function(){
+  renderingdist=8
+},4000)
 }
 // Tworzenie frustum
 const frustum = new THREE.Frustum();
@@ -1043,7 +1096,7 @@ const blocksInCave = [];
 
 var gins=0
 function generateChunkinprocess_Cave(x, z) {
-  alert("")
+  
   const chunk = new THREE.Group();
 
   const rdist = 40; // Przyjmujemy, że to jest globalny zakres
@@ -1156,43 +1209,6 @@ function updateBlockfaceCulling() {
 
 var visibleblocks=[]
 
-function checkAndRemoveDuplicateBlocks() {
- // const camera = yourCamera; // Podstaw swoją kamerę Three.js
-  const radius = 10; // Promień w jakim chcesz sprawdzać bloki
-
-  const blocksToRemove = [];
-
-  for (let i = 0; i < blocks.length; i++) {
-    const blockA = blocks[i];
-
-    // Sprawdź odległość bloku od kamery
-    const distance = camera.position.distanceTo(blockA.position);
-
-    if (distance <= radius) {
-      for (let j = i + 1; j < blocks.length; j++) {
-        const blockB = blocks[j];
-
-        // Jeśli bloki są na tej samej pozycji, dodaj drugi blok do listy do usunięcia
-        if (
-          blockA.position.x === blockB.position.x &&
-          blockA.position.y === blockB.position.y &&
-          blockA.position.z === blockB.position.z
-        ) {
-          blocksToRemove.push(blockB);
-        }
-      }
-    }
-  }
-
-  // Usuń zduplikowane bloki
-  blocksToRemove.forEach((block) => {
-    scene.remove(block);
-    const index = blocks.indexOf(block);
-    if (index !== -1) {
-      blocks.splice(index, 1);
-    }
-  });
-}
 
 
 
@@ -1202,7 +1218,7 @@ function scheduleRandomExecution() {
 
   const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
 
-  setInterval(checkAndRemoveDuplicateBlocks, randomInterval);
+  
 }
 
 // Uruchom funkcję planującą losowe wywołania
@@ -1224,7 +1240,7 @@ function updaterenderdistance() {
   const cameraFrustum = new THREE.Frustum();
   cameraFrustum.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
 
-  const occlusionRadius = 10; // Promień od kamery, w którym bloki są renderowane
+  const occlusionRadius = renderingdist; // Promień od kamery, w którym bloki są renderowane
 /*const visibleBlocks = []; // Inicjalizacja pustej listy widocznych bloków
 
 blocks.forEach((block) => {
@@ -1310,8 +1326,8 @@ function updatePlayerChunk() {
         const clouds = [];
         if(cloudsis==1){
         for (let i = 0; i < 150; i++) {
-            const cloudGeometry = new THREE.BoxGeometry(Math.random()*20+5, 0, Math.random()*20+5);
-            const cloudMaterial = new THREE.MeshBasicMaterial ({ color: 0xffffff, transparent: true, opacity: 0.5 });
+            const cloudGeometry = new THREE.BoxGeometry(Math.random()*10+15, 0, Math.random()*10+10);
+            const cloudMaterial = new THREE.MeshBasicMaterial ({ color: 0xffffff, transparent: true, opacity: 0.9 });
             const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
             cloud.position.set(Math.random() * 400 - 150, 15, Math.random() * 500 - 150);
             clouds.push(cloud);
@@ -1332,7 +1348,7 @@ setTimeout(function (){
   updatePlayerChunk()
 },1000)
         // Sterowanie gracza
-        const playerSpeed = 0.1;
+        const playerSpeed = 0.2;
 
         // Przyciski
         const moveForwardButton = document.getElementById('moveForward');
@@ -1404,7 +1420,7 @@ var jumping=1
             playerVelocity.set(0, 0, 0);
             
         };
-var Movementspeed=0.15;
+var Movementspeed=0.19;
         // Renderowanie
         
 var jumpposition=0
@@ -1433,15 +1449,19 @@ const playerVelocity2 = new THREE.Vector3(0, 0, 0);
 
 if (forwardPressed) {
     // Określ prędkość w kierunku przodu (globalny kierunek)
-    const speed = Movementspeed;
-    const direction = new THREE.Vector3(0, 0, -1.5); // Kierunek przodu kamery w przestrzeni światowej
-    direction.applyQuaternion(camera.quaternion); // Dostosuj kierunek do obrotu kamery
+    // Określ prędkość w kierunku przodu (globalny kierunek)
+const speed = Movementspeed;
 
-    // Aktualizuj wektor prędkości gracza
-    playerVelocity2.copy(direction).multiplyScalar(speed);
+// Kopiuj wektor kierunku kamery, ale usuń składową Y, aby nie uwzględniać ruchu w górę/na dół
+const direction = new THREE.Vector3(0, 0, -1.5);
+direction.applyQuaternion(camera.quaternion).normalize(); // Dostosuj kierunek do obrotu kamery i znormalizuj
 
-    // Aktualizuj pozycję gracza na podstawie wektora prędkości
-    player.position.add(playerVelocity2);
+// Aktualizuj wektor prędkości gracza
+const playerVelocity2 = new THREE.Vector3(direction.x * speed, 0, direction.z * speed);
+
+// Aktualizuj pozycję gracza na podstawie wektora prędkości
+player.position.add(playerVelocity2);
+
 }
 
 else if (backwardPressed) {
@@ -1465,7 +1485,7 @@ else if (backwardPressed) {
             }
 
             if (jumpPressed) {
-                playerVelocity.y = 0.35;
+                playerVelocity.y = 0.30;
                 jumpPressed = false; // Wyłącz skok po jego użyciu
             }
 
@@ -1607,77 +1627,70 @@ if (
             camera.rotation.order = 'YXZ';
         }*/
         
-        let centerX = window.innerWidth / 2;
-let centerY = window.innerHeight / 2;
+        // Inicjalizacja Three.js
 
-// Ostatnia pozycja dotknięcia
-let lastTouchX = 0;
-let lastTouchY = 0;
 
-// Całkowity obrót kamery
-let totalRotation = { x: 0, y: 0 };
-let fullsetrotation = { x: 0, y: 0 }
+// Obsługa ruchu kamery za pomocą dotyku
+let touchStartX = 0;
+let touchStartY = 0;
 
-// Zmienna do przechowywania poprzedniej pozycji kamery
-let previousCameraRotation = { x: 0, y: 0 };
-
-function cameramv(event) {
-    xt = event.touches[0].clientX;
-    yt = event.touches[0].clientY-100;
-
-    // Oblicz różnicę między pozycją dotknięcia a pozycją centralną
-    const deltaX = xt - centerX;
-    const deltaY = yt - centerY;
-
-    // Przesuń pozycję centralną do aktualnej pozycji
-    centerX = xt;
-    centerY = yt;
-
-    // Skonfiguruj czułość kierowania kamerą
-    const sensitivity = 0.0035;
-
-    // Oblicz zmianę pozycji od ostatniego dotknięcia
-    const deltaTouchX = xt - lastTouchX;
-    const deltaTouchY = yt - lastTouchY;
-
-    // Zaktualizuj pełny obrót kamery na podstawie różnicy pozycji
-    fullsetrotation.y -= (deltaTouchX+previousCameraRotation.y )* sensitivity;
-    if(deltaX>0){
-    
-    fullsetrotation.y -= (deltaTouchX-previousCameraRotation.y )* sensitivity*2;
-    }else {
-      
-      fullsetrotation.y -= (deltaTouchX+previousCameraRotation.y )* sensitivity*1.5;
-    }
-    fullsetrotation.x -= (deltaTouchY) * sensitivity*5.5 ;
-    //alert(previousCameraRotation.x+previousCameraRotation.y)
-
-    // Ograniczenie obrotu kamery w zakresie [-2π, 2π] - pełny obrót
-   // fullsetrotation.y = (fullsetrotation.y + 2 * Math.PI) % (2 * Math.PI);
-
-    // Ustaw obrót kamery na podstawie pełnego obrotu
-    camera.rotation.set(fullsetrotation.x, fullsetrotation.y, 0);
-
-    camera.rotation.order = 'YXZ';
-
-    // Zapisz aktualną pozycję dotknięcia
-    lastTouchX = xt;
-    lastTouchY = yt;
+function onTouchStart(event) {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
 }
 
-function stop(event) {
-    // Zapisz poprzednią pozycję kamery
-    previousCameraRotation.x = fullsetrotation.x;
-    previousCameraRotation.y = fullsetrotation.y;
-    
-    // Możesz dodać dodatkowe operacje po puścić palca, jeśli są potrzebne
+function onTouchMove(event) {
+    const touchX = event.touches[0].clientX;
+    const touchY = event.touches[0].clientY;
+
+    const deltaX = (touchX - touchStartX) * 0.02;
+    const deltaY = (touchY - touchStartY) * 0.02;
+
+    camera.rotation.y -= deltaX;
+    camera.rotation.x -= deltaY;
+
+    touchStartX = touchX;
+    touchStartY = touchY;
 }
 
+// Dodaj nasłuchiwanie zdarzeń dotyku
+document.addEventListener('touchstart', onTouchStart);
+document.addEventListener('touchmove', onTouchMove);
+
+// Funkcja renderująca
 
 // Dodaj obsługę zdarzenia kliknięcia do elementu canvas sceny
 
+// ...
+/*
+let newPosition = blockPosition.clone();
 
-// Funkcja obsługująca kliknięcie użytkownika
+// Sprawdź, która ściana jest bliżej patrząc wzdłuż osi X lub Z
+if (Math.abs(relativePosition.x) > Math.abs(relativePosition.z)) {
+  // Patrząc bardziej wzdłuż osi X
+  newPosition.x += Math.sign(relativePosition.x);
+} else if (Math.abs(relativePosition.x) < Math.abs(relativePosition.z)) {
+  // Patrząc bardziej wzdłuż osi Z
+  newPosition.z += Math.sign(relativePosition.z);
+} else {
+  // Patrząc dokładnie w kierunku przeciwnym do obu osi (patrz w górę, w dół, lewo, prawo)
+  newPosition.y += Math.sign(relativePosition.y);
+}
+
+// Jeżeli patrzysz w górę, buduj blok na górze
+if (relativePosition.y > 0) {
+  newPosition.y += 1;
+}
+
+newBlock = new THREE.Mesh(blockGeometry, materials); // Tutaj używasz materials, ale możesz dostosować do swojego materiału
+newBlock.name = currentblock;
+newBlock.position.copy(newPosition);
+newBlock.castShadow = true;
+newBlock.receiveShadow = true;
+scene.add(newBlock);
+blocks.push(newBlock);
+*/
+// ...
 function buildBlockOnClick(event) {
   updateInventory() 
   
@@ -1763,63 +1776,35 @@ function buildBlockOnClick(event) {
         }
         
         
-        if (relativePosition.y > 0) {
-            // Kliknięto górną ściankę bloku
-            // Dodaj nowy blok na górnej ściance klikniętego bloku
-            
-            newBlock.position.copy(blockPosition);
-            newBlock.position.y += 1; // Przesuń nowy blok nieco wyżej
-            newBlock.castShadow = true; // Enable shadow casting for the cube
-            newBlock.receiveShadow = true;
-            scene.add(newBlock);
-            blocks.push(newBlock);
+        let newPosition = blockPosition.clone();
         
-         
-        }else  if (relativePosition.z < 0) {
-          // Kliknięto górną ściankę bloku
-          // Dodaj nowy blok na górnej ściance klikniętego bloku
-          
-          newBlock.position.copy(blockPosition);
-          newBlock.position.z -= 1; // Przesuń nowy blok nieco wyżej
-          newBlock.castShadow = true; // Enable shadow casting for the cube
-          newBlock.receiveShadow = true;
-          scene.add(newBlock);
-          blocks.push(newBlock);
-        }else if (relativePosition.x > 0) {
-          // Kliknięto górną ściankę bloku
-          // Dodaj nowy blok na górnej ściance klikniętego bloku
-          
-          newBlock.position.copy(blockPosition);
-          newBlock.position.x += 1; // Przesuń nowy blok nieco wyżej
-          newBlock.castShadow = true; // Enable shadow casting for the cube
-          newBlock.receiveShadow = true;
-          scene.add(newBlock);
-          blocks.push(newBlock);
-        }else if (relativePosition.x < 0 && Math.floor(Math.random()*3)==1) {
-          // Kliknięto górną ściankę bloku
-          // Dodaj nowy blok na górnej ściance klikniętego bloku
-          
-          newBlock.position.copy(blockPosition);
-          newBlock.position.x -= 1; // Przesuń nowy blok nieco wyżej
-          newBlock.castShadow = true; // Enable shadow casting for the cube
-          newBlock.receiveShadow = true;
-          scene.add(newBlock);
-          blocks.push(newBlock);
-        } else if (relativePosition.z > 0) {
-          // Kliknięto górną ściankę bloku
-          // Dodaj nowy blok na górnej ściance klikniętego bloku
-          
-          newBlock.position.copy(blockPosition);
-          newBlock.position.z += 1; // Przesuń nowy blok nieco wyżej
-          newBlock.castShadow = true; // Enable shadow casting for the cube
-          newBlock.receiveShadow = true;
-          scene.add(newBlock);
-          blocks.push(newBlock);
+        // Sprawdź, która ściana jest bliżej patrząc wzdłuż osi X lub Z
+                // Jeżeli patrzysz w górę, buduj blok na górze
+        if (relativePosition.y > 0) {
+          newPosition.y += 1;
         }
+        else
+        if (Math.abs(relativePosition.x) > Math.abs(relativePosition.z)) {
+          // Patrząc bardziej wzdłuż osi X
+          newPosition.x += Math.sign(relativePosition.x);
+        } else if (Math.abs(relativePosition.x) < Math.abs(relativePosition.z)) {
+          // Patrząc bardziej wzdłuż osi Z
+          newPosition.z += Math.sign(relativePosition.z);
+        } else {
+          // Patrząc dokładnie w kierunku przeciwnym do obu osi (patrz w górę, w dół, lewo, prawo)
+          newPosition.y += Math.sign(relativePosition.y);
+        }
+        
+
+        
+        
+        newBlock.position.copy(newPosition);
+        
+        scene.add(newBlock);
+        blocks.push(newBlock);
         
     }
 }
-
 function deleteBlockOnClick(event) {
     const mouse = new THREE.Vector2();
     mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
@@ -2081,10 +2066,14 @@ function test2(){
      if (random == 0) {
      
        audio2.src = './hal3.ogg';
-     } else {
+     } if(random == 1) {
      
        audio2.src = './nuance1.ogg';
        warn2(random)
+     } if(random > 1 && random < 3){
+       audio2.src='./calm3.ogg'
+     }if (random > 2 && random < 4) {
+       audio2.src = './calm2.ogg'
      }
      audio2.play();
    }
