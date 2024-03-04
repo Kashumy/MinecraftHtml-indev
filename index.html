@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -539,9 +538,21 @@ scale :2.0
         /*  background :#666666;*/
           color :#FFFFFF;
         }
+        #debug{
+          width: 50px;
+          height: 5px;
+          padding: 10px;
+          background: #FCFCFC6E;
+          position:fixed;
+          z-index:9;
+          bottom:0;
+          left:0;
+        }
     </style>
 </head>
-
+<div id="debug">
+x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
+</div>
 <div id="game-container">
   
 
@@ -837,11 +848,12 @@ var renderingdist=100
 
 // Tablica przechowująca chunki
 var chunks = [];
-var rdist = 40
-// Funkcja do generowania nowego chunka
+var rdist = 25
+
+
 function checkAndRemoveDuplicateBlocks() {
  // const camera = yourCamera; // Podstaw swoją kamerę Three.js
-  const radius = 100; // Promień w jakim chcesz sprawdzać bloki
+  const radius = rdist; // Promień w jakim chcesz sprawdzać bloki
 
   const blocksToRemove = [];
 
@@ -878,7 +890,7 @@ function checkAndRemoveDuplicateBlocks() {
 }
 
 function generateChunk(x, z) {
-  renderingdist=100
+  renderingdist=20
     const chunk = new THREE.Group();
     
     // Generowanie bloków w chunku
@@ -1068,8 +1080,11 @@ scene.add(chunk);
 chunks.push({ x, z, chunk });
 generateChunkinprocess_Cave(x,z)
 
-checkAndRemoveDuplicateBlocks()
+
+
+
 setTimeout(function(){
+  checkAndRemoveDuplicateBlocks(x,z)
   renderingdist=8
 },4000)
 }
@@ -1100,8 +1115,7 @@ function generateChunkinprocess_Cave(x, z) {
   
   const chunk = new THREE.Group();
 
-  const rdist = 40; // Przyjmujemy, że to jest globalny zakres
-
+  
   // Wysokość, od której zaczynamy kłaść kamienie
   const startHeight = -6;
   // Wysokość do której będziemy kłaść kamienie (wypełnienie)
@@ -1295,29 +1309,37 @@ function updatePlayerChunk() {
     const playerChunkX = Math.floor(player.position.x / rdist);
     const playerChunkZ = Math.floor(player.position.z / rdist);
     
-    // Sprawdź, czy gracz wchodzi do nowego chunka
-    if (!chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ)) {
+    const chunkBorderOffset = 2; // Odległość graniczna dla generowania nowego chunka
+
+    // Sprawdź, czy gracz jest na granicy chunka
+    if (
+        !chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ) &&
+        (
+            Math.abs(player.position.x % rdist) < chunkBorderOffset ||
+            Math.abs(player.position.z % rdist) < chunkBorderOffset
+        )
+    ) {
         // Usuń chunky, które są za daleko od gracza
         for (let i = chunks.length - 1; i >= 0; i--) {
             const chunk = chunks[i];
             if (Math.abs(chunk.x - playerChunkX) > 1 || Math.abs(chunk.z - playerChunkZ) > 1) {
                 removeChunk(chunk.x, chunk.z);
-                blocks=[]
+                blocks = [];
             }
         }
         // Wygeneruj nowy chunk wokół gracza
         generateChunk(playerChunkX, playerChunkZ);
-        player.position.y += 3
-        if(one==0){
-//visibleblocks=(blocks)
-          one=1
-          checkAndRemoveDuplicateBlocks()
-          setTimeout(function (){
-            one=0
-          },1000)
+        player.position.y += 3;
+        if (one == 0) {
+            one = 1;
+            //visibleblocks=(blocks)
+            setTimeout(function () {
+                one = 0;
+            }, 1000);
         }
     }
 }
+
         // Niebieskie niebo z chmurkami
         const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
         const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, side: THREE.BackSide });
@@ -1326,7 +1348,7 @@ function updatePlayerChunk() {
         // Ruch chmur
         const clouds = [];
         if(cloudsis==1){
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 200; i++) {
             const cloudGeometry = new THREE.BoxGeometry(Math.random()*10+15, 0, Math.random()*10+10);
             const cloudMaterial = new THREE.MeshBasicMaterial ({ color: 0xffffff, transparent: true, opacity: 0.9 });
             const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
@@ -1343,13 +1365,14 @@ function updatePlayerChunk() {
         const gravity = new THREE.Vector3(0, -0.045, 0);
         const playerVelocity = new THREE.Vector3();
 setTimeout(function (){
-  player.position.y = 5
+  playerVelocity.set(0, 0, 0);
+  player.position.y = 20
   player.position.x = 12
   player.position.z = 12
-  updatePlayerChunk()
-},1000)
+//  updatePlayerChunk()
+},2500)
         // Sterowanie gracza
-        const playerSpeed = 0.2;
+        const playerSpeed = 0.3;
 
         // Przyciski
         const moveForwardButton = document.getElementById('moveForward');
@@ -1421,7 +1444,7 @@ var jumping=1
             playerVelocity.set(0, 0, 0);
             
         };
-var Movementspeed=0.19;
+var Movementspeed=0.24;
         // Renderowanie
         
 var jumpposition=0
@@ -1429,11 +1452,14 @@ var fallingdmgisactive = 0;
 setTimeout(function() {
   fallingdmgisactive = 1
 }, 6000)
-
+let forwalking=0
         const animate = () => {
           if(player.position.y < -400){
             hurt()
           }
+          document.getElementById("xpos").innerHTML=Math.floor(camera.position.x)
+          document.getElementById("ypos").innerHTML=Math.floor(camera.position.y)
+          document.getElementById("zpos").innerHTML=Math.floor(camera.position.z)
           updateFPS();
             requestAnimationFrame(animate);
 
@@ -1452,7 +1478,14 @@ if (forwardPressed) {
     // Określ prędkość w kierunku przodu (globalny kierunek)
     // Określ prędkość w kierunku przodu (globalny kierunek)
 const speed = Movementspeed;
-
+if(forwalking<5){
+forwalking++
+}else{
+var audio = new Audio('./grass1.ogg');
+forwalking=0
+// Odtwarzanie muzyki
+audio.play();
+}
 // Kopiuj wektor kierunku kamery, ale usuń składową Y, aby nie uwzględniać ruchu w górę/na dół
 const direction = new THREE.Vector3(0, 0, -1.5);
 direction.applyQuaternion(camera.quaternion).normalize(); // Dostosuj kierunek do obrotu kamery i znormalizuj
@@ -1908,7 +1941,10 @@ function buildBlockOnClick(event) {
         
 
         
+        var audio = new Audio('./stone4.ogg');
         
+        // Odtwarzanie muzyki
+        audio.play();
         newBlock.position.copy(newPosition);
         
         scene.add(newBlock);
@@ -1944,7 +1980,10 @@ function deleteBlockOnClick(event) {
         }else {
 
         }
+var audio = new Audio('./stone1.ogg');
 
+// Odtwarzanie muzyki
+audio.play();
         // Usuń kliknięty blok z tablicy bloków i ze sceny
         const index = blocks.indexOf(clickedBlock);
         if (index !== -1) {
@@ -2034,8 +2073,8 @@ function fori(){
 
 
 function test(){
-  warn2(
-"Scene polycount:"+ renderer.info.render.triangles+"Active Drawcalls:"+ renderer.info.render.calls +"Geometries in Memory"+ renderer.info.memory.geometries )
+//  warn2(
+//"Scene polycount:"+ renderer.info.render.triangles+"Active Drawcalls:"+ renderer.info.render.calls +"Geometries in Memory"+ renderer.info.memory.geometries )
 
 
 
@@ -2159,7 +2198,7 @@ function test2(){
 
 
 <script>
- window.setInterval(updatePlayerChunk,5000)
+ window.setInterval(updatePlayerChunk,2000)
  
  
  
