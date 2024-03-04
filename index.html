@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -14,7 +15,7 @@
   
   
   
-  var isloading = 0
+  var isloading = 1
   var cloudsis=1
   
   
@@ -71,11 +72,12 @@ function warn2(message) {
     <style>
     dvt{
       position :fixed ;
-      background-image: url('./pano.png'); /* Dodaj ścieżkę do swojego obrazu panoramy */
+      background-image: url('./03.jpg'); /* Dodaj ścieżkę do swojego obrazu panoramy */
             background-size: 100%;
             background-position: center;
             width :100%;
             height :100%;
+            image-rendering: pixelated;
     }
     
     
@@ -503,21 +505,23 @@ scale :2.0
       float :left ;
       background-size :100%;
       image-rendering :pixelated ;
-      margin-left :10px;
+      margin-left :3px;
     }
     #items{
-      width :300px;
-      height :50px;
+      width :370px;
+      height :100px;
       position :absolute ;
-      bottom :30px;
-      left:70vw;
+      bottom :-10px;
+      overflow: hidden;
+      overflow: scroll;
+      left:55vw;
       background :#1E1E1E2E;
       transform:translate(-50%,0%);
       z-index :1;
     }
         body { }
         #game { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #87CEEB; }
-        #controls { position: fixed; bottom: 20px; left: 20px; z-index :2; width :200px; overflow :hidden }
+        #controls { position: fixed; bottom: 20px; left: 20px; z-index :2; width :200px; overflow :hidden; zoom:0.8 }
         .null{
           user-select :none;
           width :50px;
@@ -587,27 +591,124 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
         image-rendering :pixelated ;
         background-size: 100%;
       }
+      
+      
+.night {
+  background-color: #000000;
+  animation: nights 35s forwards steps(30);
+}
+
+.day {
+  background-color: #53D8F0;
+  animation: days 35s forwards steps(30);
+}
+
+@keyframes nights {
+  0.1% {
+    background: #87CEEB;
+  }
+  30% {
+    background: #3983A2;
+  }
+  50% {
+    background: #0E4E69;
+  }
+  80% {
+    background: #07244F;
+  }
+  100% {
+    background: #000000;
+  }
+}
+
+@keyframes days {
+  0.1% {
+    background: #000000;
+  }
+  20% {
+    background: #07244F;
+  }
+  50% {
+    background: #0E4E69;
+  }
+  70% {
+    background: #3983A2;
+  }
+  99.9% {
+    background: #87CEEB;
+  }
+  100% {
+    background: #000000;
+  }
+}
+
+
     </style>
-    
-    <div class="item-slot" style="position :relative " onclick="switchi('stone')" ><img style="width:60%;height :60%;margin :20%" src="./pobrane (14).png" alt="">
-        <p id="items-slot-1" style="position :absolute ; top :0%; z-index :99;left :0%; color :white " >x999</p>
-    </div>
-    
-
-    
-    <div class="item-slot" style="position :relative " onclick="switchi('grass')" ><img style="width:60%;height :60%;margin :20%" src="./pobrane (9).png" alt="">        <p id="items-slot-2" style="position :absolute ; top :0%; z-index :99;left :0%; color :white " >x999</p></div>
-
-    <div class="item-slot" style="position :relative " onclick="switchi('plank')"><img style="width:60%;height :60%;margin :20%" src="./pobrane (10).png" alt="">        <p id="items-slot-3" style="position :absolute ; top :0%; z-index :99;left :0%; color :white " >x999</p></div>
-    <div class="item-slot" onclick="switchi()"><img style="width:60%;height :60%;margin :20%" src="./pickaxe.png" alt=""></div>
+    <div class="item-slot" onclick="switchi('pickaxe')"><img style="width:60%;height :60%;margin :20%" src="./pickaxe.png" alt=""></div>
   </div>
-  
- <script>
-   var cantbuildthisblockGeometry=0
-   var items={
-     "1":["stone",1],
-     "2":["grass",1],
-     "3":["wood",1]
+   <script>
+     var cantbuildthisblockGeometry = 0;
+   var items = {
+     "1": ["stone", 0, "./pobrane (14).png"],
+     "2": ["grass", 0, "./pobrane (9).png"],
+     "3": ["wood", 0, "./pobrane (10).png"],
+     "4": ["water", 0, "./water.png","water2"],
+     "5": ["leaves", 0, "./pobrane (19).png"]
+   };
+   
+   // Funkcja do dynamicznego dodawania slotów
+   function createItemSlots() {
+     const itemSlotsContainer = document.getElementById('items');
+   
+     // Ograniczenie do maksymalnie 6 slotów
+     const maxSlots = Math.min(6, Object.keys(items).length);
+   
+     for (let i = 1; i <= maxSlots; i++) {
+       const itemInfo = items[i.toString()];
+       const [itemName, itemCount, itemImage] = itemInfo;
+   
+       const itemSlot = document.createElement('div');
+       itemSlot.className = 'item-slot';
+       itemSlot.style.position = 'relative';
+       itemSlot.id=`itemslot${i}`
+       itemSlot.innerHTML = `
+           <img style="width:60%;height:60%;margin:20%" src="${itemImage}"  alt="">
+           <p id="items-slot-${i}" style="position:absolute;top:0%;z-index:99;left:0%;color:white">x${itemCount}</p>
+         `;
+       itemSlot.addEventListener('click', function() {
+         switchi(itemName);
+       });
+   
+       itemSlotsContainer.appendChild(itemSlot);
+     }
    }
+   
+   // Wywołanie funkcji do utworzenia slotów po załadowaniu strony
+   window.addEventListener('load', createItemSlots);
+function checkItemSlotsForItems() {
+  const itemSlotsContainer = document.getElementById('items');
+
+  setInterval(() => {
+    for (let i = 1; i <= Object.keys(items).length; i++) {
+      const itemInfo = items[i.toString()];
+      const [itemName, itemCount] = itemInfo;
+      const itemSlot = document.getElementById(`itemslot${i}`);
+
+      if (itemCount < 1) {
+        // Ukryj slot, gdy liczba itemów jest mniejsza niż 1
+        itemSlot.style.display = 'none';
+      } else {
+        // Pokaż slot, gdy liczba itemów wynosi 1 lub więcej
+        itemSlot.style.display = 'block';
+        //itemSlot.innerText = `x${itemCount}`;
+      }
+    }
+  }, 1000); // Sprawdzaj co sekundę (możesz dostosować interwał)
+}
+
+// Wywołanie funkcji sprawdzającej sloty w intervalu po załadowaniu strony
+window.addEventListener('load', checkItemSlotsForItems);
+
   var currentitemslot='';
    
    function updateInventory() {
@@ -678,14 +779,17 @@ updateInventory()
         <button id="moveForward" class="btn"></button>
         <div class="null"></div>
                 <button id="moveLeft" class="btn" ></button>
-        <button id="moveBackward" class="btn"></button>
+                      <div class="null"></div>
+
         <button id="moveRight" class="btn" ></button>
-        <button id="jump" style="position :fixed ; right :0px; bottom: 20px" class="btn" ></button>
+              <div class="null"></div>
+        <button id="moveBackward" class="btn"></button>
+
       <!--  <button id="dstr" onclick="switchi()" style="position :fixed ; left :0px; top: 20px" class="btn" >destroy</button>-->
-              <button id="empty" onclick="menu_game()" style="position :fixed ; right :0px; top: 50px ; font-weight :bold " class="btn" >|&nbsp;&nbsp;|</button>
+
     </div>
-    
-    
+            <button id="jump" style="position :fixed ; right :0px; bottom: 20px" class="btn" ></button>
+                  <button id="empty" onclick="menu_game()" style="position :fixed ; right :0px; top: 50px ; font-weight :bold " class="btn" >|&nbsp;&nbsp;|</button>
     
 </div>
     <script src="./three.js"></script>
@@ -799,7 +903,7 @@ var water = new THREE.TextureLoader().load('./water.png');
 var textureSides2 = new THREE.TextureLoader().load('./pobrane (13).png');
 textureSides2.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
 textureSides2.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-var plank = new THREE.TextureLoader().load('./cobble.png');
+var wood = new THREE.TextureLoader().load('./cobble.png');
 var stone1 = new THREE.TextureLoader().load('./pobrane (7).png');
 var stone3 = new THREE.TextureLoader().load('./pobrane (10).png');
 var wood1 = new THREE.TextureLoader().load('./pobrane (16).png');
@@ -815,10 +919,10 @@ stone3.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
 
 
 
-var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.6});
+var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.9});
 var stone = new THREE.MeshStandardMaterial({ map: stone1, });
 
-var planken = new THREE.MeshStandardMaterial ({ map: plank,flatShading: true , });
+var wooden = new THREE.MeshStandardMaterial ({ map: wood,flatShading: true , });
 var stonen = new THREE.MeshStandardMaterial ({ map: stone3,flatShading: true , });
 var material2 = new THREE.MeshStandardMaterial ({ map: textureSides2 ,flatShading: true , });
 var materialTop = new THREE.MeshStandardMaterial ({ map: textureTop,flatShading: true ,transparent: true, opacity: 1 });
@@ -957,6 +1061,7 @@ for (let i = 0; i < numberOfTrees; i++) {
     
     const block = new THREE.Mesh(new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize), material);
     block.position.set(x2 + randomx + x * rdist, y2, z2 + randomz + z * rdist);  
+    block.name='leaves'
     if(type == 1){
       block.name='woodblock'
     }
@@ -1063,7 +1168,7 @@ for (let x2 = 0; x2 < rdist; x2++) { // Zakres w osi X
 
 
     const block = new THREE.Mesh(blockGeometry, stone);
-block.name='plank'
+block.name='stone'
     block.position.set(x2 + x * rdist, -4
     -y2, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
    // block.castShadow = true; // Enable shadow casting for the cube
@@ -1135,7 +1240,7 @@ var steponstone=0
         const block = new THREE.Mesh(blockGeometry, stone);
         block.position.set(x2 + x * rdist, layerHeight-y, z2 + z * rdist);
         //block.castShadow = true;
-        block.name="plank"
+        block.name="stone"
        // block.receiveShadow = true;
         scene.add(block);
         blocks.push(block);
@@ -1453,7 +1558,16 @@ setTimeout(function() {
   fallingdmgisactive = 1
 }, 6000)
 let forwalking=0
+let D20times=0
         const animate = () => {
+          if(D20times<20){
+          
+          D20times++
+          }else{
+            D20times=0
+            updatePlayerChunk()
+          }
+          
           if(player.position.y < -400){
             hurt()
           }
@@ -1541,8 +1655,8 @@ for (const block of blocks) {
 
     // Sprawdź kolizję z górną częścią ścianki
     const halfWallHeight = block.geometry.parameters.height / 2.0; // Załóżmy, że wysokość ścianki to parametr "height".
-    const halfWallDepth = block.geometry.parameters.depth / 2.2; // Załóżmy, że głębokość ścianki to parametr "depth".
-    const halfWallWidth = block.geometry.parameters.width / 2.5; // Załóżmy, że szerokość ścianki to parametr "width".
+    const halfWallDepth = block.geometry.parameters.depth / 2.8; // Załóżmy, że głębokość ścianki to parametr "depth".
+    const halfWallWidth = block.geometry.parameters.width / 2.8; // Załóżmy, że szerokość ścianki to parametr "width".
 
     if (
         player.position.x - 0.5 < block.position.x + halfWallWidth &&
@@ -1608,7 +1722,7 @@ if (
         playerVelocity.set(0, 0, 0);
         player.position.y += (block.position.y - player.position.y) + 0.8;
         cantjump = 0;
-        if (block.name === "plank") {
+        if (block.name === "stone") {
             steponstone = 1;
         }
         jumping = 1;
@@ -1617,7 +1731,7 @@ if (
         }
     } else {
         cantjump = 1;
-        if (block.name !== "plank") {
+        if (block.name !== "stone") {
             steponstone = 0;
         }
         if (fallingdmgisactive == 1) {
@@ -1870,8 +1984,8 @@ function buildBlockOnClick(event) {
         if (currentblock == 'stone') {
           currentitemslot='stone';
           if(cantbuildthisblockGeometry==0){
-          var newBlock = new THREE.Mesh(blockGeometry, planken);
-          newBlock.name="plank"
+          var newBlock = new THREE.Mesh(blockGeometry, wooden);
+          newBlock.name="stone"
           var searchedItem = "stone";
           var index = -1; // Domyślny indeks, jeśli nie znaleziono
           
@@ -1888,7 +2002,7 @@ function buildBlockOnClick(event) {
           
           if(cantbuildthisblockGeometry==0){
           var newBlock = new THREE.Mesh(blockGeometry, stonen);
-          newBlock.name='stone'
+          newBlock.name='wood'
           var searchedItem = "wood";
           var index = -1; // Domyślny indeks, jeśli nie znaleziono
           
@@ -1917,6 +2031,43 @@ function buildBlockOnClick(event) {
           }
           useblock(index)
           }
+        }else{
+
+currentitemslot = currentblock;
+
+if (cantbuildthisblockGeometry === 0) {
+  var newBlock = new THREE.Mesh(blockGeometry, materials);
+  newBlock.name = currentitemslot;
+
+  var searchedItem = currentitemslot;
+  var index = -1; // Domyślny indeks, jeśli nie znaleziono
+
+  for (var key in items) {
+    if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+      index = key;
+      break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+    }
+  }
+
+  // Zaktualizuj materiał bloku na podstawie właściwości aktualnego przedmiotu
+  if (index !== -1) {
+    if (items[index][3] && window.hasOwnProperty(items[index][3])) {
+      // Jeśli trzeci indeks wskazuje na nazwę zmiennej, skopiuj materiał
+      var customMaterial = window[items[index][3]];
+      newBlock.material = customMaterial;
+    } else {
+      // W przeciwnym razie użyj tekstury zdefiniowanej w items
+      var itemTexture = new THREE.TextureLoader().load(items[index][2]);
+      itemTexture.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+      itemTexture.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+      var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture });
+      newBlock.material = itemMaterial;
+    }
+  }
+
+  useblock(index);
+}
+
         }
         
         
@@ -1968,17 +2119,17 @@ function deleteBlockOnClick(event) {
         // Pobierz kliknięty blok
         const clickedBlock = intersects[0].object;
 
-        // Sprawdź, czy materiał klikniętego bloku ma nazwę "planken"
-        if (clickedBlock.name === "plank") {
+        // Sprawdź, czy materiał klikniętego bloku ma nazwę "wooden"
+        if (clickedBlock.name === "stone") {
             addblock("stone");
-        }if (clickedBlock.name === "woodblock") {
+        }else if (clickedBlock.name === "woodblock") {
           addblock("wood"); addblock("wood"); addblock("wood"); addblock("wood");
         } else if (clickedBlock.name === "grass") {
           addblock("grass");
         } else if (clickedBlock.name === "stone") {
           addblock("wood");
         }else {
-
+addblock(clickedBlock.name)
         }
 var audio = new Audio('./stone1.ogg');
 
@@ -1995,6 +2146,109 @@ audio.play();
 
 
 
+
+
+
+
+
+
+
+
+
+
+// Set up a variable to track the time elapsed
+let elapsedTime = 0;
+
+
+/*
+jak wyglada materiał nieba
+const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, side: THREE.BackSide });
+const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+*/
+// Assuming you have your light, skyGeometry, and skyMaterial defined
+
+// Function to change the sky and light
+// Assuming you have your light, skyGeometry, and skyMaterial defined
+
+
+
+
+
+
+// Function to change the background color and light
+// Function to change the background color and light
+// Function to change the background color and light
+function changeBackgroundAndLight() {
+  const duration = 15000; // 15 seconds
+  const startTime = Date.now();
+  const minLightIntensity = 0.02;
+
+  const gameElement = document.getElementById('game');
+  
+  function update() {
+    const currentTime = Date.now() - startTime;
+
+    // Decrease light intensity to a minimum of 0.1 over 15 seconds
+    const progressLight = Math.min(currentTime / duration, 1);
+    const newLightIntensity = Math.max(minLightIntensity, 0.3 - 0.2 * progressLight*2);
+    light.intensity = newLightIntensity;
+
+gameElement.classList.add('night')
+
+    // Continue updating until the duration is reached
+    if (currentTime < duration) {
+      requestAnimationFrame(update);
+      
+    }else{
+      setTimeout(changeBackgroundAndLight2, 100000); // Start after 8 seconds
+    }
+  }
+
+  // Start the update function
+  update();
+}
+
+setTimeout(changeBackgroundAndLight, 300000); 
+function changeBackgroundAndLight2() {
+  const duration = 35000; // 15 seconds
+  const startTime = Date.now();
+  const minLightIntensity = 0.02;
+
+  const gameElement = document.getElementById('game');
+  
+  function update() {
+    const currentTime = Date.now() - startTime;
+
+    // Increase light intensity to a maximum of 0.6 over 15 seconds
+    const progressLight = Math.min(currentTime / duration, 1);
+    const newLightIntensity = Math.min(0.6, minLightIntensity + 0.2 * progressLight*2);
+    light.intensity = newLightIntensity;
+
+    gameElement.classList.add('day'); // Zmiana klasy na 'day'
+
+    // Continue updating until the duration is reached
+    if (currentTime < duration) {
+      
+      requestAnimationFrame(update);
+      gameElement.classList.remove('night');
+    }else{
+      gameElement.classList.remove('day');
+      setTimeout(changeBackgroundAndLight, 300000); // Start after 8 seconds
+    }
+  }
+
+  // Start the update function
+  update();
+}
+
+
+
+
+
+
+
+
+
 currentblock='stone'
 blockClickEnabled=false
 function switchi(data) {
@@ -2004,7 +2258,7 @@ function switchi(data) {
     canv.addEventListener('click', buildBlockOnClick);
 //    blockClickEnabled = false;
 currentblock='stone'
-  }else if (data == "plank") {
+  }else if (data == "wood") {
     // Wyłącz obsługę kliknięcia bloku
     canv.removeEventListener('click', deleteBlockOnClick);
     canv.addEventListener('click', buildBlockOnClick);
@@ -2016,11 +2270,17 @@ currentblock='stone'
     canv.addEventListener('click', buildBlockOnClick);
     //    blockClickEnabled = false;
     currentblock = 'grass'
-  }else {
+  }else if (data =="pickaxe"){
     // Włącz obsługę kliknięcia bloku
     canv.removeEventListener('click',buildBlockOnClick);
     canv.addEventListener('click', deleteBlockOnClick);
 //    blockClickEnabled = true;
+  }else{
+    // Wyłącz obsługę kliknięcia bloku
+    canv.removeEventListener('click', deleteBlockOnClick);
+    canv.addEventListener('click', buildBlockOnClick);
+    //    blockClickEnabled = false;
+    currentblock = data
   }
 }
 
@@ -2198,7 +2458,7 @@ function test2(){
 
 
 <script>
- window.setInterval(updatePlayerChunk,2000)
+ 
  
  
  
