@@ -325,11 +325,13 @@ setTimeout(function() {
       setTimeout(function() {
         document.getElementById('ss').style.display = "none"
       }, 2000)
+      
 }, 100)
   }
 var lbar=document.getElementById('lbar')
 var progress=0
 function playworld(data){
+  
   lbar=document.getElementById('lbar')
   document.querySelector('.menu').style.display ="none"
   document.getElementById('lading').style.display ="block"
@@ -349,6 +351,7 @@ if(isloading==1){
   setTimeout(function (){
   if(data=="world1"){
     document.getElementById('game-container').style.display ="block"
+    
   }
   },13000)
 } else {
@@ -610,7 +613,7 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
     background: #87CEEB;
   }
   30% {
-    background: #3983A2;
+    background: linear-gradient(#3988A2,#EBAF1A);
   }
   50% {
     background: #0E4E69;
@@ -775,6 +778,8 @@ updateInventory()
  
 <img src="./croschair.png" style="position :fixed ; transform:translate(-50%,-50%); top:50vh ;left :50vw; z-index :1">
 <!--<img ontouchmove="cameramv(event)" ontouchend="stop(event)"  src="./arm.png" style="position :fixed ; pointer-events :none ;bottom :-50px; right :-80px; z-index :1; width :300px;height :300px">-->
+<div id="game2" style="position:absolute;background: black; width:100%; height:100vh;">
+</div>
     <canvas ontouchmove="cameramv(event)" ontouchend="stop(event)"  id="game"></canvas>
     <div id="controls">
       <div class="null"></div>
@@ -1561,6 +1566,9 @@ setTimeout(function() {
 }, 6000)
 let forwalking=0
 let D20times=0
+const targetFPS = 20; // Maksymalna liczba klatek na sekundę
+const frameTime = 1000 / targetFPS; // Czas trwania jednej klatki w milisekundach
+
         const animate = () => {
           if(D20times<20){
           
@@ -1577,7 +1585,9 @@ let D20times=0
           document.getElementById("ypos").innerHTML=Math.floor(camera.position.y)
           document.getElementById("zpos").innerHTML=Math.floor(camera.position.z)
           updateFPS();
-            requestAnimationFrame(animate);
+            setTimeout(() => {
+              requestAnimationFrame(animate);
+            }, frameTime);
 
 camera.position.set(player.position.x, player.position.y+1, player.position.z);
 camera.rotation.order = 'YXZ';
@@ -1753,11 +1763,15 @@ if (
                 }
             }
 
-            renderer.render(scene, camera);
+            
         };
 
         animate();
-
+function fastrendering(){
+renderer.render(scene, camera);
+requestAnimationFrame(fastrendering)
+}
+fastrendering()
        /* function cameramv(event) {
             xt = event.touches[0].clientX;
             yt = event.touches[0].clientY;
@@ -2202,7 +2216,7 @@ gameElement.classList.add('night')
       requestAnimationFrame(update);
       
     }else{
-      setTimeout(changeBackgroundAndLight2, 100000); // Start after 8 seconds
+      setTimeout(changeBackgroundAndLight2, 200000); // Start after 8 seconds
     }
   }
 
