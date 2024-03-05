@@ -1316,7 +1316,7 @@ cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
 cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
 function updaterenderdistance(playerChunkX, playerChunkZ) {
-  const occlusionRadius = renderingdist;
+  const occlusionRadius = renderingdist+3;
   const additionalDistance = rdist / 2;
 
   
