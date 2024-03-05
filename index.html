@@ -3,24 +3,47 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<html lang="en" onclick="document.documentElement.requestFullscreen()" >
-  
+<html lang="en" onclick="openFullscreen()" >
+
        <div id="game-menu" class="none" style="position:fixed ;z-index:3; top:0;left:0;height:50vh;width:50vw;background : #CACACA6B ;color:white  ;font-size:24px; top:50vh; left :50vw; transform:translate(-50%,-50%);" >
-         
+
 <pre style="white-space :pre-wrap ">
  Workbench Classic Minecraft
  by: kashumyGithub
  orginal: mojang Minecraft 
 </pre>
 <script>
-  
-  
-  
-  var isloading = 1
+
+  var isloading = 0
   var cloudsis=1
-  
-  
-  
+
+
+
+    function openFullscreen() {
+        var elem = document.documentElement;
+
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen().then(rotateScreen);
+        } else if (elem.mozRequestFullScreen) {  // Firefox
+            elem.mozRequestFullScreen().then(rotateScreen);
+        } else if (elem.webkitRequestFullscreen) {  // Chrome, Safari and Opera
+            elem.webkitRequestFullscreen().then(rotateScreen);
+        } else if (elem.msRequestFullscreen) {  // IE/Edge
+            elem.msRequestFullscreen().then(rotateScreen);
+        }
+        rotateScreen()
+    }
+
+    function rotateScreen() {
+        if (screen.orientation) {
+            // Obróć ekran w tryb landscape
+            screen.orientation.lock("landscape");
+        }
+    }
+
+
+
+
 </script>
 
        </div>
@@ -49,40 +72,37 @@ function warn2(message) {
     alertDiv.classList.remove("show");
     setTimeout(function() {
       alertDiv.remove();
-    }, 300); // Czas animacji CSS
-  }, 2000); // Czas wyświetlania
+    }, 300); 
+  }, 2000); 
 }
-//warn2("hello")
+
     function menu_game(){
       document.getElementById('game-menu').classList.toggle('none')
     }
   </script>
-
 
   <style>
     .none{
       display :none ;
     }
   </style>
-  
+
 <head>
-  
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Menu</title>
     <style>
     dvt{
       position :fixed ;
-      background-image: url('./03.jpg'); /* Dodaj ścieżkę do swojego obrazu panoramy */
+      background-image: url('./03.jpg'); 
             background-size: 100%;
             background-position: center;
             width :100%;
             height :100%;
             image-rendering: pixelated;
     }
-    
-    
-    
+
 @font-face {
   font-family: 'mc';
   src: url('./Minecraft.ttf');
@@ -95,7 +115,7 @@ function warn2(message) {
           background :#000000;
             margin: 0;
             padding: 0;
-            
+
             font-family: "mc";
         }
 @media screen and (max-width: 769px) {
@@ -104,7 +124,7 @@ dvt{
   top:50vh;
   transform:translate(0%,-50%);
   background-repeat :no-repeat ;
-  
+
 }
 }
         .menu-container {
@@ -123,15 +143,15 @@ dvt{
             background :url('./button.png');
             background-size: 100%;
             font-family :'mc';
-            
+
             background-repeat: no-repeat ;
             width: 350px;
             padding: 10px;
             margin: 10px auto;
-            
+
             color: white;
             text-decoration: none;
-            
+
             font-size: 18px;
         }
         *{
@@ -139,7 +159,7 @@ dvt{
         }
 
         .menu-button:hover {
-            
+
         }
         #logo{
           width :100px;
@@ -149,7 +169,7 @@ dvt{
           transform:translate(-50%,-50%);
           left:50%;
           background-image :url('./cn.png');
-          
+
         }
         .opct{
           opacity :0;
@@ -172,7 +192,7 @@ dvt{
 }
 @keyframes buc{
   0%{
-    
+
   }
   50%{
     scale :1.2
@@ -186,7 +206,7 @@ dvt{
   setTimeout(function() {
   var splashContainer = document.getElementById('splash');
 
-  // Lista 20 przykładowych splashy Minecraftowych
+  
   var splashes = [
     "Creeper, aw man!",
     "Creeper, aw man!",
@@ -194,7 +214,6 @@ dvt{
     "<text style='font-size :40px:'>Big text </text>",
     "<text style='font-size :40px:'>Big text 2 </text>",
     "<text style='font-size :100px:'>Big text 3</text>",
-
 
     "keep going !",
     "Redstone dust can power a lot of stuff!",
@@ -224,7 +243,7 @@ dvt{
     "so, so, hmgm. regardless of my will, I must inform you that this is my favorite message 😈🔥",
     "menage items in your slots",
     "collect block for buildings !",
-    
+
     "<pre style='color:red' > This is make old version of minecraft challenge <br> Bugs !",
     " <text style='color :lime'>try to find </text>",
     "<text style='color :blue'> Unknown message </text>",
@@ -265,20 +284,19 @@ dvt{
   "Face the challenge!",
   "Cows in the pasture!"
 
-
   ];
 
-  // Losowo wybierz i wyświetl 20 splashy
+  
   for (var i = 0; i < 20; i++) {
     var randomIndex = Math.floor(Math.random() * splashes.length);
     var splashText = splashes[randomIndex];
 
-    // Utwórz nowy element div dla każdego splasha
+    
     var splashDiv = document.createElement('div');
     splashDiv.className = 'splash';
     splashDiv.textContent = splashText;
 
-    // Dodaj splash do kontenera
+    
     splashContainer.innerHTML=splashDiv.innerText;
   }
 }, 3000);
@@ -286,13 +304,12 @@ dvt{
 </script>
 <body>
   <dvt></dvt>
-  
+
    <div id="ss" style="position:fixed ;z-index:3; top:0;left:0;height:100vh;width:100vw;background :white ;color:black ;font-size:4px; " >
-     
+
 <img src="./cn.png" id="logo">
    </div>
 
-  
     <div class="menu-container">
       <div style="position: absolute; top:0; left:0;"> indev 0.5 </div>
         <img src="./Workbench.png" style="width :390px" alt="">
@@ -311,7 +328,7 @@ dvt{
 </body>
 </html>
 <script>
-  
+
   if(isloading==1){
 setTimeout(function (){
   document.getElementById('ss').classList.add('opct')
@@ -325,13 +342,13 @@ setTimeout(function() {
       setTimeout(function() {
         document.getElementById('ss').style.display = "none"
       }, 2000)
-      
+
 }, 100)
   }
 var lbar=document.getElementById('lbar')
 var progress=0
 function playworld(data){
-  
+
   lbar=document.getElementById('lbar')
   document.querySelector('.menu').style.display ="none"
   document.getElementById('lading').style.display ="block"
@@ -342,16 +359,15 @@ for (var i = 0; i <= max; i++) {
     setTimeout(function() {
       progress+=1
       lbar.style.width = progress + "%"
-    }, i * 100); // Wywołaj funkcję z opóźnieniem i sekundy
+    }, i * 100); 
   })(i);
 }
-
 
 if(isloading==1){
   setTimeout(function (){
   if(data=="world1"){
     document.getElementById('game-container').style.display ="block"
-    
+
   }
   },13000)
 } else {
@@ -376,16 +392,15 @@ function canel() {
 <div class="mmenu">
 
 <div id="lading" style="width :100%;height :100vh; display :none; position :absolute ">
-  
 
        <pre style="color :white ; text-align :center ;position :absolute; transform:translate(-50%,-50%); top:calc(50vh - 60px); left :50vw;">Building terrain</pre>
      <div id="" style="width :200px;height :10px; position :absolute; transform:translate(-50%,-50%); top:50vh; left :50vw; background-color :gray " >
 
        <div id="lbar" style="width :0%; background :lime ; height :100%; filter :brightness(1.0)">
-         
+
        </div>
      </div>
-     
+
 </div>
   <div class="menu">
 
@@ -401,11 +416,11 @@ function canel() {
 
 <style>
 #game-container{
-  
+
 }
 .dead{
   animation : 0.15s dmg  steps(1) , 0.3s rtt  ;
-  
+
 }
 @keyframes dmg{
   0%{
@@ -449,7 +464,7 @@ scale :2.0
  text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.4);
  font-family :'mc';
   height :30px;
-  
+
 }
 #bt{
   position :fixed ;
@@ -470,7 +485,7 @@ scale :2.0
   font-family :'mc';
   font-size :13px;
   background-repeat: no-repeat ;
-  
+
 }
   .mmenu{
     position :fixed ;
@@ -484,13 +499,6 @@ scale :2.0
   }
 </style>
 
-
-
-
-
-
-
-
     <style>
     html{
       position :fixed ;
@@ -503,15 +511,21 @@ scale :2.0
       margin :0;
       padding :0;
     }
-    .item-slot{
-      width :50px;
-      height :50px;
-      background :url('./itemslot.png');
-      float :left ;
-      background-size :100%;
-      image-rendering :pixelated ;
-      margin-left :3px;
-    }
+.item-slot {
+  width: 50px;
+  height: 50px;
+  background: url('./itemslot.png');
+  float: left;
+  background-size: 100%;
+  image-rendering: pixelated;
+  margin-left: 3px;
+  transition: background-color 0.3s ease; 
+}
+
+.item-slot:hover {
+  background: #f0f0f0; 
+}
+
     #items{
       width :370px;
       height :100px;
@@ -544,7 +558,7 @@ scale :2.0
           background :url('./btn.png');
           float :left ;
           height :50px;
-        /*  background :#666666;*/
+        
           color :#FFFFFF;
         }
         #debug{
@@ -563,8 +577,6 @@ scale :2.0
 x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
 </div>
 <div id="game-container">
-  
-
 
     <div id="fps-counter" style="position: fixed ; top: 10px; right: 10px; background-color: rgba(0, 0, 0, 0.5); color: white; padding: 5px; z-index :999"></div>
   <div id="items">
@@ -580,12 +592,11 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
 <div class="heart"></div>
 <div class="heart"></div>
 
-
     </div><style>
       #hearts{
         width :100%;
         height :20px;
-        
+
       }
       .heart{
         background-image :url('./heart.png');
@@ -596,8 +607,7 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
         image-rendering :pixelated ;
         background-size: 100%;
       }
-      
-      
+
 .night {
   background-color: #000000;
   animation: nights 35s forwards steps(30);
@@ -647,7 +657,6 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
   }
 }
 
-
     </style>
     <div class="item-slot" onclick="switchi('pickaxe')"><img style="width:60%;height :60%;margin :20%" src="./pickaxe.png" alt=""></div>
   </div>
@@ -658,20 +667,21 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
      "2": ["grass", 0, "./pobrane (9).png"],
      "3": ["wood", 0, "./pobrane (10).png"],
      "4": ["water", 0, "./water.png","water2"],
-     "5": ["leaves", 0, "./pobrane (19).png"]
+     "5": ["leaves", 0, "./pobrane (19).png"],
+     "6": ["brick", 0 , "./pobrane (12).png"]
    };
+   var nocollisions=["water"]
    
-   // Funkcja do dynamicznego dodawania slotów
    function createItemSlots() {
      const itemSlotsContainer = document.getElementById('items');
-   
-     // Ograniczenie do maksymalnie 6 slotów
+
+     
      const maxSlots = Math.min(6, Object.keys(items).length);
-   
+
      for (let i = 1; i <= maxSlots; i++) {
        const itemInfo = items[i.toString()];
        const [itemName, itemCount, itemImage] = itemInfo;
-   
+
        const itemSlot = document.createElement('div');
        itemSlot.className = 'item-slot';
        itemSlot.style.position = 'relative';
@@ -683,12 +693,12 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
        itemSlot.addEventListener('click', function() {
          switchi(itemName);
        });
-   
+
        itemSlotsContainer.appendChild(itemSlot);
      }
    }
+
    
-   // Wywołanie funkcji do utworzenia slotów po załadowaniu strony
    window.addEventListener('load', createItemSlots);
 function checkItemSlotsForItems() {
   const itemSlotsContainer = document.getElementById('items');
@@ -700,22 +710,22 @@ function checkItemSlotsForItems() {
       const itemSlot = document.getElementById(`itemslot${i}`);
 
       if (itemCount < 1) {
-        // Ukryj slot, gdy liczba itemów jest mniejsza niż 1
+        
         itemSlot.style.display = 'none';
       } else {
-        // Pokaż slot, gdy liczba itemów wynosi 1 lub więcej
+        
         itemSlot.style.display = 'block';
-        //itemSlot.innerText = `x${itemCount}`;
+        
       }
     }
-  }, 1000); // Sprawdzaj co sekundę (możesz dostosować interwał)
+  }, 1000); 
 }
 
-// Wywołanie funkcji sprawdzającej sloty w intervalu po załadowaniu strony
+
 window.addEventListener('load', checkItemSlotsForItems);
 
   var currentitemslot='';
-   
+
    function updateInventory() {
     for (var key in items) {
         if (items.hasOwnProperty(key)) {
@@ -725,7 +735,7 @@ window.addEventListener('load', checkItemSlotsForItems);
             var slotId = "items-slot-" + key;
             var slotElement = document.getElementById(slotId);
             if (slotElement) {
-                slotElement.textContent = "x" + itemCount; // Aktualizuj treść slotu
+                slotElement.textContent = "x" + itemCount; 
             }
 
         }
@@ -735,52 +745,51 @@ window.addEventListener('load', checkItemSlotsForItems);
 
 function addblock(typ3){
   var searchedItem = typ3;
-  var index = -1; // Domyślny indeks, jeśli nie znaleziono
-  
+  var index = -1; 
+
   for (var key in items) {
     if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
-      index = key; // Przypisz indeks, jeśli znaleziono obiekt o kluczu "wood"
-      break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+      index = key; 
+      break; 
     }
   }
   items[index][1] += 1
   updateInventory()
 }
 function useblock(typ3){
-  
+
   items[typ3][1] -= 1
 
   updateInventory()
-  
+
 }
 function checkItm(typ3){
   var searchedItem = currentitemslot;
-  var index = -1; // Domyślny indeks, jeśli nie znaleziono
-  
+  var index = -1; 
+
   for (var key in items) {
     if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
-      index = key; // Przypisz indeks, jeśli znaleziono obiekt o kluczu "wood"
+      index = key; 
 if (items[index][1] < 1) {
 cantbuildthisblockGeometry = 1
 } else {
 cantbuildthisblockGeometry = 0
 }
-      break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+      break; 
     }
   }
-//  useblock(index)
+
 
 }
 updateInventory()
-//useblock(1)
+
  </script> 
-  
- 
+
 <img src="./croschair.png" style="position :fixed ; transform:translate(-50%,-50%); top:50vh ;left :50vw; z-index :1">
-<!--<img ontouchmove="cameramv(event)" ontouchend="stop(event)"  src="./arm.png" style="position :fixed ; pointer-events :none ;bottom :-50px; right :-80px; z-index :1; width :300px;height :300px">-->
+
 <div id="game2" style="position:absolute;background: black; width:100%; height:100vh;">
 </div>
-    <canvas ontouchmove="cameramv(event)" ontouchend="stop(event)"  id="game"></canvas>
+    <canvas   id="game"></canvas>
     <div id="controls">
       <div class="null"></div>
         <button id="moveForward" class="btn"></button>
@@ -792,36 +801,36 @@ updateInventory()
               <div class="null"></div>
         <button id="moveBackward" class="btn"></button>
 
-      <!--  <button id="dstr" onclick="switchi()" style="position :fixed ; left :0px; top: 20px" class="btn" >destroy</button>-->
+      
 
     </div>
-            <button id="jump" style="position :fixed ; right :0px; bottom: 20px" class="btn" ></button>
+            <button id="jump" style="position :fixed ; z-index: 2; right :50px; bottom: 20px" class="btn" ></button>
                   <button id="empty" onclick="menu_game()" style="position :fixed ; right :0px; top: 50px ; font-weight :bold " class="btn" >|&nbsp;&nbsp;|</button>
-    
+
 </div>
     <script src="./three.js"></script>
     <script>
 
-// Pobierz element div licznika FPS
+
 var fpsCounter = document.getElementById('fps-counter');
 
-// Inicjalizacja zmiennych do śledzenia FPS
+
 var frameCount = 0;
 var lastTime;
 var fps;
 
-// Funkcja do aktualizacji licznika FPS
+
 function updateFPS() {
   var currentTime = performance.now();
   frameCount++;
-  
+
   if (!lastTime) {
     lastTime = currentTime;
     return;
   }
-  
+
   var elapsedMilliseconds = currentTime - lastTime;
-  
+
   if (elapsedMilliseconds >= 1000) {
     fps = Math.round((frameCount * 1000) / elapsedMilliseconds);
     fpsCounter.innerHTML = 'FPS: ' + fps;
@@ -830,101 +839,76 @@ function updateFPS() {
   }
 }
 
+let defaultFps=30
+let targetFPS = 30; 
+let frameTime = 1000 / targetFPS; 
 
-
-
-
-
-
-
-
-
-
-
-        // Inicjalizacja sceny Three.js
+        
         const scene = new THREE.Scene();
         var canv = document.getElementById("game");
         var width = canv.clientWidth;
         var height = canv.clientHeight;
 
-        // camera
+        
         var camera = new THREE.PerspectiveCamera(90, width / height, 0.01, 300);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("game"), alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // Światło
+        
         const ambientLight = new THREE.AmbientLight(0x555555)
         scene.add(ambientLight)
 
         const light = new THREE.DirectionalLight(0xffffff, 0.6);
         light.position.set(0, 2, 0);
-      //  light.castShadow = true; // Enable shadow casting
+      
         scene.add(light);
-//renaderer.shadowMap.enabled = true;
-//renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
 scene.fog = new THREE.FogExp2(0xffffff, 0.09);
 
 light.shadow.mapSize.width = 524;
 light.shadow.mapSize.height = 524;
 light.shadow.camera.near = 0.1;
 light.shadow.camera.far = 200;
-        // Gracz
+        
         const playerGeometry = new THREE.BoxGeometry(0.1,  1, 0.1);
         const playerMaterial = new THREE.MeshPhongMaterial({ color: 0x00000000, transparent :true , opacity :0.0});
         const player = new THREE.Mesh(playerGeometry, playerMaterial);
         scene.add(player);
 
-
-
 const textureLoader = new THREE.TextureLoader();
 const texture = textureLoader.load('./pobrane (12).png');
 
-
-
-
-
-
-
-
-
-
-
-
-
-        // Bloki w świecie
+        
         const blockGeometry = new THREE.BoxGeometry(1, 1, 1);
-        
-        
-        
+
 var textureTop = new THREE.TextureLoader().load('./grass.png');
-textureTop.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-textureTop.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+textureTop.magFilter = THREE.NearestFilter; 
+textureTop.minFilter = THREE.NearestFilter; 
 var textureBottom = new THREE.TextureLoader().load('./pobrane (8).png');
-textureBottom.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-textureBottom.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+textureBottom.magFilter = THREE.NearestFilter; 
+textureBottom.minFilter = THREE.NearestFilter; 
 var textureSides = new THREE.TextureLoader().load('./front2.png');
-textureSides.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-textureSides.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+textureSides.magFilter = THREE.NearestFilter; 
+textureSides.minFilter = THREE.NearestFilter; 
 var water = new THREE.TextureLoader().load('./water.png');
 
 var textureSides2 = new THREE.TextureLoader().load('./pobrane (13).png');
-textureSides2.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-textureSides2.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+textureSides2.magFilter = THREE.NearestFilter; 
+textureSides2.minFilter = THREE.NearestFilter; 
 var wood = new THREE.TextureLoader().load('./cobble.png');
 var stone1 = new THREE.TextureLoader().load('./pobrane (7).png');
 var stone3 = new THREE.TextureLoader().load('./pobrane (10).png');
 var wood1 = new THREE.TextureLoader().load('./pobrane (16).png');
 var leaves = new THREE.TextureLoader().load('./pobrane (19).png');
-leaves.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-leaves.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-wood1.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-wood1.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-stone1.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-stone1.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-stone3.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-stone3.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-
-
+leaves.magFilter = THREE.NearestFilter; 
+leaves.minFilter = THREE.NearestFilter; 
+wood1.magFilter = THREE.NearestFilter; 
+wood1.minFilter = THREE.NearestFilter; 
+stone1.magFilter = THREE.NearestFilter; 
+stone1.minFilter = THREE.NearestFilter; 
+stone3.magFilter = THREE.NearestFilter; 
+stone3.minFilter = THREE.NearestFilter; 
 
 var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.9});
 var stone = new THREE.MeshStandardMaterial({ map: stone1, });
@@ -936,61 +920,61 @@ var materialTop = new THREE.MeshStandardMaterial ({ map: textureTop,flatShading:
 var materialBottom = new THREE.MeshStandardMaterial ({ map: textureBottom,flatShading: true , });
 var materialSides = new THREE.MeshStandardMaterial ({ map: textureSides,flatShading: true , });
 
-
-
         const blockMaterial = new THREE.MeshLambertMaterial ({ map: texture });
 
 var materials = [
-  materialSides, // lewa
-  materialSides, // prawa
-  materialTop, // góra
-  materialBottom, // dół
-  materialSides, // tył
-  materialSides ,// przód
-  
+  materialSides, 
+  materialSides, 
+  materialTop, 
+  materialBottom, 
+  materialSides, 
+  materialSides ,
+
 ];
 materials[2].shininess = 0;
 materials[2].reflectivity = 0;
 
-
-
 var blocks = [];
-var renderingdist=100
+var renderingdist=6
 
-// Tablica przechowująca chunki
+
 var chunks = [];
 var rdist = 25
 
-
-function checkAndRemoveDuplicateBlocks() {
- // const camera = yourCamera; // Podstaw swoją kamerę Three.js
-  const radius = rdist; // Promień w jakim chcesz sprawdzać bloki
+function checkAndRemoveDuplicateBlocks(currentChunkX, currentChunkZ) {
+  const radius = rdist; 
 
   const blocksToRemove = [];
 
   for (let i = 0; i < blocks.length; i++) {
     const blockA = blocks[i];
 
-    // Sprawdź odległość bloku od kamery
+    
     const distance = camera.position.distanceTo(blockA.position);
 
     if (distance <= radius) {
-      for (let j = i + 1; j < blocks.length; j++) {
-        const blockB = blocks[j];
+      const blockChunkX = Math.floor(blockA.position.x / rdist);
+      const blockChunkZ = Math.floor(blockA.position.z / rdist);
 
-        // Jeśli bloki są na tej samej pozycji, dodaj drugi blok do listy do usunięcia
-        if (
-          blockA.position.x === blockB.position.x &&
-          blockA.position.y === blockB.position.y &&
-          blockA.position.z === blockB.position.z
-        ) {
-          blocksToRemove.push(blockB);
+      
+      if (blockChunkX === currentChunkX && blockChunkZ === currentChunkZ) {
+        for (let j = i + 1; j < blocks.length; j++) {
+          const blockB = blocks[j];
+
+          
+          if (
+            blockA.position.x === blockB.position.x &&
+            blockA.position.y === blockB.position.y &&
+            blockA.position.z === blockB.position.z
+          ) {
+            blocksToRemove.push(blockB);
+          }
         }
       }
     }
   }
 
-  // Usuń zduplikowane bloki
+  
   blocksToRemove.forEach((block) => {
     scene.remove(block);
     const index = blocks.indexOf(block);
@@ -998,32 +982,53 @@ function checkAndRemoveDuplicateBlocks() {
       blocks.splice(index, 1);
     }
   });
+
+  targetFPS = defaultFps; 
+  frameTime = 1000 / targetFPS; 
+}
+
+function removeBlocksNearCamera() {
+  const radius = 40;
+
+  const blocksToRemove = blocks.filter((block) => {
+    const distance = camera.position.distanceTo(block.position);
+    return distance <= radius;
+  });
+
+  blocksToRemove.forEach((block) => {
+    scene.remove(block);
+    const index = blocks.indexOf(block);
+    if (index !== -1) {
+     
+    }
+  });
 }
 
 function generateChunk(x, z) {
-  renderingdist=20
-    const chunk = new THREE.Group();
-    
-    // Generowanie bloków w chunku
 
-    const layerHeight = -3; // Wysokość warstwy, którą chcesz wypełnić
+ targetFPS = 10; 
+ frameTime = 1000 / targetFPS; 
+removeBlocksNearCamera()
+
+  renderingdist=7
+    const chunk = new THREE.Group();
+
+    
+
+    const layerHeight = -3; 
 const voxelSize = 1;
 const gridSize = 20;
-var numCircles = 3; // Ilość okręgów
-const fillRadius = 0; // Promień wypełnienia w środku donuta
+var numCircles = 3; 
+const fillRadius = 0; 
 
-
-
-
-        
         const voxelsize2= 1;
         const gridsize2= 20;
         const fillRadius2= 0; 
-        
+
         const voxelCoordinates = [
             [0, 0, 0],
             [1, 0, 0],
-            [1, 0, 1],
+    
             [2, 0, 1],
             [2, 0, 2],
             [1, 0, 2],
@@ -1032,7 +1037,7 @@ const fillRadius = 0; // Promień wypełnienia w środku donuta
             [0, 0, 1],
             [0, 1, 0],
             [1, 1, 0],
-            [1, 1, 1],
+          
             [2, 1, 1],
             [2, 1, 2],
             [1, 1, 2],
@@ -1044,166 +1049,160 @@ const fillRadius = 0; // Promień wypełnienia w środku donuta
             [2, 2, 1],
             [1, 2, 2],
             [0, 2, 1],
+[1,1,1,1],
+[1,0,1,1],
 [1,-1,1,1],
-[1,-2,1,1],
-[1,-3,1,1]
-            
+[1,-2,1,1]
+
         ];
-        
+
         let randomz = Math.floor(Math.random() * 20) + 5
         let randomx = Math.floor(Math.random() * 20) + 5
 var trees=0;
-const numberOfTrees = 5; // Ilość drzew do wygenerowania
+const numberOfTrees = 5; 
 
 for (let i = 0; i < numberOfTrees; i++) {
   const randomx = Math.floor(Math.random() * 20) + 5;
   const randomz = Math.floor(Math.random() * 20) + 5;
-  
+
   voxelCoordinates.forEach(coords => {
     const [x2, y2, z2, type] = coords;
     let material = new THREE.MeshStandardMaterial({ map: leaves, flatShading: true, transparent: true, opacity: 1.0 });
     if (type === 1) {
       material = new THREE.MeshStandardMaterial({ map: wood1, flatShading: true, transparent: true, opacity: 1.0 });
     }
-    
+
     const block = new THREE.Mesh(new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize), material);
     block.position.set(x2 + randomx + x * rdist, y2, z2 + randomz + z * rdist);  
     block.name='leaves'
     if(type == 1){
       block.name='woodblock'
     }
-    scene.add(block);
+
     blocks.push(block);
+
   });
 }
 
-// Generowanie donuta
-numCircles = 5
-for (var m = -2; m < Math.floor(2); m++) {
-  numCircles -= 1
-  const dwn = m
-  for (let i = 0; i < numCircles; i++) {
-    const radius = (Math.random() * 0.5) + i; // Promień okręgu (zwiększający się z każdym okręgiem)
-    const segments = 64; // Liczba segmentów na okręgu
-  
-    for (let j = 0; j < segments; j++) {
-      const angle = (j / segments) * Math.PI * 2;
-      const xv = (Math.cos(angle) * radius) + (x * rdist)+5;
-      const zv = (Math.sin(angle) * radius) + (z * rdist)+5;
-      const yv = -2; // Ustawienie y, aby utworzyć donut
-  
-      const distanceToCenter = Math.sqrt(xv * xv + zv * zv);
-  
-      if (distanceToCenter > fillRadius) {
-        const block = new THREE.Mesh(blockGeometry, materials);
-        block.position.set(Math.floor(xv), dwn, Math.floor(zv));
-        scene.add(block);
-        block.name='grass'
-        blocks.push(block)
+let numOfterains1=Math.floor(Math.random()*5)
+
+    for(let j2=0; j2<6; j2++){
+      let randomXZ=Math.floor(Math.random()*rdist)
+      let randomZX=Math.floor(Math.random()*rdist)
+    numCircles =Math.floor(Math.random()*3)+4
+    for (var m = -2; m < Math.floor(2); m++) {
+      numCircles -= 1
+      const dwn = m
+      for (let i = 0; i < numCircles; i++) {
+        const radius = (Math.random() * 0.5) + i; 
+        const segments = 64; 
+
+        for (let j = 0; j < segments; j++) {
+          const angle = (j / segments) * Math.PI * 2;
+          const xv = (Math.cos(angle) * radius) + (x * rdist);
+          const zv = (Math.sin(angle) * radius) + (z * rdist);
+          const yv = -2; 
+
+          const distanceToCenter = Math.sqrt(xv * xv + zv * zv);
+
+          if (distanceToCenter > fillRadius) {
+            const block = new THREE.Mesh(blockGeometry, materials);
+            block.position.set(Math.floor(xv)+randomXZ, dwn, Math.floor(zv)+randomZX);
+
+            block.name = 'grass'
+            blocks.push(block)
+
+          }
+        }
       }
     }
-  }
-}
-numCircles = 4
-for (var m = -2; m < Math.floor(2); m++) {
-  numCircles -= 1
-  const dwn = m
-  for (let i = 0; i < numCircles; i++) {
-    const radius = (Math.random() * 0.5) + i; // Promień okręgu (zwiększający się z każdym okręgiem)
-    const segments = 64; // Liczba segmentów na okręgu
-
-    for (let j = 0; j < segments; j++) {
-      const angle = (j / segments) * Math.PI * 2;
-      const xv = (Math.cos(angle) * radius) + (x * rdist) + 15;
-      const zv = (Math.sin(angle) * radius) + (z * rdist) + Math.random()*15;
-      const yv = -2; // Ustawienie y, aby utworzyć donut
-
-      const distanceToCenter = Math.sqrt(xv * xv + zv * zv);
-
-      if (distanceToCenter > fillRadius) {
-        const block = new THREE.Mesh(blockGeometry, materials);
-        block.position.set(Math.floor(xv), dwn, Math.floor(zv));
-        scene.add(block);
-        block.name='grass'
-        blocks.push(block)
-      }
     }
-  }
-}
-for (let x2 = 0; x2 < rdist; x2++) { // Zakres w osi X
-    for (let z2 = 0; z2 < rdist; z2++) { // Zakres w osi Z
-    
+
+for (let x2 = 0; x2 < rdist; x2++) { 
+    for (let z2 = 0; z2 < rdist; z2++) { 
+
     if(Math.floor(Math.random()*30)==1){
         const block = new THREE.Mesh(blockGeometry, materials );
         block.name='grass'
-        block.position.set(x2 + x *rdist, layerHeight, z2 + z*rdist ); // Ustaw pozycję bloku wewnątrz chunka
-      //  block.castShadow = true; // Enable shadow casting for the cube
-       // block.receiveShadow = true;
-        scene.add(block);
+        block.position.set(x2 + x *rdist, layerHeight, z2 + z*rdist ); 
+      
+       
+
         blocks.push(block);
+
     }else {
       if(Math.floor(Math.random()*20)==3){
       const block = new THREE.Mesh(blockGeometry, water2 );
-     // block.material[1].visible = false;
-     // block.material[1].visible = false;
-      block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
-      //block.castShadow = true; // Enable shadow casting for the cube
-      //block.receiveShadow = true;
-      scene.add(block);
+     
+     
+      block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); 
+      
+      
+
       block.name='water'
+
       blocks.push(block);
+
     }else{
       const block = new THREE.Mesh(blockGeometry, materials);
-      // block.material[1].visible = false;
-      // block.material[1].visible = false;
-      block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
-      //block.castShadow = true; // Enable shadow casting for the cube
-      //block.receiveShadow = true;
-      scene.add(block);
+      
+      
+      block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); 
+      
+      
+
       block.name = 'grass'
       blocks.push(block);
+
     }}
     }
-    
-    
-    
+
 }
 
-for (let x2 = 0; x2 < rdist; x2++) { // Zakres w osi X
+for (let x2 = 0; x2 < rdist; x2++) { 
  for (let y2 = 0; y2 < 2; y2++  )
-  for (let z2 = 0; z2 < rdist; z2++) { // Zakres w osi Z
+  for (let z2 = 0; z2 < rdist; z2++) { 
 
+if(Math.floor(Math.random()*15)==3){
+var block = new THREE.Mesh(blockGeometry, materials);
+var itemTexture = new THREE.TextureLoader().load('./pobrane (12).png');
+itemTexture.magFilter = THREE.NearestFilter; 
+itemTexture.minFilter = THREE.NearestFilter; 
+var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture });
+block.material = itemMaterial;
+block.name = "brick"
 
-    const block = new THREE.Mesh(blockGeometry, stone);
-block.name='stone'
+}else{
+  var block = new THREE.Mesh(blockGeometry, stone);
+  block.name = 'stone'
+}
+
     block.position.set(x2 + x * rdist, -4
-    -y2, z2 + z * rdist); // Ustaw pozycję bloku wewnątrz chunka
-   // block.castShadow = true; // Enable shadow casting for the cube
-  //  block.receiveShadow = true;
-    scene.add(block);
+    -y2, z2 + z * rdist); 
+   
+  
+
     blocks.push(block);
 
   }
 }
-// Dodaj chunk do sceny
-scene.add(chunk);
 
-// Dodaj chunk do tablicy chunków
+
+
+
+
 chunks.push({ x, z, chunk });
 generateChunkinprocess_Cave(x,z)
 
-
-
-
 setTimeout(function(){
   checkAndRemoveDuplicateBlocks(x,z)
-  renderingdist=8
+  renderingdist=6
 },4000)
 }
-// Tworzenie frustum
+
 const frustum = new THREE.Frustum();
 
-// Aktualizacja frustum przy zmianie widoku kamery
+
 function updateFrustum() {
   camera.updateMatrixWorld();
   camera.matrixWorldInverse.getInverse(camera.matrixWorld);
@@ -1211,253 +1210,178 @@ function updateFrustum() {
   frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 }
 
-// Sprawdzanie widoczności obiektów
+
 function isObjectVisible(object) {
   return frustum.intersectsObject(object);
 }
 let renderDistance=3
 function isBlockVisible(block) {
   const distance = camera.position.distanceTo(block.position);
-  return distance < renderDistance; // Ustaw renderDistance jako odpowiednią wartość
+  return distance < renderDistance; 
 }
 const blocksInCave = [];
 
 var gins=0
 function generateChunkinprocess_Cave(x, z) {
-  
+
   const chunk = new THREE.Group();
 
   
-  // Wysokość, od której zaczynamy kłaść kamienie
   const startHeight = -6;
-  // Wysokość do której będziemy kłaść kamienie (wypełnienie)
+  
   const endHeight = -22;
 
-  let layerHeight = startHeight; // Początkowa wysokość warstwy
-  let x2 = 0; // Początkowa pozycja X
-  let z2 = 0; // Początkowa pozycja Z
+  let layerHeight = startHeight; 
+  let x2 = 0; 
+  let z2 = 0; 
 var steponstone=0
   function generateLayer() {
-    
-    
+
    for(let y = 0; y < 2 ; y++){
     for (let i = 0; i < rdist ; i++) { 
-      // Generuj warstwę kamieni po 20 bloków na raz
+      
       if (layerHeight > endHeight) {
         const block = new THREE.Mesh(blockGeometry, stone);
         block.position.set(x2 + x * rdist, layerHeight-y, z2 + z * rdist);
-        //block.castShadow = true;
+        
         block.name="stone"
-       // block.receiveShadow = true;
-        scene.add(block);
+       
+
         blocks.push(block);
 blocksInCave.push(block);
-scene.remove(block)
+
         x2++;
         if (x2 >= rdist) {
           x2 = 0;
           z2++;
           if (z2 >= rdist) {
             z2 = 0;
-            layerHeight--; // Przejdź do kolejnej warstwy kamieni
+            layerHeight--; 
           }
         }
       } 
       }
 
     }
-   
+
       if (layerHeight > -10) {
         requestAnimationFrame(generateLayer);
-      //  setTimeout(generateLayer,200);
+      
       }
-    // Wywołaj samą siebie po 1 ms, aby kontynuować generowanie
     
+
   }
 
-  // Rozpocznij generowanie pierwszej warstwy
+  
   generateLayer();
 
-  // Dodaj chunk do sceny
-  scene.add(chunk);
+  
 
-  // Dodaj chunk do tablicy chunków
+
+  
   chunks.push({ x, z, chunk });
 }
 
-// Funkcja do usuwania wewnętrznych ścianek bloku
+
 function updateOcclusionCulling() {
-  const cameraFrustum = new THREE.Frustum();
-  cameraFrustum.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
 
-  blocks.forEach((block) => {
-    if (cameraFrustum.intersectsObject(block)) {
-      // Blok jest widoczny, wykonaj odpowiednie operacje
-      block.visible = true;
-      
-    } else {
-      // Blok jest niewidoczny, ukryj go
-      block.visible = false;
-    }
-  });
-updaterenderdistance()
-  clouds.forEach((cloud) => {
-    if (cameraFrustum.intersectsObject(cloud)) {
-      // Blok jest widoczny, wykonaj odpowiednie operacje
-      cloud.visible = true;
-      
-    } else {
-      // Blok jest niewidoczny, ukryj go
-      cloud.visible = false;
-    }
-  });
 }
-window.setInterval(updateOcclusionCulling,500)
+
 function updateBlockfaceCulling() {
-  blocks.forEach((block) => {
-    // Pobierz pozycję kamery w przestrzeni lokalnej bloku
-    const cameraPositionLocal = block.worldToLocal(camera.position.clone());
 
-    // Sprawdź, czy kamery jest wewnątrz bloku
-    if (
-      Math.abs(cameraPositionLocal.x) < 0.5 &&
-      Math.abs(cameraPositionLocal.y) < 0.5 &&
-      Math.abs(cameraPositionLocal.z) < 0.5
-    ) {
-      // Kamery jest wewnątrz bloku, więc wyłącz renderowanie ścianek wewnętrznych
-      block.material.side = THREE.BackSide;
-    } else {
-      // Kamery nie jest wewnątrz bloku, więc włącz renderowanie wszystkich ścianek
-      block.material.side = THREE.DoubleSide;
-    }
-  });
 }
-
 
 var visibleblocks=[]
 
-
-
-
 function scheduleRandomExecution() {
-  const minInterval = 5000; // 5 sekund w milisekundach
-  const maxInterval = 60000; // 1 minuta w milisekundach
+  const minInterval = 5000; 
+  const maxInterval = 60000; 
 
   const randomInterval = Math.random() * (maxInterval - minInterval) + minInterval;
 
-  
 }
 
-// Uruchom funkcję planującą losowe wywołania
+
 scheduleRandomExecution();
 
-const occlusionRadius = 2; // Promień od kamery, w którym bloki są renderowane
+const occlusionRadius = 2; 
 const cameraFrustum = new THREE.Frustum();
 const cameraViewProjectionMatrix = new THREE.Matrix4();
 
-// Aktualizacja macierzy widoku i projekcji
+
 camera.updateMatrixWorld();
 const matrixInv = new THREE.Matrix4().copy(camera.matrixWorld).invert();
 cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
 
 cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
+function updaterenderdistance(playerChunkX, playerChunkZ) {
+  const occlusionRadius = renderingdist;
+  const additionalDistance = rdist / 2;
 
-function updaterenderdistance() {
-  const cameraFrustum = new THREE.Frustum();
-  cameraFrustum.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
-
-  const occlusionRadius = renderingdist; // Promień od kamery, w którym bloki są renderowane
-/*const visibleBlocks = []; // Inicjalizacja pustej listy widocznych bloków
-
-blocks.forEach((block) => {
-  const distance = camera.position.distanceTo(block.position);
-  if (cameraFrustum.intersectsObject(block) && distance <= occlusionRadius) {
-    // Blok jest widoczny i znajduje się w promieniu od kamery, dodaj go do listy visibleBlocks
-    visibleBlocks.push(block);
-  //  visibleblocks=JSON.stringify(visibleBlocks)
-  }
-});*/
-
-  blocks.forEach((block) => {
-    const distance = camera.position.distanceTo(block.position);
-    if (cameraFrustum.intersectsObject(block) && distance <= occlusionRadius) {
-      // Blok jest widoczny i znajduje się w promieniu od kamery, wykonaj odpowiednie operacje
-     // block.visible = true;
-     scene.add(block)
-     
-    } else {
-      // Blok jest niewidoczny lub jest poza promieniem od kamery, ukryj go
-     // block.visible = false;
-     scene.remove(block)
-    }
-  //  updaterenderdistance2()
-  });
   
+  const blocksInCurrentChunk = blocks.filter(block => {
+    const blockChunkX = Math.floor(block.position.x / rdist);
+    const blockChunkZ = Math.floor(block.position.z / rdist);
+    return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
+  });
 
-}
+  
+  blocksInCurrentChunk.forEach(block => {
+    const distance = camera.position.distanceTo(block.position);
 
-
-
-
-//window.setInterval(updaterenderdistance,5000)
-//window.setInterval(updateBlockfaceCulling,1000)
-//window.setInterval(updaterenderdistance,100)
-// Funkcja do usuwania chunka
-function removeChunk(x, z) {
-  /*
-    const index = chunks.findIndex(chunk => chunk.x === x && chunk.z === z);
-    if (index !== -1) {
-        // Usuń chunk ze sceny
-        scene.remove(chunks[index].chunk);
-        // Usuń chunk z tablicy chunków
-        chunks.splice(index, 1);
+    if (distance <= occlusionRadius + additionalDistance) {
+      if (distance <= occlusionRadius) {
         
-    }*/
+        if (!scene.children.includes(block)) {
+          scene.add(block);
+        }
+      } else {
+        
+        if (scene.children.includes(block)) {
+          scene.remove(block);
+        }
+      }
+    } else {
+
+    }
+  });
 }
-// Funkcja do sprawdzania, w którym chunku znajduje się gracz
+
 let one=0
 function updatePlayerChunk() {
-    const playerChunkX = Math.floor(player.position.x / rdist);
-    const playerChunkZ = Math.floor(player.position.z / rdist);
-    
-    const chunkBorderOffset = 2; // Odległość graniczna dla generowania nowego chunka
+  const playerChunkX = Math.floor(player.position.x / rdist);
+  const playerChunkZ = Math.floor(player.position.z / rdist);
 
-    // Sprawdź, czy gracz jest na granicy chunka
-    if (
-        !chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ) &&
-        (
-            Math.abs(player.position.x % rdist) < chunkBorderOffset ||
-            Math.abs(player.position.z % rdist) < chunkBorderOffset
-        )
-    ) {
-        // Usuń chunky, które są za daleko od gracza
-        for (let i = chunks.length - 1; i >= 0; i--) {
-            const chunk = chunks[i];
-            if (Math.abs(chunk.x - playerChunkX) > 1 || Math.abs(chunk.z - playerChunkZ) > 1) {
-                removeChunk(chunk.x, chunk.z);
-                blocks = [];
-            }
-        }
-        // Wygeneruj nowy chunk wokół gracza
-        generateChunk(playerChunkX, playerChunkZ);
-        player.position.y += 3;
-        if (one == 0) {
-            one = 1;
-            //visibleblocks=(blocks)
-            setTimeout(function () {
-                one = 0;
-            }, 1000);
-        }
+  // Sprawdź, czy gracz wchodzi do nowego chunka
+  if (!chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ)) {
+    // Usuń chunky, które są za daleko od gracza
+    for (let i = chunks.length - 1; i >= 0; i--) {
+      const chunk = chunks[i];
+      if (Math.abs(chunk.x - playerChunkX) > 1 || Math.abs(chunk.z - playerChunkZ) > 1) {
+       // removeChunk(chunk.x, chunk.z);
+       // blocks = []
+      }
     }
+    // Wygeneruj nowy chunk wokół gracza
+    generateChunk(playerChunkX, playerChunkZ);
+    player.position.y = 4
+    if (one == 0) {
+      //visibleblocks=(blocks)
+      one = 1
+     // checkAndRemoveDuplicateBlocks()
+      setTimeout(function() {
+        one = 0
+      }, 1000)
+    }
+  }
 }
-
-        // Niebieskie niebo z chmurkami
+        
         const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
         const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, side: THREE.BackSide });
         const sky = new THREE.Mesh(skyGeometry, skyMaterial);
-     //   scene.add(sky);
-        // Ruch chmur
+     
+        
         const clouds = [];
         if(cloudsis==1){
         for (let i = 0; i < 200; i++) {
@@ -1469,51 +1393,52 @@ function updatePlayerChunk() {
             scene.add(cloud);
         }
         }
-        // Ustawienia kamery
+        
         camera.position.z = -15;
         camera.position.y = 1;
         camera.rotation.order = 'YXZ';
-        // Grawitacja
+        
         const gravity = new THREE.Vector3(0, -0.045, 0);
         const playerVelocity = new THREE.Vector3();
 setTimeout(function (){
-  playerVelocity.set(0, 0, 0);
+
   player.position.y = 20
   player.position.x = 12
   player.position.z = 12
-//  updatePlayerChunk()
-},2500)
-        // Sterowanie gracza
+  playerVelocity.set(0, 0, 0);
+setTimeout(function() {
+
+  player.position.y = 20
+  player.position.x = 12
+  player.position.z = 12
+  playerVelocity.set(0, 0, 0);
+
+}, 1000)
+},2100)
+        
         const playerSpeed = 0.3;
 
-        // Przyciski
+        
         const moveForwardButton = document.getElementById('moveForward');
         const moveBackwardButton = document.getElementById('moveBackward');
         const moveLeftButton = document.getElementById('moveLeft');
         const moveRightButton = document.getElementById('moveRight');
         const jumpButton = document.getElementById('jump');
 
-        // Zmienne przechowujące, czy przyciski są przytrzymane
+        
         let forwardPressed = false;
         let backwardPressed = false;
         let leftPressed = false;
         let rightPressed = false;
         let jumpPressed = false;
 
-        // Event listenery dla przycisków
+        
         moveForwardButton.addEventListener('touchstart', () => {
             forwardPressed = true;
         });
         moveForwardButton.addEventListener('touchend', () => {
             forwardPressed = false;
         });
-        
-        
-        
-        
-        
-        
-        
 
         moveBackwardButton.addEventListener('touchstart', () => {
             backwardPressed = true;
@@ -1537,8 +1462,9 @@ setTimeout(function (){
         });
 var cantjump=0
 var jumping=1
-        jumpButton.addEventListener('touchstart', () => {
-            if (cantjump==0) { // Możesz skakać tylko gdy jesteś na ziemi
+        jumpButton.addEventListener('touchstart', (event) => {
+          event.preventDefault()
+            if (cantjump==0) { 
             jumpposition=player.position.y
                 jumpPressed = true;
             }else if(jumping>0){
@@ -1547,18 +1473,27 @@ var jumping=1
               jumping=-1
             }
         });
-        jumpButton.addEventListener('touchend', () => {
-            jumpPressed = false;
+        jumpButton.addEventListener('click', (event) => {
+          event.preventDefault()
+          if (cantjump == 0) { 
+            jumpposition = player.position.y
+            jumpPressed = true;
+          } else if (jumping > 0) {
+            jumpposition = player.position.y
+            jumpPressed = true;
+            jumping = -1
+          }
+
         });
 
-        // Zatrzymywanie ruchu po puszczeniu przycisku
+        
         const stopMovement = () => {
             playerVelocity.set(0, 0, 0);
-            
+
         };
 var Movementspeed=0.24;
-        // Renderowanie
         
+
 var jumpposition=0
 var fallingdmgisactive = 0;
 setTimeout(function() {
@@ -1566,18 +1501,26 @@ setTimeout(function() {
 }, 6000)
 let forwalking=0
 let D20times=0
-const targetFPS = 20; // Maksymalna liczba klatek na sekundę
-const frameTime = 1000 / targetFPS; // Czas trwania jednej klatki w milisekundach
+let D5times
 
         const animate = () => {
-          if(D20times<20){
-          
+          const playerChunkX = Math.floor(player.position.x / rdist);
+          const playerChunkZ = Math.floor(player.position.z / rdist);
+          if(D5times<1){
+            D5times++
+          }else{
+
+            updaterenderdistance(playerChunkX,playerChunkZ)
+            D5times
+          }
+          if(D20times<10){
+
           D20times++
           }else{
             D20times=0
             updatePlayerChunk()
           }
-          
+
           if(player.position.y < -400){
             hurt()
           }
@@ -1592,34 +1535,33 @@ const frameTime = 1000 / targetFPS; // Czas trwania jednej klatki w milisekundac
 camera.position.set(player.position.x, player.position.y+1, player.position.z);
 camera.rotation.order = 'YXZ';
 
-
-            // Obsługa ruchu gracza
+            
             playerVelocity.add(gravity);
 
-            // Obsługa ruchu gracza na przytrzymanie
-// Inicjalizacja wektora prędkości gracza
+            
+
 const playerVelocity2 = new THREE.Vector3(0, 0, 0);
 
 if (forwardPressed) {
-    // Określ prędkość w kierunku przodu (globalny kierunek)
-    // Określ prędkość w kierunku przodu (globalny kierunek)
+    
+    
 const speed = Movementspeed;
 if(forwalking<5){
 forwalking++
 }else{
 var audio = new Audio('./grass1.ogg');
 forwalking=0
-// Odtwarzanie muzyki
+
 audio.play();
 }
-// Kopiuj wektor kierunku kamery, ale usuń składową Y, aby nie uwzględniać ruchu w górę/na dół
-const direction = new THREE.Vector3(0, 0, -1.5);
-direction.applyQuaternion(camera.quaternion).normalize(); // Dostosuj kierunek do obrotu kamery i znormalizuj
 
-// Aktualizuj wektor prędkości gracza
+const direction = new THREE.Vector3(0, 0, -1.5);
+direction.applyQuaternion(camera.quaternion).normalize(); 
+
+
 const playerVelocity2 = new THREE.Vector3(direction.x * speed, 0, direction.z * speed);
 
-// Aktualizuj pozycję gracza na podstawie wektora prędkości
+
 player.position.add(playerVelocity2);
 
 }
@@ -1646,124 +1588,120 @@ else if (backwardPressed) {
 
             if (jumpPressed) {
                 playerVelocity.y = 0.30;
-                jumpPressed = false; // Wyłącz skok po jego użyciu
+                jumpPressed = false; 
             }
 
             player.position.add(playerVelocity);
 
-            // Kolizje z blokami
-for (const block of blocks) {
+  const halfPlayerWidth = 0.5;
+  const halfPlayerHeight = 0.4;
+  const halfPlayerDepth = 0.5;
+
+  const blocksInCurrentChunk = blocks.filter(block => {
+    const blockChunkX = Math.floor(block.position.x / rdist);
+    const blockChunkZ = Math.floor(block.position.z / rdist);
+    return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
+  });
+
+  for (const block of blocksInCurrentChunk) {
     const box1 = new THREE.Box3().setFromObject(player);
     const box2 = new THREE.Box3().setFromObject(block);
 
-    // Sprawdź kolizję boczną
+    
     if (box1.intersectsBox(box2)) {
-        // Jeśli jest kolizja z boczną ścianką, możesz dodać odpowiednią logikę reakcji.
-        // Na przykład, zatrzymaj ruch gracza lub zmień jego pozycję.
-
-        // Przykład: Zatrzymaj ruch gracza
-        // playerVelocity.set(0, 0, 0);
+   
     }
+if (!nocollisions.includes(block.name)) {
 
-    // Sprawdź kolizję z górną częścią ścianki
-    const halfWallHeight = block.geometry.parameters.height / 2.0; // Załóżmy, że wysokość ścianki to parametr "height".
-    const halfWallDepth = block.geometry.parameters.depth / 2.8; // Załóżmy, że głębokość ścianki to parametr "depth".
-    const halfWallWidth = block.geometry.parameters.width / 2.8; // Załóżmy, że szerokość ścianki to parametr "width".
+    
+    const halfWallHeight = block.geometry.parameters.height / 2.0;
+    const halfWallDepth = block.geometry.parameters.depth / 2.8;
+    const halfWallWidth = block.geometry.parameters.width / 2.8;
 
     if (
-        player.position.x - 0.5 < block.position.x + halfWallWidth &&
-        player.position.x > block.position.x &&
-        player.position.y + 0.4 > block.position.y - halfWallHeight -0.3&&
-        player.position.y - 0.4 < block.position.y + halfWallHeight -0.3 &&
-        player.position.z + 0.5 > block.position.z - halfWallDepth &&
-        player.position.z - 0.5 < block.position.z + halfWallDepth
+      player.position.x - 0.5 < block.position.x + halfWallWidth &&
+      player.position.x > block.position.x &&
+      player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
+      player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
+      player.position.z + 0.5 > block.position.z - halfWallDepth &&
+      player.position.z - 0.5 < block.position.z + halfWallDepth
     ) {
-        // Kolizja z lewą ścianką bloku
-        // Dodaj odpowiednią logikę reakcji.
-      //  playerVelocity.set(0, 0, 0);
-        player.position.x +=  0.3;
+      player.position.x += 0.3;
     }
-if (
-    player.position.x + 0.5 > block.position.x - halfWallWidth &&
-    player.position.x < block.position.x &&
-    player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
-    player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
-    player.position.z + 0.5 > block.position.z - halfWallDepth &&
-    player.position.z - 0.5 < block.position.z + halfWallDepth
-) {
-    // Kolizja z prawą ścianką bloku
-    // Dodaj odpowiednią logikę reakcji.
-    // playerVelocity.set(0, 0, 0);
-    player.position.x -= 0.3;
-}
-if (
-    player.position.z - 0.5 < block.position.z + halfWallDepth &&
-    player.position.z > block.position.z &&
-    player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
-    player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
-    player.position.x + 0.5 > block.position.x - halfWallWidth &&
-    player.position.x - 0.5 < block.position.x + halfWallWidth
-) {
-    // Kolizja z przednią ścianką bloku
-    // Dodaj odpowiednią logikę reakcji.
-    // playerVelocity.set(0, 0, 0);
-    player.position.z += 0.3;
-}
-if (
-  player.position.z + 0.5 > block.position.z - halfWallDepth &&
-  player.position.z < block.position.z &&
-  player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
-  player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
+
+    if (
+      player.position.x + 0.5 > block.position.x - halfWallWidth &&
+      player.position.x < block.position.x &&
+      player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
+      player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
+      player.position.z + 0.5 > block.position.z - halfWallDepth &&
+      player.position.z - 0.5 < block.position.z + halfWallDepth
+    ) {
+      player.position.x -= 0.3;
+    }
+
+    if (
+      player.position.z - 0.5 < block.position.z + halfWallDepth &&
+      player.position.z > block.position.z &&
+      player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
+      player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
+      player.position.x + 0.5 > block.position.x - halfWallWidth &&
+      player.position.x - 0.5 < block.position.x + halfWallWidth
+    ) {
+      player.position.z += 0.3;
+    }
+
+    if (
+      player.position.z + 0.5 > block.position.z - halfWallDepth &&
+      player.position.z < block.position.z &&
+      player.position.y + 0.4 > block.position.y - halfWallHeight - 0.3 &&
+      player.position.y - 0.4 < block.position.y + halfWallHeight - 0.3 &&
+      player.position.x + 0.5 > block.position.x - halfWallWidth &&
+      player.position.x - 0.5 < block.position.x + halfWallWidth
+    ) {
+      player.position.z -= 0.3;
+    }
+
+    if (
+  player.position.y - 0.4 < block.position.y + halfWallHeight &&
+  player.position.y > block.position.y &&
   player.position.x + 0.5 > block.position.x - halfWallWidth &&
-  player.position.x - 0.5 < block.position.x + halfWallWidth
+  player.position.x - 0.5 < block.position.x + halfWallWidth &&
+  player.position.z + 0.5 > block.position.z - halfWallDepth &&
+  player.position.z - 0.5 < block.position.z + halfWallDepth
 ) {
-  // Kolizja z tylnią ścianką bloku
-  // Dodaj odpowiednią logikę reakcji.
-  // playerVelocity.set(0, 0, 0);
-  player.position.z -= 0.3;
-}
-    if (
-        player.position.y - 0.4 < block.position.y + halfWallHeight &&
-        player.position.y > block.position.y &&
-        player.position.x + 0.5 > block.position.x - halfWallWidth &&
-        player.position.x - 0.5 < block.position.x + halfWallWidth &&
-        player.position.z + 0.5 > block.position.z - halfWallDepth &&
-        player.position.z - 0.5 < block.position.z + halfWallDepth
-    ) {
-        // Kolizja z górną częścią ścianki
-        playerVelocity.set(0, 0, 0);
-        player.position.y += (block.position.y - player.position.y) + 0.8;
-        cantjump = 0;
-        if (block.name === "stone") {
-            steponstone = 1;
-        }
-        jumping = 1;
-        if (player.position.y < jumpposition - 1.5) {
-            hurt();
-        }
-    } else {
-        cantjump = 1;
-        if (block.name !== "stone") {
-            steponstone = 0;
-        }
-        if (fallingdmgisactive == 1) {
-            if (playerVelocity.y < 0) {
-                //warn2("no way")
-            }
-        }
+  
+  playerVelocity.set(0, 0, 0);
+  player.position.y += (block.position.y - player.position.y) + 0.8;
+  cantjump = 0;
+  if (block.name === "stone") {
+    steponstone = 1;
+  }
+  jumping = 1;
+  if (player.position.y < jumpposition - 1.5) {
+    hurt();
+  }
+} else {
+  cantjump = 1;
+  if (block.name !== "stone") {
+    steponstone = 0;
+  }
+  if (fallingdmgisactive == 1) {
+    if (playerVelocity.y < 0) {
+      
     }
+  }
+}}
 }
 
-
-            // Ruch chmur
+            
             for (const cloud of clouds) {
-                cloud.position.x -= 0.1; // Ruch w lewo
+                cloud.position.x -= 0.1; 
                 if (cloud.position.x < -150) {
                     cloud.position.x = 300;
                 }
             }
 
-            
         };
 
         animate();
@@ -1772,29 +1710,11 @@ renderer.render(scene, camera);
 requestAnimationFrame(fastrendering)
 }
 fastrendering()
-       /* function cameramv(event) {
-            xt = event.touches[0].clientX;
-            yt = event.touches[0].clientY;
-            const canv = document.getElementById("game");
-            if (xt > canv.clientWidth - parseInt(canv.style.width) / 2) {
-                camera.rotation.y -= 0.02;
-            }
-            if (xt < canv.clientWidth - parseInt(canv.style.width) / 2) {
-                camera.rotation.y += 0.02;
-            }
-            if (yt < canv.clientHeight - parseInt(canv.style.height) / 2) {
-                camera.rotation.x += 0.02;
-            }
-            if (yt > canv.clientHeight - parseInt(canv.style.height) / 2) {
-                camera.rotation.x -= 0.02;
-            }
-            camera.rotation.order = 'YXZ';
-        }*/
+       
+
         
-        // Inicjalizacja Three.js
 
 
-// Obsługa ruchu kamery za pomocą dotyku
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -1817,66 +1737,39 @@ function onTouchMove(event) {
     touchStartY = touchY;
 }
 
-// Dodaj nasłuchiwanie zdarzeń dotyku
+
 document.addEventListener('touchstart', onTouchStart);
 document.addEventListener('touchmove', onTouchMove);
 
-// Funkcja renderująca
 
-// Dodaj obsługę zdarzenia kliknięcia do elementu canvas sceny
 
-// ...
-/*
-let newPosition = blockPosition.clone();
 
-// Sprawdź, która ściana jest bliżej patrząc wzdłuż osi X lub Z
-if (Math.abs(relativePosition.x) > Math.abs(relativePosition.z)) {
-  // Patrząc bardziej wzdłuż osi X
-  newPosition.x += Math.sign(relativePosition.x);
-} else if (Math.abs(relativePosition.x) < Math.abs(relativePosition.z)) {
-  // Patrząc bardziej wzdłuż osi Z
-  newPosition.z += Math.sign(relativePosition.z);
-} else {
-  // Patrząc dokładnie w kierunku przeciwnym do obu osi (patrz w górę, w dół, lewo, prawo)
-  newPosition.y += Math.sign(relativePosition.y);
-}
 
-// Jeżeli patrzysz w górę, buduj blok na górze
-if (relativePosition.y > 0) {
-  newPosition.y += 1;
-}
 
-newBlock = new THREE.Mesh(blockGeometry, materials); // Tutaj używasz materials, ale możesz dostosować do swojego materiału
-newBlock.name = currentblock;
-newBlock.position.copy(newPosition);
-newBlock.castShadow = true;
-newBlock.receiveShadow = true;
-scene.add(newBlock);
-blocks.push(newBlock);
-*/
-// ...
-// Zdefiniuj geometrię i materiał dla bloku // Zdefiniuj geometrię dla bloku podglądowego
+
+
+
 const previewGeometry = new THREE.BoxGeometry(1, 1, 1);
 
-// Zdefiniuj materiał do rysowania bloku
+
 const blockMaterial2 = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });
 
-// Utwórz blok podglądowy
+
 let previewBlock = new THREE.Mesh(previewGeometry, blockMaterial2);
 
 scene.add(previewBlock);
 
-// Funkcja do animacji opacity
+
 function animateOpacity() {
   const opacityValue = previewBlock.material.opacity;
 showIndicationForWallsinOtherBlocks()
-  // Zmniejsz opacity do 0.2 lub zwiększ do 0.6 w zależności od obecnego stanu
+  
   const targetOpacity = opacityValue === 0.6 ? 0.2 : 0.6;
 
-  // Animacja zmiany opacity
-  const duration = 300; // 500 ms to 0.5 sekundy
-  const startTime = Date.now();
   
+  const duration = 300; 
+  const startTime = Date.now();
+
   function updateOpacity() {
     const currentTime = Date.now() - startTime;
     const progress = Math.min(currentTime / duration, 1);
@@ -1886,146 +1779,150 @@ showIndicationForWallsinOtherBlocks()
 
     if (progress < 1) {
       requestAnimationFrame(updateOpacity);
-      
+
     }
   }
 
   updateOpacity();
 }
 
-// Uruchom animację co 0.6 sekundy (600 ms)
+
 setInterval(animateOpacity, 400);
 
+let previewBlockAdded = false; 
 
 
-let previewBlockAdded = false; // Dodaj zmienną do śledzenia, czy blok podglądowy został dodany
 
-// Dodaj event listener dla ontouchmove
-//document.querySelector('body').addEventListener('touchmove', showIndicationForWallsinOtherBlocks);
 
 function showIndicationForWallsinOtherBlocks(event) {
   updateInventory();
-
-  // Pobierz pozycję myszy w pikselach na canvasie
+const playerChunkX = Math.floor(player.position.x / rdist);
+const playerChunkZ = Math.floor(player.position.z / rdist);
   
   const mouse = new THREE.Vector2();
   mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
   mouse.y = -((window.innerHeight / 2) / window.innerHeight) * 2 + 1;
 
-  // Utwórz raycaster, który będzie sprawdzał kolizje z obiektami na scenie
+  
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
-  // Znajdź obiekty, z którymi promień się przecina (czyli bloki)
-  const intersects = raycaster.intersectObjects(blocks);
+  
+  const blocksInCurrentChunk = blocks.filter(block => {
+    const blockChunkX = Math.floor(block.position.x / rdist);
+    const blockChunkZ = Math.floor(block.position.z / rdist);
+    return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
+  });
+
+  const intersects = raycaster.intersectObjects(blocksInCurrentChunk);
 
   if (intersects.length > 0) {
-
     const clickedBlock = intersects[0].object;
     const blockPosition = new THREE.Vector3();
     clickedBlock.getWorldPosition(blockPosition);
+
     
-    // Zaokrągl pozycję do liczb całkowitych
     blockPosition.x = Math.floor(blockPosition.x);
     blockPosition.y = Math.floor(blockPosition.y);
     blockPosition.z = Math.floor(blockPosition.z);
+
     
-    // Określ stronę, którą użytkownik kliknął (góra, dół, lewo, prawo, przód, tył)
     const intersectionPoint = intersects[0].point;
     const relativePosition = new THREE.Vector3().copy(intersectionPoint).sub(blockPosition);
 
     let newPosition = blockPosition.clone();
 
-    // Sprawdź, która ściana jest bliżej patrząc wzdłuż osi X lub Z
-    // Jeżeli patrzysz w górę, buduj blok na górze
+    
+    
     if (relativePosition.y > 0) {
       newPosition.y += 1;
     } else if (Math.abs(relativePosition.x) > Math.abs(relativePosition.z)) {
-      // Patrząc bardziej wzdłuż osi X
+      
       newPosition.x += Math.sign(relativePosition.x);
     } else if (Math.abs(relativePosition.x) < Math.abs(relativePosition.z)) {
-      // Patrząc bardziej wzdłuż osi Z
+      
       newPosition.z += Math.sign(relativePosition.z);
     } else {
-      // Patrząc dokładnie w kierunku przeciwnym do obu osi (patrz w górę, w dół, lewo, prawo)
-      newPosition.y += Math.sign(relativePosition.y);
+      
     }
 
-
-    previewBlock.position.copy(newPosition);
     
+    previewBlock.position.copy(newPosition);
+    previewBlockAdded = true;
 
-    // ... (reszta kodu bez zmian)
+    
   } else {
-    // Jeśli nie ma kolizji, usuń blok podglądowy (jeśli istnieje)
+    
     if (previewBlockAdded) {
-      scene.remove(previewBlock);
+      
+      previewBlock.position.set(Infinity, Infinity, Infinity);
       previewBlockAdded = false;
+      
     }
   }
 }
 
 function buildBlockOnClick(event) {
   updateInventory() 
-  
-    // Pobierz pozycję myszy w pikselach na canvasie
+
+    
     const mouse = new THREE.Vector2();
     mouse.x = ((window.innerWidth/2) / window.innerWidth) * 2 - 1;
     mouse.y = -((window.innerHeight/2) / window.innerHeight) * 2 + 1;
 
-    // Utwórz raycaster, który będzie sprawdzał kolizje z obiektami na scenie
+    
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
-    // Znajdź obiekty, z którymi promień się przecina (czyli bloki)
+    
     const intersects = raycaster.intersectObjects(blocks);
 
     if (intersects.length > 0) {
-        // Pobierz pozycję bloku, na który użytkownik kliknął
+        
         const clickedBlock = intersects[0].object;
         const blockPosition = new THREE.Vector3();
         clickedBlock.getWorldPosition(blockPosition);
 
-        // Zaokrągl pozycję do liczb całkowitych
+        
         blockPosition.x = Math.floor(blockPosition.x);
         blockPosition.y = Math.floor(blockPosition.y);
         blockPosition.z = Math.floor(blockPosition.z);
 
-        // Określ stronę, którą użytkownik kliknął (góra, dół, lewo, prawo, przód, tył)
+        
         const intersectionPoint = intersects[0].point;
         const relativePosition = new THREE.Vector3().copy(intersectionPoint).sub(blockPosition);
 
-        // Sprawdź, czy promień przecina górną ściankę klikniętego bloku
         
+
         if (currentblock == 'stone') {
           currentitemslot='stone';
           if(cantbuildthisblockGeometry==0){
           var newBlock = new THREE.Mesh(blockGeometry, wooden);
           newBlock.name="stone"
           var searchedItem = "stone";
-          var index = -1; // Domyślny indeks, jeśli nie znaleziono
-          
+          var index = -1; 
+
           for (var key in items) {
             if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
-              index = key; // Przypisz indeks, jeśli znaleziono obiekt o kluczu "wood"
-              break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+              index = key; 
+              break; 
             }
           }
           useblock(index)
           }
         } else if (currentblock == 'wood'){
           currentitemslot='wood'
-          
+
           if(cantbuildthisblockGeometry==0){
           var newBlock = new THREE.Mesh(blockGeometry, stonen);
           newBlock.name='wood'
           var searchedItem = "wood";
-          var index = -1; // Domyślny indeks, jeśli nie znaleziono
-          
+          var index = -1; 
+
           for (var key in items) {
             if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
-              index = key; // Przypisz indeks, jeśli znaleziono obiekt o kluczu "wood"
-              break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+              index = key; 
+              break; 
             }
           }
           useblock(index)
@@ -2037,12 +1934,12 @@ function buildBlockOnClick(event) {
           var newBlock = new THREE.Mesh(blockGeometry, materials );
           newBlock.name='grass'
           var searchedItem = "grass";
-          var index = -1; // Domyślny indeks, jeśli nie znaleziono
-          
+          var index = -1; 
+
           for (var key in items) {
             if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
-              index = key; // Przypisz indeks, jeśli znaleziono obiekt o kluczu "wood"
-              break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+              index = key; 
+              break; 
             }
           }
           useblock(index)
@@ -2056,26 +1953,26 @@ if (cantbuildthisblockGeometry === 0) {
   newBlock.name = currentitemslot;
 
   var searchedItem = currentitemslot;
-  var index = -1; // Domyślny indeks, jeśli nie znaleziono
+  var index = -1; 
 
   for (var key in items) {
     if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
       index = key;
-      break; // Zakończ pętlę, gdy znaleziono pierwsze wystąpienie
+      break; 
     }
   }
 
-  // Zaktualizuj materiał bloku na podstawie właściwości aktualnego przedmiotu
+  
   if (index !== -1) {
     if (items[index][3] && window.hasOwnProperty(items[index][3])) {
-      // Jeśli trzeci indeks wskazuje na nazwę zmiennej, skopiuj materiał
+      
       var customMaterial = window[items[index][3]];
       newBlock.material = customMaterial;
     } else {
-      // W przeciwnym razie użyj tekstury zdefiniowanej w items
+      
       var itemTexture = new THREE.TextureLoader().load(items[index][2]);
-      itemTexture.magFilter = THREE.NearestFilter; // Wyłącz antyaliasing
-      itemTexture.minFilter = THREE.NearestFilter; // Wyłącz antyaliasing
+      itemTexture.magFilter = THREE.NearestFilter; 
+      itemTexture.minFilter = THREE.NearestFilter; 
       var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture });
       newBlock.material = itemMaterial;
     }
@@ -2085,38 +1982,35 @@ if (cantbuildthisblockGeometry === 0) {
 }
 
         }
-        
-        
+
         let newPosition = blockPosition.clone();
+
         
-        // Sprawdź, która ściana jest bliżej patrząc wzdłuż osi X lub Z
-                // Jeżeli patrzysz w górę, buduj blok na górze
+                
         if (relativePosition.y > 0) {
           newPosition.y += 1;
         }
         else
         if (Math.abs(relativePosition.x) > Math.abs(relativePosition.z)) {
-          // Patrząc bardziej wzdłuż osi X
+          
           newPosition.x += Math.sign(relativePosition.x);
         } else if (Math.abs(relativePosition.x) < Math.abs(relativePosition.z)) {
-          // Patrząc bardziej wzdłuż osi Z
+          
           newPosition.z += Math.sign(relativePosition.z);
         } else {
-          // Patrząc dokładnie w kierunku przeciwnym do obu osi (patrz w górę, w dół, lewo, prawo)
+          
           newPosition.y += Math.sign(relativePosition.y);
         }
-        
+
+        var audio = new Audio('./stone4.ogg');
 
         
-        var audio = new Audio('./stone4.ogg');
-        
-        // Odtwarzanie muzyki
         audio.play();
         newBlock.position.copy(newPosition);
-        
+
         scene.add(newBlock);
         blocks.push(newBlock);
-        
+
     }
 }
 function deleteBlockOnClick(event) {
@@ -2124,18 +2018,18 @@ function deleteBlockOnClick(event) {
     mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
     mouse.y = -((window.innerHeight / 2) / window.innerHeight) * 2 + 1;
 
-    // Utwórz raycaster, który będzie sprawdzał kolizje z obiektami na scenie
+    
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
-    // Znajdź obiekty, z którymi promień się przecina (czyli bloki)
+    
     const intersects = raycaster.intersectObjects(blocks);
 
     if (intersects.length > 0) {
-        // Pobierz kliknięty blok
+        
         const clickedBlock = intersects[0].object;
 
-        // Sprawdź, czy materiał klikniętego bloku ma nazwę "wooden"
+        
         if (clickedBlock.name === "stone") {
             addblock("stone");
         }else if (clickedBlock.name === "woodblock") {
@@ -2149,9 +2043,9 @@ addblock(clickedBlock.name)
         }
 var audio = new Audio('./stone1.ogg');
 
-// Odtwarzanie muzyki
+
 audio.play();
-        // Usuń kliknięty blok z tablicy bloków i ze sceny
+        
         const index = blocks.indexOf(clickedBlock);
         if (index !== -1) {
             blocks.splice(index, 1);
@@ -2161,141 +2055,111 @@ audio.play();
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-// Set up a variable to track the time elapsed
 let elapsedTime = 0;
 
 
-/*
-jak wyglada materiał nieba
-const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, side: THREE.BackSide });
-const sky = new THREE.Mesh(skyGeometry, skyMaterial);
-*/
-// Assuming you have your light, skyGeometry, and skyMaterial defined
-
-// Function to change the sky and light
-// Assuming you have your light, skyGeometry, and skyMaterial defined
 
 
 
 
 
 
-// Function to change the background color and light
-// Function to change the background color and light
-// Function to change the background color and light
+
+
 function changeBackgroundAndLight() {
-  const duration = 15000; // 15 seconds
+  const duration = 15000; 
   const startTime = Date.now();
   const minLightIntensity = 0.02;
 
   const gameElement = document.getElementById('game');
-  
+
   function update() {
     const currentTime = Date.now() - startTime;
 
-    // Decrease light intensity to a minimum of 0.1 over 15 seconds
+    
     const progressLight = Math.min(currentTime / duration, 1);
     const newLightIntensity = Math.max(minLightIntensity, 0.3 - 0.2 * progressLight*2);
     light.intensity = newLightIntensity;
 
 gameElement.classList.add('night')
 
-    // Continue updating until the duration is reached
+    
     if (currentTime < duration) {
       requestAnimationFrame(update);
-      
+
     }else{
-      setTimeout(changeBackgroundAndLight2, 200000); // Start after 8 seconds
+      setTimeout(changeBackgroundAndLight2, 200000); 
     }
   }
 
-  // Start the update function
+  
   update();
 }
 
 setTimeout(changeBackgroundAndLight, 300000); 
 function changeBackgroundAndLight2() {
-  const duration = 35000; // 15 seconds
+  const duration = 35000; 
   const startTime = Date.now();
   const minLightIntensity = 0.02;
 
   const gameElement = document.getElementById('game');
-  
+
   function update() {
     const currentTime = Date.now() - startTime;
 
-    // Increase light intensity to a maximum of 0.6 over 15 seconds
+    
     const progressLight = Math.min(currentTime / duration, 1);
     const newLightIntensity = Math.min(0.6, minLightIntensity + 0.2 * progressLight*2);
     light.intensity = newLightIntensity;
 
-    gameElement.classList.add('day'); // Zmiana klasy na 'day'
+    gameElement.classList.add('day'); 
 
-    // Continue updating until the duration is reached
+    
     if (currentTime < duration) {
-      
+
       requestAnimationFrame(update);
       gameElement.classList.remove('night');
     }else{
       gameElement.classList.remove('day');
-      setTimeout(changeBackgroundAndLight, 300000); // Start after 8 seconds
+      setTimeout(changeBackgroundAndLight, 300000); 
     }
   }
 
-  // Start the update function
+  
   update();
 }
-
-
-
-
-
-
-
-
 
 currentblock='stone'
 blockClickEnabled=false
 function switchi(data) {
   if (data=="stone") {
-    // Wyłącz obsługę kliknięcia bloku
+    
     canv.removeEventListener('click', deleteBlockOnClick);
     canv.addEventListener('click', buildBlockOnClick);
-//    blockClickEnabled = false;
+
 currentblock='stone'
   }else if (data == "wood") {
-    // Wyłącz obsługę kliknięcia bloku
+    
     canv.removeEventListener('click', deleteBlockOnClick);
     canv.addEventListener('click', buildBlockOnClick);
-    //    blockClickEnabled = false;
+    
     currentblock = 'wood'
   }else if (data == "grass") {
-    // Wyłącz obsługę kliknięcia bloku
+    
     canv.removeEventListener('click', deleteBlockOnClick);
     canv.addEventListener('click', buildBlockOnClick);
-    //    blockClickEnabled = false;
+    
     currentblock = 'grass'
   }else if (data =="pickaxe"){
-    // Włącz obsługę kliknięcia bloku
+    
     canv.removeEventListener('click',buildBlockOnClick);
     canv.addEventListener('click', deleteBlockOnClick);
-//    blockClickEnabled = true;
+
   }else{
-    // Wyłącz obsługę kliknięcia bloku
+    
     canv.removeEventListener('click', deleteBlockOnClick);
     canv.addEventListener('click', buildBlockOnClick);
-    //    blockClickEnabled = false;
+    
     currentblock = data
   }
 }
@@ -2304,110 +2168,50 @@ window.addEventListener('resize', function() {
   var newScreenWidth = window.innerWidth;
   var newScreenHeight = window.innerHeight;
 
-  // Zaktualizuj rozmiar renderera
+  
   renderer.setSize(newScreenWidth, newScreenHeight);
 
-  // Zaktualizuj proporcje kamery
+  
   camera.aspect = newScreenWidth / newScreenHeight;
   camera.updateProjectionMatrix();
 });
 
-
-
-
-
-
-
-
-
-
-
 function fori(){
   camera.getWorldPosition(cameraPosition);
   camera.getWorldDirection(cameraDirection);
+
   
-  // Pobierz pozycję bloku
   var blockPosition = block.getWorldPosition(new THREE.Vector3());
+
   
-  // Oblicz kierunek od kamery do bloku
   var directionToBlock = blockPosition.sub(cameraPosition).normalize();
+
   
-  // Sprawdź, czy kamera patrzy na blok
   var dotProduct = cameraDirection.dot(directionToBlock);
-  if (dotProduct > 0.99) { // Możesz dostosować ten próg
-    // Kamera patrzy na blok, więc zmień kolor i zacznij migotać
+  if (dotProduct > 0.99) { 
+    
     block.material.color.set(0xffffff);
     block.material.emissive.set(0xffffff);
   } else {
-    // Kamera nie patrzy na blok, więc przywróć standardowe kolory
+    
     block.material.color.set(0x00ff00);
     block.material.emissive.set(0x000000);
   }
 }
-//window.setInterval(fori , 1000)
-
 
 
 function test(){
-//  warn2(
-//"Scene polycount:"+ renderer.info.render.triangles+"Active Drawcalls:"+ renderer.info.render.calls +"Geometries in Memory"+ renderer.info.memory.geometries )
-
 
 
 
 }
 window.setInterval(test,10000)
 
-
-
 var hurtperseconds=0
-/*function hurt() {
-//  hurtperseconds=1;
-
-  if(hurtperseconds==0){
-    hurtperseconds = 1
-    fallingtime = 0
-    setTimeout(function() {
-      hurtperseconds = 0
-    }, 1500)
-    // Znajdź element nadrzędny, który zawiera wszystkie serca
-    const heartsContainer = document.getElementById("hearts");
-
-    // Sprawdź, czy istnieje przynajmniej jeden element do usunięcia
-    if (heartsContainer.children.length > 0) {
-        // Znajdź ostatni element wewnątrz kontenera i usuń go
-        const lastHeart = heartsContainer.lastChild;
-if (lastHeart) {
-  lastHeart.remove();
-}
-
-        // Tworzenie elementu audio
-var audio = new Audio('hurt.ogg');
-
-// Odtwarzanie muzyki
-audio.play();
-
-// Aby zatrzymać odtwarzanie muzyki
-// audio.pause();
 
 
-        // Sprawdź, czy nie ma już serc
-        if (heartsContainer.children.length === 0) {
-            // Jeżeli nie ma serc, pokaż alert "you died"
-            alert("You died");
-        }
-    }
-    
-  }
-
-}*/
-
-
-
-let canHurt = true; // Zmienna kontrolująca, czy funkcję hurt można uruchomić
-let lastHurtTime = 0; // Czas ostatniego wywołania funkcji hurt w milisekundach
-
-
+let canHurt = true; 
+let lastHurtTime = 0; 
 
 function hurt() {
   jumpposition = player.position.y;
@@ -2418,31 +2222,31 @@ function hurt() {
     document.getElementById('game').classList.remove('dead');
   }, 10000);
 
-  // Tworzenie elementu audio
+  
   var audio = new Audio('hurt.ogg');
 
-  // Odtwarzanie muzyki
+  
   audio.play();
 
-  // Sprawdzenie, czy minęło co najmniej 2 sekundy od ostatniego wywołania
+  
   if (timeSinceLastHurt >= 500) {
-    // Tutaj umieść kod obsługi obrażeń
+    
 
     const heartsContainer = document.getElementById("hearts");
 
-    // Sprawdź, czy istnieje przynajmniej jeden element do usunięcia
+    
     setTimeout(function() {
       if (heartsContainer.children.length > 0) {
-        // Znajdź ostatni element wewnątrz kontenera i usuń go
+        
         const lastHeart = heartsContainer.lastChild;
         heartsContainer.removeChild(lastHeart);
 
-        // Sprawdź, czy nie ma już serc
+        
         if (heartsContainer.children.length === 0) {
-          // Jeżeli nie ma serc, pokaż alert "you died"
+          
           warn2("You died");
 
-          // Przywróć serca
+          
           for (var i = 0; i < 11; i++) {
             heartsContainer.innerHTML += '<div class="heart"></div>';
           }
@@ -2450,50 +2254,40 @@ function hurt() {
           player.position.x = 15;
           player.position.z = 15;
           playerVelocity.set(0, 0, 0);
-          updaterenderdistance()
+       
         }
       }
     }, 1500);
 
-    lastHurtTime = currentTime; // Zaktualizuj czas ostatniego wywołania funkcji hurt
+    lastHurtTime = currentTime; 
   }
 }
 
 
-// Teraz możesz wywołać funkcję hurt, ale zostanie wykonana tylko raz na 2 sekundy
-
-
 
 function test2(){
-  //warn2(fallingtime)
+  
 }
-//window.setInterval(test2,100)
-// Wywołaj funkcję hurt() w odpowiednim momencie, np. po otrzymaniu obrażeń
+
+
 
     </script>
 
-
 <script>
- 
- 
- 
- 
- 
- 
+
  var audio2 = new Audio('./hal3.ogg');
 
-// Odtwarzanie muzyki
 
 
  function playnaunce1(){
    let random =Math.floor(Math.random()*2) 
-   
+
    if(audio2.paused){
      if (random == 0) {
-     
+
        audio2.src = './hal3.ogg';
      } if(random == 1) {
-     
+
        audio2.src = './nuance1.ogg';
        warn2(random)
      } if(random > 1 && random < 3){
@@ -2503,65 +2297,15 @@ function test2(){
      }
      audio2.play();
    }
-   
+
  }
  window.setInterval(playnaunce1,10000)
 </script>
 
-
-
-
-
 <script>
+
   
-  /*
-// Przygotowanie tekstury słońca
-const sunTexture = new THREE.TextureLoader().load('sun.png');
-const sunMaterial = new THREE.PointsMaterial({
-  map: sunTexture,
-  size: 20 // Rozmiar particle
-});
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(3);
-
-// Początkowa pozycja particle
-positions[0] = 0;
-positions[1] = 0;
-positions[2] = -10; // Ustawiona z ujemną wartością Z, aby particle było przed kamerą
-
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-
-// Stworzenie płaskiego dysku (plate)
-const sunPlate = new THREE.Mesh(new THREE.Points(geometry ,sunMaterial);
-sunPlate.position.z =30
-scene.add(sunPlate);
-
-// Ustawienie pozycji kamery
-//camera.position.z = 15;
-
-// Wektor wokół którego obraca się dysk
-const rotationAxis = new THREE.Vector3(0, 1, 0);
-
-// Prędkość obrotu w radianach na klatkę
-const rotationSpeed = 0.01;
-
-// Animacja obrotu dysku
-function animateSunRotation() {
-    sunPlate.rotateOnWorldAxis(rotationAxis, rotationSpeed);
-
-    // Wywołaj animację rekurencyjnie
-    requestAnimationFrame(animateSunRotation);
-
-    // Renderuj scenę
-   // renderer.render(scene, camera);
-}
-
-// Rozpoczęcie animacji
-animateSunRotation()
-*/
 </script>
-
 
 </div>
 </html>
