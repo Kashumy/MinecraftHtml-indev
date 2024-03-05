@@ -14,7 +14,7 @@
 </pre>
 <script>
 
-  var isloading = 0
+  var isloading = 1
   var cloudsis=1
 
 
@@ -1316,7 +1316,7 @@ cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
 cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
 function updaterenderdistance(playerChunkX, playerChunkZ) {
-  const occlusionRadius = renderingdist+3;
+  const occlusionRadius = renderingdist+2;
   const additionalDistance = rdist / 2;
 
   
