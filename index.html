@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -95,12 +96,8 @@ function warn2(message) {
     <style>
     dvt{
       position :fixed ;
-      background-image: url('./03.jpg'); 
-            background-size: 100%;
-            background-position: center;
-            width :100%;
-            height :100%;
-            image-rendering: pixelated;
+      background-image: url('./pobrane (12).png'); 
+              image-rendering: pixelated;
     }
 
 @font-face {
@@ -208,82 +205,8 @@ dvt{
 
   
   var splashes = [
-    "Creeper, aw man!",
-    "Creeper, aw man!",
-    "Creeper, aw man!",
-    "<text style='font-size :40px:'>Big text </text>",
-    "<text style='font-size :40px:'>Big text 2 </text>",
-    "<text style='font-size :100px:'>Big text 3</text>",
-
-    "keep going !",
-    "Redstone dust can power a lot of stuff!",
-    "Diamonds are a miner's best friend!",
-    "2009",
-    "Keep calm",
-    "Building a dirt house... survival mode!",
-    "Endermen are shy... and creepy!",
-    "Classic alpha is good",
-    "Don't dig straight down!",
-    "Crafting is the key to success!",
-    "Hugs for everyone!",
-    "Keep mining and stay crafty!",
-    "Cows go moo!",
-    "Chickens lay eggs!",
-    "On mobile only",
-    "try terraria",
-    "Your sand box world",
-    "Building is so much fun!",
-    "Take creative ",
-    " confusion ",
-    "krystian Kashumy ",
-    "mojang say no updates for now",
-    "Adventure Awaits Beyond the Horizon.",
-    "sit on the chair my child ",
-    "broadcast message from the studio: Don't be fooled, the crepper is waiting for you",
-    "so, so, hmgm. regardless of my will, I must inform you that this is my favorite message 😈🔥",
-    "menage items in your slots",
-    "collect block for buildings !",
-
-    "<pre style='color:red' > This is make old version of minecraft challenge <br> Bugs !",
-    " <text style='color :lime'>try to find </text>",
-    "<text style='color :blue'> Unknown message </text>",
-    "<text style='color :orange '> Easy Lag</text>",
-    "yellow pilar",
-    "uwu",
-    "Big number of splashes ",
-  "Adventure awaits!",
-  "Mine and build!",
-  "Diamonds shine bright!",
-  "Crafting and smelting!",
-  "Exploring the depths!",
-  "Wings of freedom!",
-  "Beware of the Enderman!",
-  "Build your world!",
-  "Survival is key!",
-  "Discover new horizons!",
-  "Sailing the oceans!",
-  "Beware of creepers!",
-  "Guardians of the realm!",
-  "Treasures in the dark!",
-  "Green pastures ahead!",
-  "Obsidian fortress!",
-  "Lapis Lazuli treasures!",
-  "Unlock enchantments!",
-  "Mobs in the night!",
-  "Bones of the earth!",
-  "Clay by the river!",
-  "Blooming flowers!",
-  "Potatoes and carrots!",
-  "Redstone wonders!",
-  "Buzzing with bees!",
-  "Eggs of potential!",
-  "Ender pearl magic!",
-  "Sheep herding time!",
-  "Moonlit adventures!",
-  "Aim true with arrows!",
-  "Face the challenge!",
-  "Cows in the pasture!"
-
+"[ Object object ]",
+"INDEV 0.5.1_pre_2"
   ];
 
   
@@ -668,7 +591,10 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
      "3": ["wood", 0, "./pobrane (10).png"],
      "4": ["water", 0, "./water.png","water2"],
      "5": ["leaves", 0, "./pobrane (19).png"],
-     "6": ["brick", 0 , "./pobrane (12).png"]
+     "6": ["brick", 0 , "./pobrane (12).png"],
+     "7": ["glass", 0 , "./glass.png"],
+     "8": ["glowstone",0, "./glowstone.png"],
+     "9": ["polishedstone", 0,"/pobrane (11).png"]
    };
    var nocollisions=["water"]
    
@@ -676,7 +602,7 @@ x:<t id="xpos"></t>y:<t id="ypos"></t>z:<t id="zpos"></t>
      const itemSlotsContainer = document.getElementById('items');
 
      
-     const maxSlots = Math.min(6, Object.keys(items).length);
+     const maxSlots = Math.min(20, Object.keys(items).length);
 
      for (let i = 1; i <= maxSlots; i++) {
        const itemInfo = items[i.toString()];
@@ -851,11 +777,14 @@ let frameTime = 1000 / targetFPS;
 
         
         var camera = new THREE.PerspectiveCamera(90, width / height, 0.01, 300);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("game"), alpha: true, antialias: true });
+        var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("game"), alpha: true, antialias: true });
+var lod = new THREE.LOD();
+
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        
-        const ambientLight = new THREE.AmbientLight(0x555555)
+        renderer.shadowMap.type = THREE.BasicShadowMap; // Zmiana typu shadow map
+
+        let ambientLight = new THREE.AmbientLight(0x555555)
         scene.add(ambientLight)
 
         const light = new THREE.DirectionalLight(0xffffff, 0.6);
@@ -872,7 +801,7 @@ light.shadow.camera.near = 0.1;
 light.shadow.camera.far = 200;
         
         const playerGeometry = new THREE.BoxGeometry(0.1,  1, 0.1);
-        const playerMaterial = new THREE.MeshPhongMaterial({ color: 0x00000000, transparent :true , opacity :0.0});
+        const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x00000000, transparent :true , opacity :0.0});
         const player = new THREE.Mesh(playerGeometry, playerMaterial);
         scene.add(player);
 
@@ -909,6 +838,10 @@ stone1.magFilter = THREE.NearestFilter;
 stone1.minFilter = THREE.NearestFilter; 
 stone3.magFilter = THREE.NearestFilter; 
 stone3.minFilter = THREE.NearestFilter; 
+var chet1 = new THREE.TextureLoader().load('./chest_front.png');
+chet1.magFilter = THREE.NearestFilter;
+chet1.minFilter = THREE.NearestFilter;
+var chest = new THREE.MeshStandardMaterial({ map: chet1, });
 
 var water2 = new THREE.MeshStandardMaterial ({ map: water, flatShading: true, transparent: true, opacity: 0.9});
 var stone = new THREE.MeshStandardMaterial({ map: stone1, });
@@ -916,11 +849,11 @@ var stone = new THREE.MeshStandardMaterial({ map: stone1, });
 var wooden = new THREE.MeshStandardMaterial ({ map: wood,flatShading: true , });
 var stonen = new THREE.MeshStandardMaterial ({ map: stone3,flatShading: true , });
 var material2 = new THREE.MeshStandardMaterial ({ map: textureSides2 ,flatShading: true , });
-var materialTop = new THREE.MeshStandardMaterial ({ map: textureTop,flatShading: true ,transparent: true, opacity: 1 });
+var materialTop = new THREE.MeshStandardMaterial ({ map: textureTop,shading: THREE.FlatShading,transparent: true, opacity: 1 });
 var materialBottom = new THREE.MeshStandardMaterial ({ map: textureBottom,flatShading: true , });
-var materialSides = new THREE.MeshStandardMaterial ({ map: textureSides,flatShading: true , });
+var materialSides = new THREE.MeshStandardMaterial ({ map: textureSides,shading: THREE.FlatShading });
 
-        const blockMaterial = new THREE.MeshLambertMaterial ({ map: texture });
+        const blockMaterial = new THREE.MeshLambertMaterial ({ map: texture,flatShading: true  });
 
 var materials = [
   materialSides, 
@@ -929,10 +862,9 @@ var materials = [
   materialBottom, 
   materialSides, 
   materialSides ,
-
+flatShading =true 
 ];
-materials[2].shininess = 0;
-materials[2].reflectivity = 0;
+
 
 var blocks = [];
 var renderingdist=6
@@ -1122,7 +1054,7 @@ for (let x2 = 0; x2 < rdist; x2++) {
     for (let z2 = 0; z2 < rdist; z2++) { 
 
     if(Math.floor(Math.random()*30)==1){
-        const block = new THREE.Mesh(blockGeometry, materials );
+        let block = new THREE.Mesh(blockGeometry, materials );
         block.name='grass'
         block.position.set(x2 + x *rdist, layerHeight, z2 + z*rdist ); 
       
@@ -1132,7 +1064,7 @@ for (let x2 = 0; x2 < rdist; x2++) {
 
     }else {
       if(Math.floor(Math.random()*20)==3){
-      const block = new THREE.Mesh(blockGeometry, water2 );
+      let block = new THREE.Mesh(blockGeometry, water2 );
      
      
       block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); 
@@ -1144,7 +1076,7 @@ for (let x2 = 0; x2 < rdist; x2++) {
       blocks.push(block);
 
     }else{
-      const block = new THREE.Mesh(blockGeometry, materials);
+      let block = new THREE.Mesh(blockGeometry, materials);
       
       
       block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist); 
@@ -1154,7 +1086,18 @@ for (let x2 = 0; x2 < rdist; x2++) {
       block.name = 'grass'
       blocks.push(block);
 
-    }}
+    }
+    if(Math.floor(Math.random()*155)==5){
+ block = new THREE.Mesh(blockGeometry, chest);
+      block.name = 'chest'
+      block.position.set(x2 + x * rdist, layerHeight+1, z2 + z * rdist);
+      
+      
+      
+      blocks.push(block);
+    }
+    }
+    
     }
 
 }
@@ -1168,7 +1111,7 @@ var block = new THREE.Mesh(blockGeometry, materials);
 var itemTexture = new THREE.TextureLoader().load('./pobrane (12).png');
 itemTexture.magFilter = THREE.NearestFilter; 
 itemTexture.minFilter = THREE.NearestFilter; 
-var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture });
+var itemMaterial = new THREE.MeshStandardMaterial({ map: itemTexture });
 block.material = itemMaterial;
 block.name = "brick"
 
@@ -1241,11 +1184,19 @@ var steponstone=0
     for (let i = 0; i < rdist ; i++) { 
       
       if (layerHeight > endHeight) {
+        
         const block = new THREE.Mesh(blockGeometry, stone);
         block.position.set(x2 + x * rdist, layerHeight-y, z2 + z * rdist);
         
         block.name="stone"
-       
+       if(Math.floor(Math.random()*200)==5){
+         var itemTexture = new THREE.TextureLoader().load("/pobrane (11).png");
+         itemTexture.magFilter = THREE.NearestFilter;
+         itemTexture.minFilter = THREE.NearestFilter;
+         var itemMaterial = new THREE.MeshStandardMaterial({ map: itemTexture, transparent: true, alpha: true });
+         block.material = itemMaterial;
+         block.name="polishedstone"
+       }
 
         blocks.push(block);
 blocksInCave.push(block);
@@ -1316,7 +1267,7 @@ cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
 cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
 function updaterenderdistance(playerChunkX, playerChunkZ) {
-  const occlusionRadius = renderingdist+2;
+  const occlusionRadius = renderingdist;
   const additionalDistance = rdist / 2;
 
   
@@ -1335,6 +1286,8 @@ function updaterenderdistance(playerChunkX, playerChunkZ) {
         
         if (!scene.children.includes(block)) {
           scene.add(block);
+          
+
         }
       } else {
         
@@ -1532,7 +1485,7 @@ let D5times
               requestAnimationFrame(animate);
             }, frameTime);
 
-camera.position.set(player.position.x, player.position.y+1, player.position.z);
+camera.position.set(player.position.x, player.position.y+1.3, player.position.z);
 camera.rotation.order = 'YXZ';
 
             
@@ -1707,11 +1660,12 @@ if (!nocollisions.includes(block.name)) {
         animate();
 function fastrendering(){
 renderer.render(scene, camera);
+
 requestAnimationFrame(fastrendering)
 }
 fastrendering()
-       
-
+    //   lod.addLevel(renderer, 3);
+lod.addLevel(scene, 1);
         
 
 
@@ -1944,7 +1898,44 @@ function buildBlockOnClick(event) {
           }
           useblock(index)
           }
-        }else{
+        }
+   else if (currentblock == 'glowstone') {
+      currentitemslot = currentblock;
+      
+      if (cantbuildthisblockGeometry === 0) {
+        var newBlock = new THREE.Mesh(blockGeometry, materials);
+        newBlock.name = currentitemslot;
+      
+        var searchedItem = currentitemslot;
+        var index = -1;
+      
+        for (var key in items) {
+          if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+            index = key;
+            break;
+          }
+        }
+      
+      
+        if (index !== -1) {
+          if (items[index][3] && window.hasOwnProperty(items[index][3])) {
+      
+            var customMaterial = window[items[index][3]];
+            newBlock.material = customMaterial;
+          } else {
+      
+            var itemTexture = new THREE.TextureLoader().load(items[index][2]);
+            itemTexture.magFilter = THREE.NearestFilter;
+            itemTexture.minFilter = THREE.NearestFilter;
+            var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture, transparent: true, alpha: true });
+            newBlock.material = itemMaterial;
+          }
+        }
+      
+        useblock(index);
+      }
+    } 
+else{
 
 currentitemslot = currentblock;
 
@@ -1973,7 +1964,7 @@ if (cantbuildthisblockGeometry === 0) {
       var itemTexture = new THREE.TextureLoader().load(items[index][2]);
       itemTexture.magFilter = THREE.NearestFilter; 
       itemTexture.minFilter = THREE.NearestFilter; 
-      var itemMaterial = new THREE.MeshBasicMaterial({ map: itemTexture });
+      var itemMaterial = new THREE.MeshStandardMaterial({ map: itemTexture, transparent: true, alpha: true });
       newBlock.material = itemMaterial;
     }
   }
@@ -2010,9 +2001,93 @@ if (cantbuildthisblockGeometry === 0) {
 
         scene.add(newBlock);
         blocks.push(newBlock);
-
+//addPointLightsToglowstonees() 
+addPointLightsToglowstonees()
     }
+    
 }
+
+let glowstoneLightsMap = new Map();
+
+function addPointLightsToglowstonees() {
+  const playerChunkX = Math.floor(player.position.x / rdist);
+  const playerChunkZ = Math.floor(player.position.z / rdist);
+
+  const blocksInCurrentChunk = blocks.filter(block => {
+    const blockChunkX = Math.floor(block.position.x / rdist);
+    const blockChunkZ = Math.floor(block.position.z / rdist);
+    return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
+  });
+
+  // Remove glowstone lights that don't have corresponding blocks
+  glowstoneLightsMap.forEach((light, block) => {
+    if (!blocksInCurrentChunk.includes(block)) {
+      scene.remove(light);
+
+      // Check if light, material, and geometry are defined before calling dispose
+      if (light) {
+        if (light.material) light.material.dispose();
+        if (light.geometry) light.geometry.dispose();
+      }
+
+      glowstoneLightsMap.delete(block);
+    }
+  });
+
+  // Add or update glowstone lights for new or existing glowstone blocks
+  blocksInCurrentChunk.forEach(block => {
+    if (block.name === 'glowstone') {
+      const existingLight = glowstoneLightsMap.get(block);
+
+      if (existingLight) {
+        // Update existing light position if block already has a light
+        existingLight.position.copy(block.position);
+      } else {
+        // Create a new light if block doesn't have a corresponding light
+        const blockLight = new THREE.PointLight(0xffffff, 2, 10);
+        blockLight.position.copy(block.position);
+        scene.add(blockLight);
+        blocks.push(blockLight);
+        glowstoneLightsMap.set(block, blockLight);
+      }
+    }
+  });
+
+  // Remove glowstone blocks and their corresponding lights that have been removed from the scene
+  blocks = blocks.filter(block => {
+    const blockInCurrentChunk = blocksInCurrentChunk.includes(block);
+    if (!blockInCurrentChunk) {
+      const light = glowstoneLightsMap.get(block);
+      if (light) {
+        scene.remove(light);
+
+        // Check if light, material, and geometry are defined before calling dispose
+        if (light.material) light.material.dispose();
+        if (light.geometry) light.geometry.dispose();
+
+        glowstoneLightsMap.delete(block);
+      }
+    }
+    return blockInCurrentChunk;
+  });
+}
+
+// Usuń wszystkie światła glowstonea przed dodaniem nowych
+function clearglowstoneLights() {
+  glowstoneLightsMap.forEach(light => {
+    scene.remove(light);
+    light.material.dispose();
+    light.geometry.dispose();
+  });
+  glowstoneLightsMap.clear();
+}
+
+window.setInterval(addPointLightsToglowstonees, 7500);
+//lod.addLevel(scene, 3);
+
+
+
+
 function deleteBlockOnClick(event) {
     const mouse = new THREE.Vector2();
     mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
@@ -2032,6 +2107,33 @@ function deleteBlockOnClick(event) {
         
         if (clickedBlock.name === "stone") {
             addblock("stone");
+        }else if (clickedBlock.name === "chest") {
+          if(Math.floor(Math.random()*3)==2){
+            for (var i = 0; i < 30; i++) {
+                addblock("brick");
+              
+            }
+          }else if (Math.floor(Math.random() * 2) == 1) {
+            for (var i = 0; i < 30; i++) {
+              addblock("glass");
+          
+            }
+          }else if (Math.floor(Math.random() * 3) == 1) {
+            for (var i = 0; i < 30; i++) {
+              addblock("wood");
+          
+            }
+          }else if (Math.floor(Math.random() * 3) == 1) {
+            for (var i = 0; i < 15; i++) {
+              addblock("polishedstone");
+          
+            }
+          }else {
+            for (var i = 0; i < 2; i++) {
+              addblock("glowstone");
+          
+            }
+          }
         }else if (clickedBlock.name === "woodblock") {
           addblock("wood"); addblock("wood"); addblock("wood"); addblock("wood");
         } else if (clickedBlock.name === "grass") {
@@ -2051,6 +2153,7 @@ audio.play();
             blocks.splice(index, 1);
             scene.remove(clickedBlock);
         }
+        addPointLightsToglowstonees()
     }
 }
 
@@ -2078,10 +2181,14 @@ function changeBackgroundAndLight() {
 
     
     const progressLight = Math.min(currentTime / duration, 1);
-    const newLightIntensity = Math.max(minLightIntensity, 0.3 - 0.2 * progressLight*2);
+    const newLightIntensity = Math.max(minLightIntensity, 0.9 - 0.2 * progressLight*5);
     light.intensity = newLightIntensity;
 
 gameElement.classList.add('night')
+scene.remove(ambientLight)
+ ambientLight = new THREE.AmbientLight(0x111111)
+scene.add(ambientLight)
+scene.fog = new THREE.FogExp2(0x000000, 0.09);
 
     
     if (currentTime < duration) {
@@ -2096,7 +2203,7 @@ gameElement.classList.add('night')
   update();
 }
 
-setTimeout(changeBackgroundAndLight, 300000); 
+setTimeout(changeBackgroundAndLight, 200000); 
 function changeBackgroundAndLight2() {
   const duration = 35000; 
   const startTime = Date.now();
@@ -2114,7 +2221,11 @@ function changeBackgroundAndLight2() {
 
     gameElement.classList.add('day'); 
 
-    
+    scene.remove(ambientLight)
+    ambientLight = new THREE.AmbientLight(0x555555)
+    scene.add(ambientLight)
+scene.fog = new THREE.FogExp2(0xffffff, 0.09);
+
     if (currentTime < duration) {
 
       requestAnimationFrame(update);
