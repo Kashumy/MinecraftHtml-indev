@@ -96,8 +96,13 @@ function warn2(message) {
     <style>
     dvt{
       position :fixed ;
-      background-image: url('./pobrane (12).png'); 
-              image-rendering: pixelated;
+      background-image: url('./pobrane (7).png'); 
+background-size: 32px;
+background-repeat: repeat;
+   filter: brightness(20%);
+       width :100%; 
+       height :100vh; 
+            image-rendering: pixelated;
     }
 
 @font-face {
@@ -117,10 +122,7 @@ function warn2(message) {
         }
 @media screen and (max-width: 769px) {
 dvt{
-  background-size :150%;
-  top:50vh;
-  transform:translate(0%,-50%);
-  background-repeat :no-repeat ;
+  
 
 }
 }
@@ -920,7 +922,7 @@ function checkAndRemoveDuplicateBlocks(currentChunkX, currentChunkZ) {
 }
 
 function removeBlocksNearCamera() {
-  const radius = 40;
+  const radius = 200;
 
   const blocksToRemove = blocks.filter((block) => {
     const distance = camera.position.distanceTo(block.position);
@@ -1316,7 +1318,7 @@ function updatePlayerChunk() {
        // blocks = []
       }
     }
-    // Wygeneruj nowy chunk wokół gracza
+
     generateChunk(playerChunkX, playerChunkZ);
     player.position.y = 4
     if (one == 0) {
@@ -1474,8 +1476,8 @@ let D5times
             updatePlayerChunk()
           }
 
-          if(player.position.y < -400){
-            hurt()
+          if(player.position.y < -100){
+            player.position.y=20
           }
           document.getElementById("xpos").innerHTML=Math.floor(camera.position.x)
           document.getElementById("ypos").innerHTML=Math.floor(camera.position.y)
@@ -2002,14 +2004,14 @@ if (cantbuildthisblockGeometry === 0) {
         scene.add(newBlock);
         blocks.push(newBlock);
 //addPointLightsToglowstonees() 
-addPointLightsToglowstonees()
+addPointLightsToGlowstones()
     }
     
 }
 
 let glowstoneLightsMap = new Map();
 
-function addPointLightsToglowstonees() {
+function addPointLightsToGlowstones() {
   const playerChunkX = Math.floor(player.position.x / rdist);
   const playerChunkZ = Math.floor(player.position.z / rdist);
 
@@ -2019,9 +2021,9 @@ function addPointLightsToglowstonees() {
     return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
   });
 
-  // Remove glowstone lights that don't have corresponding blocks
+  // Remove glowstone lights that don't have corresponding blocks with torches
   glowstoneLightsMap.forEach((light, block) => {
-    if (!blocksInCurrentChunk.includes(block)) {
+    if (!blocksInCurrentChunk.includes(block) || !isGlowstonePresent(block.position)) {
       scene.remove(light);
 
       // Check if light, material, and geometry are defined before calling dispose
@@ -2031,12 +2033,20 @@ function addPointLightsToglowstonees() {
       }
 
       glowstoneLightsMap.delete(block);
+
+
+
+      // Remove light from torches array
+      const torchIndex = torches.indexOf(block);
+      if (torchIndex !== -1) {
+        torches.splice(torchIndex, 1);
+      }
     }
   });
 
-  // Add or update glowstone lights for new or existing glowstone blocks
+  // Add or update glowstone lights for new or existing glowstone blocks with torches
   blocksInCurrentChunk.forEach(block => {
-    if (block.name === 'glowstone') {
+    if (block.name === 'glowstone' && isGlowstonePresent(block.position)) {
       const existingLight = glowstoneLightsMap.get(block);
 
       if (existingLight) {
@@ -2047,42 +2057,37 @@ function addPointLightsToglowstonees() {
         const blockLight = new THREE.PointLight(0xffffff, 2, 10);
         blockLight.position.copy(block.position);
         scene.add(blockLight);
-        blocks.push(blockLight);
+        //blocks.push(block);
+        torches.push(block);
         glowstoneLightsMap.set(block, blockLight);
       }
     }
   });
-
-  // Remove glowstone blocks and their corresponding lights that have been removed from the scene
-  blocks = blocks.filter(block => {
-    const blockInCurrentChunk = blocksInCurrentChunk.includes(block);
-    if (!blockInCurrentChunk) {
-      const light = glowstoneLightsMap.get(block);
-      if (light) {
-        scene.remove(light);
-
-        // Check if light, material, and geometry are defined before calling dispose
-        if (light.material) light.material.dispose();
-        if (light.geometry) light.geometry.dispose();
-
-        glowstoneLightsMap.delete(block);
-      }
-    }
-    return blockInCurrentChunk;
-  });
 }
 
-// Usuń wszystkie światła glowstonea przed dodaniem nowych
-function clearglowstoneLights() {
-  glowstoneLightsMap.forEach(light => {
-    scene.remove(light);
-    light.material.dispose();
-    light.geometry.dispose();
-  });
-  glowstoneLightsMap.clear();
+// Function to check if a glowstone block is present at a given position
+function isGlowstonePresent(position) {
+  // Implement your logic to check if a glowstone block is present at the specified position
+  // For example, you can check if there's a glowstone block at that position
+  // and return true if there is, otherwise return false.
+
+  // Replace the following placeholder with your actual implementation.
+  // You might want to iterate through your glowstone blocks array or use a different mechanism.
+
+  // Example placeholder:
+  return blocks.some(glowstone => glowstone.position.equals(position) && glowstone.name === 'glowstone');
 }
 
-window.setInterval(addPointLightsToglowstonees, 7500);
+
+
+// Assume you have an array of torches
+let torches = []; // Populate this array with torch objects as needed
+
+
+
+
+
+window.setInterval(addPointLightsToGlowstones, 7500);
 //lod.addLevel(scene, 3);
 
 
@@ -2153,7 +2158,7 @@ audio.play();
             blocks.splice(index, 1);
             scene.remove(clickedBlock);
         }
-        addPointLightsToglowstonees()
+        addPointLightsToGlowstones()
     }
 }
 
