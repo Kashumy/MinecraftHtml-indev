@@ -14,7 +14,9 @@
   <script>
     var isloading = 0
     var cloudsis = 1
-
+var experiments={
+  "test1":1,
+}
     function openFullscreen() {
       var elem = document.documentElement;
 
@@ -799,7 +801,7 @@
   let frameTime = 1000 / targetFPS;
 
   const scene = new THREE.Scene();
-  
+
   var canv = document.getElementById("game");
   var width = canv.clientWidth;
   var height = canv.clientHeight;
@@ -814,13 +816,11 @@
 
   let ambientLight = new THREE.AmbientLight(0x555555)
   scene.add(ambientLight)
-  
+
   const light = new THREE.DirectionalLight(0xffffff, 0.6);
   light.position.set(0, 2, 0);
 
   scene.add(light);
-  
-  
 
   scene.fog = new THREE.FogExp2(0xffffff, 0.09);
 
@@ -969,7 +969,7 @@ flatShading = true
     frameTime = 1000 / targetFPS;
     removeBlocksNearCamera()
 
-    renderingdist = 7
+    renderingdist = 0
     const chunk = new THREE.Group();
 
     const layerHeight = -3;
@@ -1195,7 +1195,7 @@ flatShading = true
           if (layerHeight > endHeight) {
 
             const block = new THREE.Mesh(blockGeometry, stone);
-            block.position.set(x2 + x * rdist, layerHeight - y, z2 + z * rdist);
+            block.position.set(x2 + x * rdist, layerHeight , z2 + z * rdist);
 
             block.name = "stone"
             if (Math.floor(Math.random() * 200) == 5) {
@@ -1268,7 +1268,7 @@ flatShading = true
 
   function updaterenderdistance(playerChunkX, playerChunkZ) {
     const occlusionRadius = renderingdist;
-    const additionalDistance = rdist / 2;
+    const additionalDistance = 3;
 
     const blocksInCurrentChunk = blocks.filter(block => {
       const blockChunkX = Math.floor(block.position.x / rdist);
@@ -1304,27 +1304,15 @@ flatShading = true
     const playerChunkX = Math.floor(player.position.x / rdist);
     const playerChunkZ = Math.floor(player.position.z / rdist);
 
-
     if (!chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ)) {
 
       for (let i = chunks.length - 1; i >= 0; i--) {
-        const chunk = chunks[i];
-        if (Math.abs(chunk.x - playerChunkX) > 1 || Math.abs(chunk.z - playerChunkZ) > 1) {
-
-
-        }
+      
       }
 
       generateChunk(playerChunkX, playerChunkZ);
       player.position.y = 4
-      if (one == 0) {
 
-        one = 1
-
-        setTimeout(function() {
-          one = 0
-        }, 1000)
-      }
     }
   }
 
@@ -1352,13 +1340,13 @@ flatShading = true
   const playerVelocity = new THREE.Vector3();
   setTimeout(function() {
 
-    player.position.y = 20
+    player.position.y = 10
     player.position.x = 12
     player.position.z = 12
     playerVelocity.set(0, 0, 0);
     setTimeout(function() {
 
-      player.position.y = 20
+      player.position.y = 10
       player.position.x = 12
       player.position.z = 12
       playerVelocity.set(0, 0, 0);
@@ -1450,16 +1438,12 @@ flatShading = true
 
   const creepers = [];
 
-
   const creeper1 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshBasicMaterial({ color: 0x00dd00 }));
   const creeper2 = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshBasicMaterial({ color: 0xff0000 }));
 
   creepers.push(creeper1);
 
-
   creeper1.position.set(5, 10, 5);
-
-
 
   const handleCollisions = (object, blocks) => {
     const objectBox = new THREE.Box3().setFromObject(object);
@@ -1568,7 +1552,7 @@ flatShading = true
     } else {
 
       updaterenderdistance(playerChunkX, playerChunkZ)
-      D5times
+      D5times=0
     }
     if (D20times < 10) {
 
@@ -1801,14 +1785,17 @@ flatShading = true
         cloud.position.x = 300;
       }
     }
-
+if (experiments.test1 == 0) {
+  renderer.render(scene, camera);
+}
   };
 
   animate();
 
   function fastrendering() {
+    if(experiments.test1==1){
     renderer.render(scene, camera);
-
+    }
     requestAnimationFrame(fastrendering)
   }
   fastrendering()
@@ -2128,11 +2115,9 @@ flatShading = true
       return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
     });
 
-
     glowstoneLightsMap.forEach((light, block) => {
       if (!blocksInCurrentChunk.includes(block) || !isGlowstonePresent(block.position)) {
         scene.remove(light);
-
 
         if (light) {
           if (light.material) light.material.dispose();
@@ -2141,14 +2126,12 @@ flatShading = true
 
         glowstoneLightsMap.delete(block);
 
-
         const torchIndex = torches.indexOf(block);
         if (torchIndex !== -1) {
           torches.splice(torchIndex, 1);
         }
       }
     });
-
 
     blocksInCurrentChunk.forEach(block => {
       if (block.name === 'glowstone' && isGlowstonePresent(block.position)) {
@@ -2170,24 +2153,14 @@ flatShading = true
     });
   }
 
-
   function isGlowstonePresent(position) {
-
-
-
-
-
-
-
 
     return blocks.some(glowstone => glowstone.position.equals(position) && glowstone.name === 'glowstone');
   }
 
-
   let torches = [];
 
-  window.setInterval(addPointLightsToGlowstones, 7500);
-
+  window.setInterval(addPointLightsToGlowstones, 9500);
 
   function deleteBlockOnClick(event) {
     const mouse = new THREE.Vector2();
@@ -2205,6 +2178,7 @@ flatShading = true
 
       if (clickedBlock.name === "stone") {
         addblock("stone");
+        recipesadd("Stone age!", "./cobble.png");
       } else if (clickedBlock.name === "chest") {
         if (Math.floor(Math.random() * 3) == 2) {
           for (var i = 0; i < 30; i++) {
@@ -2219,7 +2193,6 @@ flatShading = true
         } else if (Math.floor(Math.random() * 3) == 1) {
           for (var i = 0; i < 30; i++) {
             addblock("wood");
-
           }
         } else if (Math.floor(Math.random() * 3) == 1) {
           for (var i = 0; i < 15; i++) {
@@ -2229,7 +2202,7 @@ flatShading = true
         } else {
           for (var i = 0; i < 2; i++) {
             addblock("glowstone");
-
+recipesadd("Rare Loot!", "./chest_front.png");
           }
         }
       } else if (clickedBlock.name === "woodblock") {
@@ -2237,12 +2210,19 @@ flatShading = true
         addblock("wood");
         addblock("wood");
         addblock("wood");
+        recipesadd("Get Wood!", "./pobrane (16).png");
       } else if (clickedBlock.name === "grass") {
         addblock("grass");
       } else if (clickedBlock.name === "stone") {
         addblock("wood");
       } else {
         addblock(clickedBlock.name)
+      }
+      if(clickedBlock.name === "brick"){
+        recipesadd("Brick Break!", "./pobrane (12).png");
+      }
+      if (clickedBlock.name === "polishedstone") {
+        recipesadd("Polished !", "./pobrane (11).png");
       }
       var audio = new Audio('./stone1.ogg');
 
@@ -2263,9 +2243,8 @@ flatShading = true
 
     for (var i = 0; i < 2; i++) {
       const creeper3 = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshBasicMaterial({ color: 0x00dd00 }));
-
+recipesadd("Night Time ", "./chest_front.png");
       creepers.push(creeper3);
-
 
       creeper3.position.set(chunkX * rdist + Math.floor(Math.random() * rdist), 5, chunkZ * rdist + Math.floor(Math.random() * rdist));
 
@@ -2303,7 +2282,7 @@ flatShading = true
     update();
   }
 
-  setTimeout(changeBackgroundAndLight, 20000);
+  setTimeout(changeBackgroundAndLight, 200000);
 
   function changeBackgroundAndLight2() {
     const duration = 35000;
@@ -2320,7 +2299,7 @@ flatShading = true
       light.intensity = newLightIntensity;
 
       gameElement.classList.add('day');
-
+recipesadd("Survive first Day", "./glowstone.png");
       scene.remove(ambientLight)
       ambientLight = new THREE.AmbientLight(0x555555)
       scene.add(ambientLight)
@@ -2424,19 +2403,14 @@ flatShading = true
       document.getElementById('game').classList.remove('dead');
     }, 10000);
 
-    var audio = new Audio('hurt.ogg');
-
-    audio.play();
-
-    if (timeSinceLastHurt >= 500) {
+    if (timeSinceLastHurt >= 100) {
 
       const heartsContainer = document.getElementById("hearts");
 
+    const lastHeart = heartsContainer.lastChild;
+heartsContainer.removeChild(lastHeart);
       setTimeout(function() {
         if (heartsContainer.children.length > 0) {
-
-          const lastHeart = heartsContainer.lastChild;
-          heartsContainer.removeChild(lastHeart);
 
           if (heartsContainer.children.length === 0) {
 
@@ -2452,9 +2426,12 @@ flatShading = true
 
           }
         }
-      }, 1500);
+      }, 500);
 
       lastHurtTime = currentTime;
+      var audio = new Audio('hurt.ogg');
+
+      audio.play();
     }
   }
 
@@ -2470,6 +2447,7 @@ flatShading = true
     let random = Math.floor(Math.random() * 2)
 
     if (audio2.paused) {
+      audio2.src = './calm1.ogg';
       if (random == 0) {
 
         audio2.src = './hal3.ogg';
@@ -2478,12 +2456,12 @@ flatShading = true
 
         audio2.src = './nuance1.ogg';
         warn2(random)
-      }
+      } 
       if (random > 1 && random < 3) {
         audio2.src = './calm3.ogg'
-      }
+      } else
       if (random > 2 && random < 4) {
-        audio2.src = './calm2.ogg'
+        audio2.src = './calm1.ogg'
       }
       audio2.play();
     }
@@ -2492,7 +2470,72 @@ flatShading = true
   window.setInterval(playnaunce1, 10000)
 </script>
 
+    <style>
+        #recipeBar {
+            position: fixed;
+            white-space: pre-wrap;
+            top: 10px;
+            right: -400px;
+            width: 200px;
+            height: 30px;
+            background-color: #787878;
+            color: white;
+            text-align: right;
+
+            padding: 10px;
+            transition: 2.5s;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        #recipeBar img {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            image-rendering:pixelated;
+        }
+    </style>
+</head>
+<body>
+
+<pre id="recipeBar" ></pre>
+
 <script>
+    let unlockedRecipes = [];
+
+    function isRecipeAdded(recipe) {
+        return unlockedRecipes.includes(recipe);
+    }
+
+    function recipesadd(recipe, img) {
+        
+        if (isRecipeAdded(recipe)) {
+            console.log("Receptura już dodana");
+            return;
+        }else{
+
+        
+        unlockedRecipes.push(recipe);
+
+        
+        const recipeBar = document.getElementById("recipeBar");
+        recipeBar.innerHTML = `<img src="${img}" alt="${recipe}">${recipe}            `;
+
+        
+        setTimeout(() => {
+            recipeBar.style.right = "-5px";
+        }, 200);
+
+        
+        setTimeout(() => {
+            recipeBar.style.right = "-400px";
+        }, 5000);
+        }
+    }
 
 </script>
 
