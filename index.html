@@ -650,6 +650,7 @@ var experiments={
         itemSlot.className = 'item-slot';
         itemSlot.style.position = 'relative';
         itemSlot.id = `itemslot${i}`
+
         itemSlot.innerHTML = `
            <img style="width:60%;height:60%;margin:20%" src="${itemImage}"  alt="">
            <p id="items-slot-${i}" style="position:absolute;top:0%;z-index:99;left:0%;color:white">x${itemCount}</p>
@@ -766,11 +767,30 @@ var experiments={
 
   </div>
   <button id="jump" style="position :fixed ; z-index: 2; right :50px; bottom: 20px" class="btn"></button>
-  <button id="empty" onclick="menu_game()" style="position :fixed ; right :0px; top: 50px ; font-weight :bold " class="btn">|&nbsp;&nbsp;|</button>
+  <button id="empty"  onclick="menu_game()" style="position :fixed ; right :0px; top: 50px ; font-weight :bold " class="btn">|&nbsp;&nbsp;|</button>
 
 </div>
-<script src="./three.js"></script>
+
+
+
+    <script type="module">
+
+      import * as THREE from "./three.module.js"; 
+      import { GLTFLoader } from "./GLTFLoader(1).js"; 
+window.THREE = THREE;
+window.GLTFLoader = GLTFLoader;
+</script>
+
+
 <script>
+setTimeout(function(){
+  document.querySelector('body').innerHTML+=`<script src="./GLTFLoader.js">`
+
+},100);
+var switchi;
+setTimeout( function() {
+
+var steponstone = 0
   var fpsCounter = document.getElementById('fps-counter');
 
   var frameCount = 0;
@@ -806,42 +826,55 @@ var experiments={
   var width = canv.clientWidth;
   var height = canv.clientHeight;
 
-  var camera = new THREE.PerspectiveCamera(90, width / height, 0.01, 300);
+  const camera = new THREE.PerspectiveCamera(
+    90,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
   var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("game"), alpha: true, antialias: true });
+
+
+
+renderer.gammaFactor = 0.2;  
+
+
+renderer.toneMappingExposure = 0.4;
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+
+
   var lod = new THREE.LOD();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.shadowMap.type = THREE.BasicShadowMap;
+  
+var ambientLight=new THREE.AmbientLight(0x505050)
+  scene.add(ambientLight);
 
-  let ambientLight = new THREE.AmbientLight(0x555555)
-  scene.add(ambientLight)
-
-  const light = new THREE.DirectionalLight(0xffffff, 0.6);
+  const light = new THREE.DirectionalLight(0xffffff, 0.85);
   light.position.set(0, 2, 0);
 
   scene.add(light);
 
-  scene.fog = new THREE.FogExp2(0xffffff, 0.09);
+ 
 
-  light.shadow.mapSize.width = 524;
-  light.shadow.mapSize.height = 524;
-  light.shadow.camera.near = 0.1;
-  light.shadow.camera.far = 200;
+  scene.fog = new THREE.FogExp2(0xffffff, 0.009);
 
   const playerGeometry = new THREE.BoxGeometry(0.1, 1, 0.1);
   const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x00000000, transparent: true, opacity: 0.0 });
   const player = new THREE.Mesh(playerGeometry, playerMaterial);
   scene.add(player);
 
-  const textureLoader = new THREE.TextureLoader();
+  var textureLoader = new THREE.TextureLoader();
   const texture = textureLoader.load('./pobrane (12).png');
 
   const blockGeometry = new THREE.BoxGeometry(1, 1, 1);
 
   var textureTop = new THREE.TextureLoader().load('./grass.png');
-  textureTop.magFilter = THREE.NearestFilter;
-  textureTop.minFilter = THREE.NearestFilter;
+textureTop.magFilter = THREE.NearestFilter;
+textureTop.minFilter = THREE.NearestFilter;
+
   var textureBottom = new THREE.TextureLoader().load('./pobrane (8).png');
   textureBottom.magFilter = THREE.NearestFilter;
   textureBottom.minFilter = THREE.NearestFilter;
@@ -871,17 +904,17 @@ var experiments={
   chet1.minFilter = THREE.NearestFilter;
   var chest = new THREE.MeshStandardMaterial({ map: chet1, });
 
-  var water2 = new THREE.MeshStandardMaterial({ map: water, flatShading: true, transparent: true, opacity: 0.9 });
+  var water2 = new THREE.MeshStandardMaterial({ map: water,  transparent: true, opacity: 0.9 });
   var stone = new THREE.MeshStandardMaterial({ map: stone1, });
 
-  var wooden = new THREE.MeshStandardMaterial({ map: wood, flatShading: true, });
-  var stonen = new THREE.MeshStandardMaterial({ map: stone3, flatShading: true, });
-  var material2 = new THREE.MeshStandardMaterial({ map: textureSides2, flatShading: true, });
-  var materialTop = new THREE.MeshStandardMaterial({ map: textureTop, shading: THREE.FlatShading, transparent: true, opacity: 1 });
-  var materialBottom = new THREE.MeshStandardMaterial({ map: textureBottom, flatShading: true, });
-  var materialSides = new THREE.MeshStandardMaterial({ map: textureSides, shading: THREE.FlatShading });
+  var wooden = new THREE.MeshStandardMaterial({ map: wood, });
+  var stonen = new THREE.MeshStandardMaterial({ map: stone3,  });
+  var material2 = new THREE.MeshStandardMaterial({ map: textureSides2,  });
+  var materialTop = new THREE.MeshStandardMaterial({ map: textureTop, transparent: true, opacity: 1 });
+  var materialBottom = new THREE.MeshStandardMaterial({ map: textureBottom,  });
+  var materialSides = new THREE.MeshStandardMaterial({ map: textureSides,});
 
-  const blockMaterial = new THREE.MeshLambertMaterial({ map: texture, flatShading: true });
+  const blockMaterial = new THREE.MeshLambertMaterial({ map: texture,  });
 
   var materials = [
   materialSides,
@@ -890,7 +923,7 @@ var experiments={
   materialBottom,
   materialSides,
   materialSides,
-flatShading = true
+
 ];
 
   var blocks = [];
@@ -1024,9 +1057,9 @@ flatShading = true
 
         voxelCoordinates.forEach(coords => {
           const [x2, y2, z2, type] = coords;
-          let material = new THREE.MeshStandardMaterial({ map: leaves, flatShading: true, transparent: true, opacity: 1.0 });
+          let material = new THREE.MeshStandardMaterial({ map: leaves});
           if (type === 1) {
-            material = new THREE.MeshStandardMaterial({ map: wood1, flatShading: true, transparent: true, opacity: 1.0 });
+            material = new THREE.MeshStandardMaterial({ map: wood1});
           }
 
           const block = new THREE.Mesh(new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize), material);
@@ -1185,7 +1218,6 @@ flatShading = true
     let layerHeight = startHeight;
     let x2 = 0;
     let z2 = 0;
-    var steponstone = 0
 
     function generateLayer() {
 
@@ -1257,14 +1289,6 @@ flatShading = true
   scheduleRandomExecution();
 
   const occlusionRadius = 2;
-  const cameraFrustum = new THREE.Frustum();
-  const cameraViewProjectionMatrix = new THREE.Matrix4();
-
-  camera.updateMatrixWorld();
-  const matrixInv = new THREE.Matrix4().copy(camera.matrixWorld).invert();
-  cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
-
-  cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
   function updaterenderdistance(playerChunkX, playerChunkZ) {
     const occlusionRadius = renderingdist;
@@ -1317,8 +1341,9 @@ flatShading = true
   }
 
   const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
-  const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, side: THREE.BackSide });
+  const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87EEEB, side: THREE.BackSide });
   const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+
 
   const clouds = [];
   if (cloudsis == 1) {
@@ -1438,13 +1463,6 @@ flatShading = true
 
   const creepers = [];
 
-  const creeper1 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshBasicMaterial({ color: 0x00dd00 }));
-  const creeper2 = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshBasicMaterial({ color: 0xff0000 }));
-
-  creepers.push(creeper1);
-
-  creeper1.position.set(5, 10, 5);
-
   const handleCollisions = (object, blocks) => {
     const objectBox = new THREE.Box3().setFromObject(object);
 
@@ -1501,8 +1519,8 @@ flatShading = true
         }
 
         if (
-          object.position.y - 0.8 < block.position.y + halfWallHeight &&
-          object.position.y > block.position.y - 2.0 &&
+          object.position.y - 0.5 < block.position.y + halfWallHeight &&
+          object.position.y > block.position.y  &&
           object.position.x + 0.5 > block.position.x - halfWallWidth &&
           object.position.x - 0.5 < block.position.x + halfWallWidth &&
           object.position.z + 0.5 > block.position.z - halfWallDepth &&
@@ -1510,7 +1528,17 @@ flatShading = true
         ) {
 
           object.position.y += 0.2;
+const distanceToPlayer = object.position.distanceTo(player.position);
 
+if (distanceToPlayer <= 5) {
+
+  const playerDirection = new THREE.Vector3().copy(player.position).sub(object.position);
+  playerDirection.y = object.position.y;
+  playerDirection.normalize();
+
+  const speed = 0.10;
+  object.position.add(playerDirection.multiplyScalar(speed));
+}
         } else if (!(object.position.y - 0.8 < block.position.y + halfWallHeight &&
             object.position.y > block.position.y &&
             object.position.x + 0.5 > block.position.x - halfWallWidth &&
@@ -1529,7 +1557,10 @@ flatShading = true
     if (ghs == 0) {
       ghs = 1
       hurt()
+      hurt()
+      setTimeout(hurt,500)
       setTimeout(function() {
+        hurt()
         ghs = 0
       }, 1000)
     }
@@ -1647,7 +1678,7 @@ flatShading = true
       }
 
       const distanceToPlayer = creeper.position.distanceTo(player.position);
-      if (creeper.position.y <= -100) {
+      if (creeper.position.y <= -30) {
         scene.remove(creeper);
 
         const index = creepers.indexOf(creeper);
@@ -1667,15 +1698,7 @@ flatShading = true
         OneHurt()
         return 0;
       } else {
-        if (distanceToPlayer <= 9) {
-          creeper.lookAt(player.position.x, creeper.position.y, player.position.z)
-
-          const playerDirection = new THREE.Vector3().copy(player.position).sub(creeper.position);
-          playerDirection.y = creeper.position.y;
-          playerDirection.normalize();
-
-          const speed = 0.1;
-          creeper.position.add(playerDirection.multiplyScalar(speed));
+        if (distanceToPlayer <= 5) {
 
           creeper.inAttackRange = true;
         } else {
@@ -1685,6 +1708,10 @@ flatShading = true
           creeper.position.y -= 0.2;
           handleCollisions(creeper, blocksInCurrentChunk);
         }
+
+      }
+      if (distanceToPlayer < 7) {
+        creeper.lookAt(player.position.x * -1, creeper.position.y, player.position.z * -1)
 
       }
     });
@@ -1795,8 +1822,9 @@ if (experiments.test1 == 0) {
   function fastrendering() {
     if(experiments.test1==1){
     renderer.render(scene, camera);
-    }
+
     requestAnimationFrame(fastrendering)
+    }
   }
   fastrendering()
 
@@ -2238,17 +2266,31 @@ recipesadd("Rare Loot!", "./chest_front.png");
   }
 
   let elapsedTime = 0;
-
+const loader = new GLTFLoader();
   function changeBackgroundAndLight() {
 
     for (var i = 0; i < 2; i++) {
-      const creeper3 = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshBasicMaterial({ color: 0x00dd00 }));
+
 recipesadd("Night Time ", "./chest_front.png");
-      creepers.push(creeper3);
+      scene.fog = new THREE.FogExp2(0x000000, 0.09);
 
-      creeper3.position.set(chunkX * rdist + Math.floor(Math.random() * rdist), 5, chunkZ * rdist + Math.floor(Math.random() * rdist));
 
-      scene.add(creeper3);
+
+
+
+
+loader.load(
+  './model.gltf', 
+  (gltf) => {
+    let creeper3 = gltf.scene; 
+
+    creeper3.scale.set(0.05, 0.055, 0.05);
+    creeper3.position.set(chunkX * rdist + Math.floor(Math.random() * rdist), 5, chunkZ * rdist + Math.floor(Math.random() * rdist));
+
+    scene.add(creeper3);
+    creepers.push(creeper3);
+  }
+);
 
     }
 
@@ -2282,7 +2324,7 @@ recipesadd("Night Time ", "./chest_front.png");
     update();
   }
 
-  setTimeout(changeBackgroundAndLight, 200000);
+  setTimeout(changeBackgroundAndLight, 400000);
 
   function changeBackgroundAndLight2() {
     const duration = 35000;
@@ -2300,7 +2342,9 @@ recipesadd("Night Time ", "./chest_front.png");
 
       gameElement.classList.add('day');
 recipesadd("Survive first Day", "./glowstone.png");
-      scene.remove(ambientLight)
+scene.fog = new THREE.FogExp2(0xffffff, 0.015);
+     scene.remove(ambientLight)
+
       ambientLight = new THREE.AmbientLight(0x555555)
       scene.add(ambientLight)
       scene.fog = new THREE.FogExp2(0xffffff, 0.09);
@@ -2318,10 +2362,10 @@ recipesadd("Survive first Day", "./glowstone.png");
     update();
   }
 
-  currentblock = 'stone'
-  blockClickEnabled = false
+var  currentblock = 'stone'
+var  blockClickEnabled = false
 
-  function switchi(data) {
+ switchi =  function(data) {
     if (data == "stone") {
 
       canv.removeEventListener('click', deleteBlockOnClick);
@@ -2376,11 +2420,11 @@ recipesadd("Survive first Day", "./glowstone.png");
     if (dotProduct > 0.99) {
 
       block.material.color.set(0xffffff);
-      block.material.emissive.set(0xffffff);
+     
     } else {
 
       block.material.color.set(0x00ff00);
-      block.material.emissive.set(0x000000);
+      
     }
   }
 
@@ -2438,6 +2482,7 @@ heartsContainer.removeChild(lastHeart);
   function test2() {
 
   }
+},5000);
 </script>
 
 <script>
