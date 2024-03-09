@@ -203,7 +203,11 @@ var experiments={
 
     var splashes = [
 "[ Object object ]",
-"INDEV 0.5.1_pre_2"
+"INDEV 0.5.2_pre_full",
+" shiny GlowStone Gives light",
+" You get Items in chest's ",
+" warning Night is dangerous ",
+" Build House In NIGHT !"
   ];
 
     for (var i = 0; i < 20; i++) {
@@ -228,10 +232,9 @@ var experiments={
   </div>
 
   <div class="menu-container">
-    <div style="position: absolute; top:0; left:0;"> indev 0.5 </div>
+    <div style="position: absolute; top:0; left:0;"> indev 0.5.2 pre 3 </div>
     <img src="./Workbench.png" style="width :390px" alt="">
-    <img src="./classic.png" style="width :100px" alt="">
-    <div id="splash" style="color :yellow; margin-top :-30px; margin-left :250px">
+ <div id="splash" style="color :yellow; margin-top :-30px; margin-left :250px">
       Now on mobile
     </div>
     <a class="menu-button" onclick="play()">Play</a>
@@ -285,12 +288,13 @@ var experiments={
       setTimeout(function() {
         if (data == "world1") {
           document.getElementById('game-container').style.display = "block"
-
+Start()
         }
       }, 13000)
     } else {
       if (data == "world1") {
         document.getElementById('game-container').style.display = "block"
+        Start()
       }
     }
 
@@ -326,10 +330,6 @@ var experiments={
 
     <div onclick="playworld('world1')">world1</div>
     <div class="bt" id="bt" style="width :200px" onclick="canel()">canel</div>
-    <div>--empty--</div>
-    <div>--empty--</div>
-    <div>--empty--</div>
-    <div>--empty--</div>
 
   </div>
 </div>
@@ -476,6 +476,8 @@ var experiments={
     width: 100%;
     height: 100vh;
     background: #87CEEB;
+    filter: saturate(96%) brightness(96%) contrast(90%) sepia(20%) grayscale(0%) invert(5%) hue-rotate(0deg);
+
   }
 
   #controls {
@@ -622,7 +624,71 @@ var experiments={
     </style>
     <div class="item-slot" onclick="switchi('pickaxe')"><img style="width:60%;height :60%;margin :20%" src="./pickaxe.png" alt=""></div>
   </div>
-  <script>
+
+    <script type="module">
+
+      import * as THREE from "./three.module.js"; 
+      import { GLTFLoader } from "./GLTFLoader(1).js"; 
+window.THREE = THREE;
+window.GLTFLoader = GLTFLoader;
+</script>
+
+    <script>
+
+setTimeout(function(){
+
+        
+        function Slider(config) {
+          this.name = config.name;
+            this.min = config.min;
+            this.max = config.max;
+            this.addby = config.addby;
+            this.variable = config.variable;
+        }
+
+        
+        function appendslider(slider, elementId) {
+            var element = document.querySelector(elementId);
+var sliderName = document.createElement("div");
+sliderName.innerText=slider.name
+
+            
+            var sliderElement = document.createElement("input");
+            sliderElement.type = "range";
+            sliderElement.min = slider.min;
+            sliderElement.max = slider.max;
+            sliderElement.step = slider.addby;
+
+            
+            sliderElement.addEventListener("input", function() {
+                
+                warn2(sliderElement.value)
+                window[slider.variable]  = parseFloat(sliderElement.value);
+
+                console.log("Nowa wartość zmiennej:", window[slider.variable]  );
+                defrdist=rdist
+            });
+
+            
+
+            element.appendChild(sliderName);
+            element.appendChild(sliderElement);
+        }
+
+var Slider1 = new Slider({'name':"chunk size" ,'min': 10, 'max': 30, 'addby': 2, 'variable': 'rdistD'});
+appendslider(Slider1, ".menu");
+
+var Slider2a = new Slider({ 'name': "number of terrain's ", 'min': 0, 'max': 5, 'addby': 1, 'variable': 'numberterains1D' });
+appendslider(Slider2a, ".menu");
+
+var Slider3a = new Slider({ 'name': "Heigh Terrain", 'min': 0, 'max': 5, 'addby': 1, 'variable': 'numofcirclesD' });
+appendslider(Slider3a, ".menu");
+
+var Slider4a = new Slider({ 'name': "Number of Trees", 'min': 0, 'max': 5, 'addby': 1, 'variable': 'numberOfTreesD' });
+appendslider(Slider4a, ".menu");
+
+},Infinity);
+
     var cantbuildthisblockGeometry = 0;
     var items = {
       "1": ["stone", 0, "./pobrane (14).png"],
@@ -771,23 +837,18 @@ var experiments={
 
 </div>
 
-
-
-    <script type="module">
-
-      import * as THREE from "./three.module.js"; 
-      import { GLTFLoader } from "./GLTFLoader(1).js"; 
-window.THREE = THREE;
-window.GLTFLoader = GLTFLoader;
-</script>
-
-
 <script>
-setTimeout(function(){
-  document.querySelector('body').innerHTML+=`<script src="./GLTFLoader.js">`
 
-},100);
+var numberOfTreesD = 3;
+var numofcirclesD = 1
+var numberterains1D = 2
+var rdistD = 13
+var defrdistD = 10
+
 var switchi;
+
+ function Start() {
+
 setTimeout( function() {
 
 var steponstone = 0
@@ -839,8 +900,8 @@ var steponstone = 0
 renderer.gammaFactor = 0.2;  
 
 
-renderer.toneMappingExposure = 0.4;
-renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMappingExposure = 0.3;
+
 
 
 
@@ -849,10 +910,10 @@ renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   
-var ambientLight=new THREE.AmbientLight(0x505050)
+var ambientLight=new THREE.AmbientLight(0x707070)
   scene.add(ambientLight);
 
-  const light = new THREE.DirectionalLight(0xffffff, 0.85);
+  const light = new THREE.DirectionalLight(0xffffff, 0.60);
   light.position.set(0, 2, 0);
 
   scene.add(light);
@@ -930,7 +991,7 @@ textureTop.minFilter = THREE.NearestFilter;
   var renderingdist = 6
 
   var chunks = [];
-  var rdist = 20
+  var rdist = rdistD
 
   function checkAndRemoveDuplicateBlocks(currentChunkX, currentChunkZ) {
     const radius = rdist;
@@ -1002,13 +1063,13 @@ textureTop.minFilter = THREE.NearestFilter;
     frameTime = 1000 / targetFPS;
     removeBlocksNearCamera()
 
-    renderingdist = 0
+
     const chunk = new THREE.Group();
 
     const layerHeight = -3;
     const voxelSize = 1;
     const gridSize = 20;
-    var numCircles = 3;
+    var numCircles = numofcirclesD;
     const fillRadius = 0;
 
     const voxelsize2 = 1;
@@ -1046,14 +1107,14 @@ textureTop.minFilter = THREE.NearestFilter;
 
         ];
 
-    let randomz = Math.floor(Math.random() * 20) + 5
-    let randomx = Math.floor(Math.random() * 20) + 5
+    let randomz = Math.floor(Math.random() * 20) 
+    let randomx = Math.floor(Math.random() * 20) 
     var trees = 0;
-    const numberOfTrees = 5;
+    const numberOfTrees = numberOfTreesD;
     if (worldFlat == 0) {
       for (let i = 0; i < numberOfTrees; i++) {
-        const randomx = Math.floor(Math.random() * 20) + 5;
-        const randomz = Math.floor(Math.random() * 20) + 5;
+        const randomx = Math.floor(Math.random() * rdist);
+        const randomz = Math.floor(Math.random() * rdist) ;
 
         voxelCoordinates.forEach(coords => {
           const [x2, y2, z2, type] = coords;
@@ -1074,9 +1135,9 @@ textureTop.minFilter = THREE.NearestFilter;
         });
       }
     }
-    let numOfterains1 = Math.floor(Math.random() * 5)
+    let numOfterains1 = Math.floor(Math.random() * numberterains1D)
     if (worldFlat == 0) {
-      for (let j2 = 0; j2 < 6; j2++) {
+      for (let j2 = 0; j2 < numOfterains1; j2++) {
         let randomXZ = Math.floor(Math.random() * rdist)
         let randomZX = Math.floor(Math.random() * rdist)
         numCircles = Math.floor(Math.random() * 3) + 4
@@ -1366,14 +1427,14 @@ textureTop.minFilter = THREE.NearestFilter;
   setTimeout(function() {
 
     player.position.y = 10
-    player.position.x = 12
-    player.position.z = 12
+    player.position.x = 5
+  player.position.z = 5
     playerVelocity.set(0, 0, 0);
     setTimeout(function() {
 
       player.position.y = 10
-      player.position.x = 12
-      player.position.z = 12
+      player.position.x = 5
+      player.position.z = 5
       playerVelocity.set(0, 0, 0);
 
     }, 1000)
@@ -2311,7 +2372,7 @@ loader.load(
       scene.remove(ambientLight)
       ambientLight = new THREE.AmbientLight(0x111111)
       scene.add(ambientLight)
-      scene.fog = new THREE.FogExp2(0x000000, 0.09);
+      scene.fog = new THREE.FogExp2(0x000000, 0.3);
 
       if (currentTime < duration) {
         requestAnimationFrame(update);
@@ -2345,7 +2406,7 @@ recipesadd("Survive first Day", "./glowstone.png");
 scene.fog = new THREE.FogExp2(0xffffff, 0.015);
      scene.remove(ambientLight)
 
-      ambientLight = new THREE.AmbientLight(0x555555)
+      ambientLight = new THREE.AmbientLight(0x707070)
       scene.add(ambientLight)
       scene.fog = new THREE.FogExp2(0xffffff, 0.09);
 
@@ -2483,6 +2544,7 @@ heartsContainer.removeChild(lastHeart);
 
   }
 },5000);
+}
 </script>
 
 <script>
@@ -2557,25 +2619,21 @@ heartsContainer.removeChild(lastHeart);
     }
 
     function recipesadd(recipe, img) {
-        
+
         if (isRecipeAdded(recipe)) {
             console.log("Receptura już dodana");
             return;
         }else{
 
-        
         unlockedRecipes.push(recipe);
 
-        
         const recipeBar = document.getElementById("recipeBar");
         recipeBar.innerHTML = `<img src="${img}" alt="${recipe}">${recipe}            `;
 
-        
         setTimeout(() => {
             recipeBar.style.right = "-5px";
         }, 200);
 
-        
         setTimeout(() => {
             recipeBar.style.right = "-400px";
         }, 5000);
