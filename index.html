@@ -692,101 +692,6 @@ Start()
         <div class="crafting-slot" onclick="placeItemInCraftingTable(9)"></div>
     </div>
 
-    <script>
-        let craftingTableVisible = false;
-        let currentCraftingItem =  0
-
-        function toggleCraftingTable() {
-            const craftingTable = document.getElementById('crafting-table');
-            craftingTableVisible = !craftingTableVisible;
-            craftingTable.style.display = craftingTableVisible ? 'block' : 'none';
-        }
-
-        // Dodaj craftingRecipes
-var craftingRecipes = {
-    "wooden_pickaxe": [["wood", "wood", "wood",null, "wood", null, null, "wood", null]],
-    "stone_pickaxe": [["stone", "stone", "stone",null, "wood", null, null, "wood", null]],
-};
-
-function craftItem() {
-    // Iterate through craftingRecipes
-    for (const recipe in craftingRecipes) {
-        if (JSON.stringify(itemsincrafting) === JSON.stringify(craftingRecipes[recipe][0])) {
-          currentCraftingItem=recipe
-            // Matched a recipe, create the item
-            if (currentCraftingItem === "wooden_pickaxe" && recipe === "wooden_pickaxe") {
-                for (var i = 0; i < 100; i++) {
-                    addblock(currentCraftingItem);
-                }
-            }else if (currentCraftingItem === "stone_pickaxe" && recipe === "stone_pickaxe") {
-              for (var i = 0; i < 250; i++) {
-                addblock(currentCraftingItem);
-              }
-            }
-            clearCraftingTable();
-            break; // Stop checking once a match is found
-        }
-    }
-}
-
-
-
-
-function clearCraftingTable() {
-    for (let i = 0; i < 9; i++) {
-        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
-        craftingSlot.innerHTML = '';
-    }
-/*
-    // Usuń użyte przedmioty
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            const requiredItem = craftingRecipes[currentCraftingItem][i][j];
-            const requiredIndex = findItemIndex(requiredItem);
-            items[requiredIndex][1] -= 1;
-        }
-    }
-*/updateCraftingItems();
-    updateInventory();
-}
-var itemsincrafting=[null,null,null,null,null,null,null,null,null]
-// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
-// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
-// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
-function placeItemInCraftingTable(slotNumber) {
-    const craftingSlot = document.getElementsByClassName('crafting-slot')[slotNumber - 1];
-
-    if (craftingSlot.innerHTML) {
-      const itemName = items[currentitem][0];
-        // Jeśli coś jest już umieszczone w crafting table, usuń to przy podwójnym kliknięciu
-        addblock(craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null)
-        craftingSlot.innerHTML = '';
-      //  currentCraftingItem = null;
-        updateCraftingItems();
-        
-    } else {
-
-   //     currentCraftingItem = items[currentitem][0];
-        const itemName = items[currentitem][0];
-        craftingSlot.innerHTML = `<img style="width: 100%; height: 100%;" src="${items[currentitem][2]}" alt="${itemName}">`;
-        subblock(itemName)
-        updateCraftingItems();
-    }
-}
-
-function updateCraftingItems() {
-    for (let i = 0; i < 9; i++) {
-        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
-        itemsincrafting[i] = craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null;
-    }
-    
-}
-
-// Dodaj przycisk do kraftowania
-document.getElementById('craft-button').addEventListener('click', craftItem);
-
-    </script>
-
 
     <script type="module">
 
@@ -3021,6 +2926,101 @@ heartsContainer.removeChild(lastHeart);
     }
 
 </script>
+    <script>
+        let craftingTableVisible = false;
+        let currentCraftingItem =  0
+
+        function toggleCraftingTable() {
+            const craftingTable = document.getElementById('crafting-table');
+            craftingTableVisible = !craftingTableVisible;
+            craftingTable.style.display = craftingTableVisible ? 'block' : 'none';
+        }
+
+        // Dodaj craftingRecipes
+var craftingRecipes = {
+    "wooden_pickaxe": [["wood", "wood", "wood",null, "wood", null, null, "wood", null]],
+    "stone_pickaxe": [["stone", "stone", "stone",null, "wood", null, null, "wood", null]],
+};
+
+function craftItem() {
+    // Iterate through craftingRecipes
+    for (const recipe in craftingRecipes) {
+        if (JSON.stringify(itemsincrafting) === JSON.stringify(craftingRecipes[recipe][0])) {
+          currentCraftingItem=recipe
+            // Matched a recipe, create the item
+            if (currentCraftingItem === "wooden_pickaxe" && recipe === "wooden_pickaxe") {
+                for (var i = 0; i < 100; i++) {
+                    addblock(currentCraftingItem);
+                }
+            }else if (currentCraftingItem === "stone_pickaxe" && recipe === "stone_pickaxe") {
+              for (var i = 0; i < 250; i++) {
+                addblock(currentCraftingItem);
+              }
+            }
+            clearCraftingTable();
+            break; // Stop checking once a match is found
+        }
+    }
+}
+
+
+
+
+function clearCraftingTable() {
+    for (let i = 0; i < 9; i++) {
+        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
+        craftingSlot.innerHTML = '';
+    }
+/*
+    // Usuń użyte przedmioty
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            const requiredItem = craftingRecipes[currentCraftingItem][i][j];
+            const requiredIndex = findItemIndex(requiredItem);
+            items[requiredIndex][1] -= 1;
+        }
+    }
+*/updateCraftingItems();
+    updateInventory();
+}
+var itemsincrafting=[null,null,null,null,null,null,null,null,null]
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+function placeItemInCraftingTable(slotNumber) {
+    const craftingSlot = document.getElementsByClassName('crafting-slot')[slotNumber - 1];
+
+    if (craftingSlot.innerHTML) {
+      const itemName = items[currentitem][0];
+        // Jeśli coś jest już umieszczone w crafting table, usuń to przy podwójnym kliknięciu
+        addblock(craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null)
+        craftingSlot.innerHTML = '';
+      //  currentCraftingItem = null;
+        updateCraftingItems();
+        
+    } else {
+
+   //     currentCraftingItem = items[currentitem][0];
+        const itemName = items[currentitem][0];
+        craftingSlot.innerHTML = `<img style="width: 100%; height: 100%;" src="./${items[currentitem][2]}" alt="${itemName}">`;
+        subblock(itemName)
+        updateCraftingItems();
+    }
+}
+
+function updateCraftingItems() {
+    for (let i = 0; i < 9; i++) {
+        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
+        itemsincrafting[i] = craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null;
+    }
+    
+}
+
+// Dodaj przycisk do kraftowania
+document.getElementById('craft-button').addEventListener('click', craftItem);
+
+    </script>
+
 
 </div>
 
