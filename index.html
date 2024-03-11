@@ -2460,7 +2460,7 @@ function deleteBlockOnClick(event) {
             }
           }
           if(items[index][1]>-1){
-durability++;durability++;durability++;
+durability+=1.5;
 //alert(items[index][1])
 }else{
   currentblock=''
@@ -2476,7 +2476,7 @@ durability++;durability++;durability++;
             }
           }
           if(items[index][1]>-1){
-durability++;durability++;durability++;durability++;durability++;
+durability++;durability++;durability+=1.5;
 //alert(items[index][1])
 }else{
   currentblock=''
@@ -2577,7 +2577,7 @@ document.querySelector('html').addEventListener("touchend", function(event) {
 function checkiy(){
   
    // warn2("ok")
-  if(presstodel==1&&Movingcamera==0){ deleteBlockOnClick(event) ; warn2(Movingcamera, presstodel);}
+  if(presstodel==1&&Movingcamera==0){ deleteBlockOnClick(event) ;}
     
   
   setTimeout(checkiy,200)
