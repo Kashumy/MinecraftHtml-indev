@@ -160,7 +160,8 @@ var experiments={
       transform: translate(-50%, -50%);
       left: 50%;
       background-image: url('./cn.png');
-
+image-rendering: pixelated;
+zoom:0.9
     }
 
     .opct {
@@ -203,11 +204,20 @@ var experiments={
 
     var splashes = [
 "[ Object object ]",
-"INDEV 0.5.2_pre_full",
+"INDEV 0.5.2_pre 3",
 " shiny GlowStone Gives light",
 " You get Items in chest's ",
 " warning Night is dangerous ",
-" Build House In NIGHT !"
+" Build House In NIGHT !",
+" Pro Tip: if you craft USE planks instead of sticks",
+" Pro Tip: if you craft USE planks instead of sticks",
+" Pro Tip: if you craft USE planks instead of sticks",
+" Pro Tip: if you craft USE planks instead of sticks",
+" Pro Tip: There is no Weapon in this game ONLY pickaxes" ,
+" Pro Tip: craft wooden pickaxe to make stone pickaxe",
+" craft the Pickaxe ",
+" Creeper waiting in night",
+" Do something "
   ];
 
     for (var i = 0; i < 20; i++) {
@@ -232,7 +242,7 @@ var experiments={
   </div>
 
   <div class="menu-container">
-    <div style="position: absolute; top:0; left:0;"> indev 0.5.2 pre 3 </div>
+    <div style="position: absolute; top:0; left:0;"> indev 0.5.2.1 pre 2.4 </div>
     <img src="./Workbench.png" style="width :390px" alt="">
  <div id="splash" style="color :yellow; margin-top :-30px; margin-left :250px">
       Now on mobile
@@ -261,6 +271,7 @@ var experiments={
       document.getElementById('ss').classList.add('opct')
       setTimeout(function() {
         document.getElementById('ss').style.display = "none"
+        Start()
       }, 2000)
 
     }, 100)
@@ -330,6 +341,7 @@ Start()
 
     <div onclick="playworld('world1')">world1</div>
     <div class="bt" id="bt" style="width :200px" onclick="canel()">canel</div>
+
 
   </div>
 </div>
@@ -623,7 +635,158 @@ Start()
       }
     </style>
     <div class="item-slot" onclick="switchi('pickaxe')"><img style="width:60%;height :60%;margin :20%" src="./pickaxe.png" alt=""></div>
+    
+
+    <style>
+        /* Dodaj odpowiednie style dla crafting table */
+        #crafting-table {
+            display: none;
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            z-index: 99;
+            position: fixed;
+            background: #52525278;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .crafting-slot {
+            width: 66.6px;
+            height: 66.6px;
+            float: left;
+            border: 1px solid gray;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 100px;
+        }
+    </style>
+
+    <!-- Dodaj nowy slot Inventory, który będzie toggle'ować crafting table -->
+    <div class="item-slot" onclick="toggleCraftingTable()">
+        <img style="width: 60%; height: 60%; margin: 20%" src="./btn.png" alt="">
+    </div>
+<div class="item-slot"  id="craft-button" onclick="craftItem()">
+    <img style="width: 60%; height: 60%; margin: 20%" src="./btn.png" alt="">
+</div>
+
+
+    <script>
+        
+    </script>
+
+
+
   </div>
+
+    <div id="crafting-table">
+        <!-- Dodaj 9 slotów do crafting table -->
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(1)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(2)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(3)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(4)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(5)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(6)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(7)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(8)"></div>
+        <div class="crafting-slot" onclick="placeItemInCraftingTable(9)"></div>
+    </div>
+
+    <script>
+        let craftingTableVisible = false;
+        let currentCraftingItem =  0
+
+        function toggleCraftingTable() {
+            const craftingTable = document.getElementById('crafting-table');
+            craftingTableVisible = !craftingTableVisible;
+            craftingTable.style.display = craftingTableVisible ? 'block' : 'none';
+        }
+
+        // Dodaj craftingRecipes
+var craftingRecipes = {
+    "wooden_pickaxe": [["wood", "wood", "wood",null, "wood", null, null, "wood", null]],
+    "stone_pickaxe": [["stone", "stone", "stone",null, "wood", null, null, "wood", null]],
+};
+
+function craftItem() {
+    // Iterate through craftingRecipes
+    for (const recipe in craftingRecipes) {
+        if (JSON.stringify(itemsincrafting) === JSON.stringify(craftingRecipes[recipe][0])) {
+          currentCraftingItem=recipe
+            // Matched a recipe, create the item
+            if (currentCraftingItem === "wooden_pickaxe" && recipe === "wooden_pickaxe") {
+                for (var i = 0; i < 100; i++) {
+                    addblock(currentCraftingItem);
+                }
+            }else if (currentCraftingItem === "stone_pickaxe" && recipe === "stone_pickaxe") {
+              for (var i = 0; i < 250; i++) {
+                addblock(currentCraftingItem);
+              }
+            }
+            clearCraftingTable();
+            break; // Stop checking once a match is found
+        }
+    }
+}
+
+
+
+
+function clearCraftingTable() {
+    for (let i = 0; i < 9; i++) {
+        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
+        craftingSlot.innerHTML = '';
+    }
+/*
+    // Usuń użyte przedmioty
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            const requiredItem = craftingRecipes[currentCraftingItem][i][j];
+            const requiredIndex = findItemIndex(requiredItem);
+            items[requiredIndex][1] -= 1;
+        }
+    }
+*/updateCraftingItems();
+    updateInventory();
+}
+var itemsincrafting=[null,null,null,null,null,null,null,null,null]
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+// Dodaj obsługę kraftowania przy kliknięciu w Crafting Table
+function placeItemInCraftingTable(slotNumber) {
+    const craftingSlot = document.getElementsByClassName('crafting-slot')[slotNumber - 1];
+
+    if (craftingSlot.innerHTML) {
+      const itemName = items[currentitem][0];
+        // Jeśli coś jest już umieszczone w crafting table, usuń to przy podwójnym kliknięciu
+        addblock(craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null)
+        craftingSlot.innerHTML = '';
+      //  currentCraftingItem = null;
+        updateCraftingItems();
+        
+    } else {
+
+   //     currentCraftingItem = items[currentitem][0];
+        const itemName = items[currentitem][0];
+        craftingSlot.innerHTML = `<img style="width: 100%; height: 100%;" src="${items[currentitem][2]}" alt="${itemName}">`;
+        subblock(itemName)
+        updateCraftingItems();
+    }
+}
+
+function updateCraftingItems() {
+    for (let i = 0; i < 9; i++) {
+        const craftingSlot = document.getElementsByClassName('crafting-slot')[i];
+        itemsincrafting[i] = craftingSlot.innerHTML.includes('alt') ? craftingSlot.querySelector('img').alt : null;
+    }
+    
+}
+
+// Dodaj przycisk do kraftowania
+document.getElementById('craft-button').addEventListener('click', craftItem);
+
+    </script>
+
 
     <script type="module">
 
@@ -633,11 +796,12 @@ window.THREE = THREE;
 window.GLTFLoader = GLTFLoader;
 </script>
 
-    <script>
 
+    <script>
+var currentitem=0
 setTimeout(function(){
 
-        
+        // Tworzenie obiektu slidera
         function Slider(config) {
           this.name = config.name;
             this.min = config.min;
@@ -646,35 +810,36 @@ setTimeout(function(){
             this.variable = config.variable;
         }
 
-        
+        // Funkcja do dodawania slidera do elementu na stronie
         function appendslider(slider, elementId) {
             var element = document.querySelector(elementId);
 var sliderName = document.createElement("div");
 sliderName.innerText=slider.name
 
-            
+            // Utwórz element suwaka
             var sliderElement = document.createElement("input");
             sliderElement.type = "range";
             sliderElement.min = slider.min;
             sliderElement.max = slider.max;
             sliderElement.step = slider.addby;
 
-            
+            // Dodaj obsługę zdarzenia zmiany wartości suwaka
             sliderElement.addEventListener("input", function() {
-                
+                // Ustaw wartość zmiennej na wartość slidera
                 warn2(sliderElement.value)
                 window[slider.variable]  = parseFloat(sliderElement.value);
-
+                
                 console.log("Nowa wartość zmiennej:", window[slider.variable]  );
                 defrdist=rdist
             });
 
+            // Dodaj suwak do elementu na stronie
             
-
             element.appendChild(sliderName);
             element.appendChild(sliderElement);
         }
 
+        
 var Slider1 = new Slider({'name':"chunk size" ,'min': 10, 'max': 30, 'addby': 2, 'variable': 'rdistD'});
 appendslider(Slider1, ".menu");
 
@@ -699,9 +864,21 @@ appendslider(Slider4a, ".menu");
       "6": ["brick", 0, "./pobrane (12).png"],
       "7": ["glass", 0, "./glass.png"],
       "8": ["glowstone", 0, "./glowstone.png"],
-      "9": ["polishedstone", 0, "./pobrane (11).png"]
+      "9": ["polishedstone", 0, "./pobrane (11).png"],
+      "10":["wooden_pickaxe", 0 ,"./pickaxe.png",1],
+      "11":["stone_pickaxe", 0 ,"./pickaxe.png",1]
     };
     var nocollisions = ["water"]
+
+
+function findItemIndex(itemName) {
+    for (const index in items) {
+        if (items[index][0] === itemName) {
+            return index;
+        }
+    }
+    return null; // Zwróć null, jeśli przedmiot nie zostanie znaleziony
+}
 
     function createItemSlots() {
       const itemSlotsContainer = document.getElementById('items');
@@ -723,6 +900,7 @@ appendslider(Slider4a, ".menu");
          `;
         itemSlot.addEventListener('click', function() {
           switchi(itemName);
+          currentitem = findItemIndex(itemName);
         });
 
         itemSlotsContainer.appendChild(itemSlot);
@@ -786,7 +964,19 @@ appendslider(Slider4a, ".menu");
       items[index][1] += 1
       updateInventory()
     }
+function subblock(typ3) {
+  var searchedItem = typ3;
+  var index = -1;
 
+  for (var key in items) {
+    if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+      index = key;
+      break;
+    }
+  }
+  items[index][1] -= 1
+  updateInventory()
+}
     function useblock(typ3) {
 
       items[typ3][1] -= 1
@@ -837,6 +1027,11 @@ appendslider(Slider4a, ".menu");
 
 </div>
 
+
+
+
+
+
 <script>
 
 var numberOfTreesD = 3;
@@ -845,12 +1040,13 @@ var numberterains1D = 2
 var rdistD = 13
 var defrdistD = 10
 
+
 var switchi;
 
  function Start() {
 
 setTimeout( function() {
-
+  
 var steponstone = 0
   var fpsCounter = document.getElementById('fps-counter');
 
@@ -882,7 +1078,7 @@ var steponstone = 0
   let frameTime = 1000 / targetFPS;
 
   const scene = new THREE.Scene();
-
+  
   var canv = document.getElementById("game");
   var width = canv.clientWidth;
   var height = canv.clientHeight;
@@ -894,33 +1090,36 @@ var steponstone = 0
     1000
   );
   var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("game"), alpha: true, antialias: true });
-
-
-
-renderer.gammaFactor = 0.2;  
-
+  
+//renderer.setPixelRatio(window.devicePixelRatio);
+//renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.gammaFactor = 0.2;  // Eksperymentuj z różnymi wartościami
+//renderer.outputEncoding = THREE.sRGBEncoding;
 
 renderer.toneMappingExposure = 0.3;
-
-
-
+//renderer.outputEncoding = THREE.sRGBEncoding;
+//renderer.physicallyCorrectLights = true;
+//renderer.precision = 'mediump'; // Dostosuj precision, może pomóc w komunikatach o highp
 
   var lod = new THREE.LOD();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  
+  //renderer.shadowMap.type = THREE.BasicShadowMap;
 var ambientLight=new THREE.AmbientLight(0x707070)
   scene.add(ambientLight);
-
+  
   const light = new THREE.DirectionalLight(0xffffff, 0.60);
   light.position.set(0, 2, 0);
 
   scene.add(light);
-
- 
+  
+  
+ // THREE.ColorManagement.enabled = false;
 
   scene.fog = new THREE.FogExp2(0xffffff, 0.009);
+
+  
 
   const playerGeometry = new THREE.BoxGeometry(0.1, 1, 0.1);
   const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x00000000, transparent: true, opacity: 0.0 });
@@ -935,6 +1134,7 @@ var ambientLight=new THREE.AmbientLight(0x707070)
   var textureTop = new THREE.TextureLoader().load('./grass.png');
 textureTop.magFilter = THREE.NearestFilter;
 textureTop.minFilter = THREE.NearestFilter;
+
 
   var textureBottom = new THREE.TextureLoader().load('./pobrane (8).png');
   textureBottom.magFilter = THREE.NearestFilter;
@@ -973,7 +1173,7 @@ textureTop.minFilter = THREE.NearestFilter;
   var material2 = new THREE.MeshStandardMaterial({ map: textureSides2,  });
   var materialTop = new THREE.MeshStandardMaterial({ map: textureTop, transparent: true, opacity: 1 });
   var materialBottom = new THREE.MeshStandardMaterial({ map: textureBottom,  });
-  var materialSides = new THREE.MeshStandardMaterial({ map: textureSides,});
+  var materialSides = new THREE.MeshStandardMaterial({ map: textureSides,/* shading: THREE.FlatShading */});
 
   const blockMaterial = new THREE.MeshLambertMaterial({ map: texture,  });
 
@@ -1063,7 +1263,7 @@ textureTop.minFilter = THREE.NearestFilter;
     frameTime = 1000 / targetFPS;
     removeBlocksNearCamera()
 
-
+//    renderingdist = 0
     const chunk = new THREE.Group();
 
     const layerHeight = -3;
@@ -1176,7 +1376,7 @@ textureTop.minFilter = THREE.NearestFilter;
           let block = new THREE.Mesh(blockGeometry, materials);
           block.name = 'grass'
           block.position.set(x2 + x * rdist, layerHeight, z2 + z * rdist);
-
+//scene.add(block)
           blocks.push(block);
 
         } else {
@@ -1279,6 +1479,7 @@ textureTop.minFilter = THREE.NearestFilter;
     let layerHeight = startHeight;
     let x2 = 0;
     let z2 = 0;
+    
 
     function generateLayer() {
 
@@ -1350,7 +1551,15 @@ textureTop.minFilter = THREE.NearestFilter;
   scheduleRandomExecution();
 
   const occlusionRadius = 2;
+/*  const cameraFrustum = new THREE.Frustum();
+  const cameraViewProjectionMatrix = new THREE.Matrix4();
 
+  camera.updateMatrixWorld();
+  const matrixInv = new THREE.Matrix4().copy(camera.matrixWorld).invert();
+  cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, matrixInv);
+
+  cameraFrustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
+*/
   function updaterenderdistance(playerChunkX, playerChunkZ) {
     const occlusionRadius = renderingdist;
     const additionalDistance = 3;
@@ -1389,15 +1598,20 @@ textureTop.minFilter = THREE.NearestFilter;
     const playerChunkX = Math.floor(player.position.x / rdist);
     const playerChunkZ = Math.floor(player.position.z / rdist);
 
+
     if (!chunks.some(chunk => chunk.x === playerChunkX && chunk.z === playerChunkZ)) {
 
       for (let i = chunks.length - 1; i >= 0; i--) {
-      
+      /*  const chunk = chunks[i];
+        if (Math.abs(chunk.x - playerChunkX) > 1 || Math.abs(chunk.z - playerChunkZ) > 1) {
+
+
+        }*/
       }
 
       generateChunk(playerChunkX, playerChunkZ);
       player.position.y = 4
-
+      
     }
   }
 
@@ -1405,7 +1619,7 @@ textureTop.minFilter = THREE.NearestFilter;
   const skyMaterial = new THREE.MeshStandardMaterial({ color: 0x87EEEB, side: THREE.BackSide });
   const sky = new THREE.Mesh(skyGeometry, skyMaterial);
 
-
+//scene.add(sky)
   const clouds = [];
   if (cloudsis == 1) {
     for (let i = 0; i < 200; i++) {
@@ -1524,6 +1738,10 @@ textureTop.minFilter = THREE.NearestFilter;
 
   const creepers = [];
 
+
+  
+
+
   const handleCollisions = (object, blocks) => {
     const objectBox = new THREE.Box3().setFromObject(object);
 
@@ -1592,7 +1810,7 @@ textureTop.minFilter = THREE.NearestFilter;
 const distanceToPlayer = object.position.distanceTo(player.position);
 
 if (distanceToPlayer <= 5) {
-
+  
   const playerDirection = new THREE.Vector3().copy(player.position).sub(object.position);
   playerDirection.y = object.position.y;
   playerDirection.normalize();
@@ -1608,6 +1826,11 @@ if (distanceToPlayer <= 5) {
             object.position.z - 0.5 < block.position.z + halfWallDepth)) {
 
         }
+
+
+
+
+
 
       }
     }
@@ -1760,7 +1983,9 @@ if (distanceToPlayer <= 5) {
         return 0;
       } else {
         if (distanceToPlayer <= 5) {
+          
 
+          
           creeper.inAttackRange = true;
         } else {
 
@@ -1773,7 +1998,8 @@ if (distanceToPlayer <= 5) {
       }
       if (distanceToPlayer < 7) {
         creeper.lookAt(player.position.x * -1, creeper.position.y, player.position.z * -1)
-
+      
+      
       }
     });
 
@@ -1883,7 +2109,7 @@ if (experiments.test1 == 0) {
   function fastrendering() {
     if(experiments.test1==1){
     renderer.render(scene, camera);
-
+    
     requestAnimationFrame(fastrendering)
     }
   }
@@ -1898,8 +2124,11 @@ if (experiments.test1 == 0) {
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
   }
-
+var Movingcamera=0
   function onTouchMove(event) {
+    if(presstodel!==1){
+    Movingcamera=1
+    }
     const touchX = event.touches[0].clientX;
     const touchY = event.touches[0].clientY;
 
@@ -1912,10 +2141,12 @@ if (experiments.test1 == 0) {
     touchStartX = touchX;
     touchStartY = touchY;
   }
-
+function endedTouching(event){
+  Movingcamera=0
+}
   document.addEventListener('touchstart', onTouchStart);
   document.addEventListener('touchmove', onTouchMove);
-
+document.addEventListener('touchend', endedTouching);
   const previewGeometry = new THREE.BoxGeometry(1, 1, 1);
 
   const blockMaterial2 = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });
@@ -2015,6 +2246,7 @@ if (experiments.test1 == 0) {
 
   function buildBlockOnClick(event) {
     updateInventory()
+    
 
     const mouse = new THREE.Vector2();
     mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
@@ -2037,6 +2269,7 @@ if (experiments.test1 == 0) {
 
       const intersectionPoint = intersects[0].point;
       const relativePosition = new THREE.Vector3().copy(intersectionPoint).sub(blockPosition);
+
 
       if (currentblock == 'stone') {
         currentitemslot = 'stone';
@@ -2127,7 +2360,18 @@ if (experiments.test1 == 0) {
       else {
 
         currentitemslot = currentblock;
+//alert(currentitemslot)
+var searchedItem = currentitemslot;
+var index = -1;
+for (var key in items) {
+  if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+    index = key;
+    break;
+  }
+}
 
+if (index !== -1) {
+  if (items[index][4]!==1) {
         if (cantbuildthisblockGeometry === 0) {
           var newBlock = new THREE.Mesh(blockGeometry, materials);
           newBlock.name = currentitemslot;
@@ -2161,7 +2405,7 @@ if (experiments.test1 == 0) {
         }
 
       }
-
+}}
       let newPosition = blockPosition.clone();
 
       if (relativePosition.y > 0) {
@@ -2189,7 +2433,9 @@ if (experiments.test1 == 0) {
 
       addPointLightsToGlowstones()
     }
-
+setTimeout(function (){
+  Movingcamera=0
+},600)
   }
 
   let glowstoneLightsMap = new Map();
@@ -2204,9 +2450,11 @@ if (experiments.test1 == 0) {
       return blockChunkX === playerChunkX && blockChunkZ === playerChunkZ;
     });
 
+
     glowstoneLightsMap.forEach((light, block) => {
       if (!blocksInCurrentChunk.includes(block) || !isGlowstonePresent(block.position)) {
         scene.remove(light);
+
 
         if (light) {
           if (light.material) light.material.dispose();
@@ -2215,12 +2463,14 @@ if (experiments.test1 == 0) {
 
         glowstoneLightsMap.delete(block);
 
+
         const torchIndex = torches.indexOf(block);
         if (torchIndex !== -1) {
           torches.splice(torchIndex, 1);
         }
       }
     });
+
 
     blocksInCurrentChunk.forEach(block => {
       if (block.name === 'glowstone' && isGlowstonePresent(block.position)) {
@@ -2242,108 +2492,212 @@ if (experiments.test1 == 0) {
     });
   }
 
+
   function isGlowstonePresent(position) {
+
+
+
+
+
+
+
 
     return blocks.some(glowstone => glowstone.position.equals(position) && glowstone.name === 'glowstone');
   }
+
 
   let torches = [];
 
   window.setInterval(addPointLightsToGlowstones, 9500);
 
-  function deleteBlockOnClick(event) {
-    const mouse = new THREE.Vector2();
-    mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
-    mouse.y = -((window.innerHeight / 2) / window.innerHeight) * 2 + 1;
 
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, camera);
+  const blockDurability = {
+  wood: 10,
+  leaves:1,
+  water:1,
+  stone: 15,
+  brick: 10,
+  glass: 1,
+  glowstone: 1,
+  polishedstone: 20,
+  grass: 3,
+  woodblock: 10, // Adjust durability for woodblock
+  chest: 1 // Adjust durability for chest
+};
+let durability=0
+function deleteBlockOnClick(event) {
+  const mouse = new THREE.Vector2();
+  mouse.x = ((window.innerWidth / 2) / window.innerWidth) * 2 - 1;
+  mouse.y = -((window.innerHeight / 2) / window.innerHeight) * 2 + 1;
 
-    const intersects = raycaster.intersectObjects(blocks);
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
 
-    if (intersects.length > 0) {
+  const intersects = raycaster.intersectObjects(blocks);
 
-      const clickedBlock = intersects[0].object;
+  if (intersects.length > 0) {
+    const clickedBlock = intersects[0].object;
+    const blockName = clickedBlock.name;
 
-      if (clickedBlock.name === "stone") {
-        addblock("stone");
-        recipesadd("Stone age!", "./cobble.png");
-      } else if (clickedBlock.name === "chest") {
-        if (Math.floor(Math.random() * 3) == 2) {
-          for (var i = 0; i < 30; i++) {
-            addblock("brick");
+    if (blockDurability[blockName] !== undefined) {
+      
 
+
+
+
+      if (currentblock == 'wooden_pickaxe') {
+          var searchedItem = "wooden_pickaxe";
+          var index = -1;
+          for (var key in items) {
+            if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+              index = key;
+              break;
+            }
           }
-        } else if (Math.floor(Math.random() * 2) == 1) {
-          for (var i = 0; i < 30; i++) {
-            addblock("glass");
-
+          if(items[index][1]>-1){
+durability++;durability++;durability++;
+//alert(items[index][1])
+}else{
+  currentblock=''
+  //currentitem=''
+  warn2("Pickaxe braked")
+}useblock(index)} else if (currentblock == 'stone_pickaxe') {
+          var searchedItem = "stone_pickaxe";
+          var index = -1;
+          for (var key in items) {
+            if (items.hasOwnProperty(key) && items[key][0] === searchedItem) {
+              index = key;
+              break;
+            }
           }
-        } else if (Math.floor(Math.random() * 3) == 1) {
-          for (var i = 0; i < 30; i++) {
+          if(items[index][1]>-1){
+durability++;durability++;durability++;durability++;durability++;
+//alert(items[index][1])
+}else{
+  currentblock=''
+  //currentitem=''
+  warn2("Pickaxe braked")
+}useblock(index)}
+
+
+
+
+
+      durability++;
+var audio = new Audio('./stone4.ogg');
+audio.play();
+      if (blockDurability[blockName] <= durability) {
+        durability=0
+        if (blockName === "stone") {
+          if (currentblock == 'wooden_pickaxe' || currentblock == 'stone_pickaxe') {
+          addblock("stone");
+          recipesadd("Stone age!", "./cobble.png");
+          }
+        } else if (blockName === "chest") {
+          if (Math.floor(Math.random() * 3) == 2) {
+            for (var i = 0; i < 30; i++) {
+              addblock("brick");
+            }
+          } else if (Math.floor(Math.random() * 2) == 1) {
+            for (var i = 0; i < 30; i++) {
+              addblock("glass");
+            }
+          } else if (Math.floor(Math.random() * 3) == 1) {
+            for (var i = 0; i < 30; i++) {
+              addblock("wood");
+            }
+          } else if (Math.floor(Math.random() * 3) == 1) {
+            for (var i = 0; i < 15; i++) {
+              addblock("polishedstone");
+            }
+          } else {
+            for (var i = 0; i < 2; i++) {
+              addblock("glowstone");
+              recipesadd("Rare Loot!", "./chest_front.png");
+            }
+          }
+        } else if (blockName === "woodblock") {
+          // Adjust code for woodblock
+          for (var i = 0; i < 4; i++) {
             addblock("wood");
           }
-        } else if (Math.floor(Math.random() * 3) == 1) {
-          for (var i = 0; i < 15; i++) {
-            addblock("polishedstone");
-
-          }
+          recipesadd("Get Wood!", "./pobrane (16).png");
+        } else if (blockName === "grass") {
+          addblock("grass");
         } else {
-          for (var i = 0; i < 2; i++) {
-            addblock("glowstone");
-recipesadd("Rare Loot!", "./chest_front.png");
-          }
+          addblock(blockName);
         }
-      } else if (clickedBlock.name === "woodblock") {
-        addblock("wood");
-        addblock("wood");
-        addblock("wood");
-        addblock("wood");
-        recipesadd("Get Wood!", "./pobrane (16).png");
-      } else if (clickedBlock.name === "grass") {
-        addblock("grass");
-      } else if (clickedBlock.name === "stone") {
-        addblock("wood");
-      } else {
-        addblock(clickedBlock.name)
-      }
-      if(clickedBlock.name === "brick"){
-        recipesadd("Brick Break!", "./pobrane (12).png");
-      }
-      if (clickedBlock.name === "polishedstone") {
-        recipesadd("Polished !", "./pobrane (11).png");
-      }
-      var audio = new Audio('./stone1.ogg');
 
-      audio.play();
+        var audio = new Audio('./stone1.ogg');
+        audio.play();
 
-      const index = blocks.indexOf(clickedBlock);
-      if (index !== -1) {
-        blocks.splice(index, 1);
-        scene.remove(clickedBlock);
+        const index = blocks.indexOf(clickedBlock);
+        if (index !== -1) {
+          blocks.splice(index, 1);
+          scene.remove(clickedBlock);
+        }
+
+        addPointLightsToGlowstones();
       }
-      addPointLightsToGlowstones()
     }
   }
+}
+var presstodel=0
+var clicking=0
+document.addEventListener("click", function (event){
+  event.preventDefault()
+clicking=1
+}
+)
 
+var touchTimer;
+
+document.querySelector('html').addEventListener("touchstart", function(event) {
+  event.preventDefault()
+    touchTimer = setTimeout(function() {
+        // Your code to execute after holding for 1 second
+        if (Movingcamera == 0) {
+//warn2("Holding for 1 second");
+            presstodel = 1;
+        }
+    }, 1000); // Set the timeout to 1000 milliseconds (1 second)
+});
+
+document.querySelector('html').addEventListener("touchend", function(event) {
+    clearTimeout(touchTimer); // Clear the timer if touch is
+    presstodel=0
+    Movingcamera=0
+})
+
+function checkiy(){
+  
+   // warn2("ok")
+  if(presstodel==1&&Movingcamera==0){ deleteBlockOnClick(event) ; warn2(Movingcamera, presstodel);}
+    
+  
+  setTimeout(checkiy,200)
+}
+checkiy()
   let elapsedTime = 0;
 const loader = new GLTFLoader();
   function changeBackgroundAndLight() {
 
     for (var i = 0; i < 2; i++) {
-
+      
 recipesadd("Night Time ", "./chest_front.png");
       scene.fog = new THREE.FogExp2(0x000000, 0.09);
+// Remove the existing Mesh creation
+// const creeper3 = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshBasicMaterial({ color: 0x00dd00 }));
 
-
-
+// Comment out the existing line adding creeper3 to creepers array
+// creepers.push(creeper3);
 
 
 
 loader.load(
-  './model.gltf', 
+  './model.gltf', // Update the path
   (gltf) => {
-    let creeper3 = gltf.scene; 
+    let creeper3 = gltf.scene; // Use gltf.scene as the new creeper3
 
     creeper3.scale.set(0.05, 0.055, 0.05);
     creeper3.position.set(chunkX * rdist + Math.floor(Math.random() * rdist), 5, chunkZ * rdist + Math.floor(Math.random() * rdist));
@@ -2405,7 +2759,7 @@ loader.load(
 recipesadd("Survive first Day", "./glowstone.png");
 scene.fog = new THREE.FogExp2(0xffffff, 0.015);
      scene.remove(ambientLight)
-
+     
       ambientLight = new THREE.AmbientLight(0x707070)
       scene.add(ambientLight)
       scene.fog = new THREE.FogExp2(0xffffff, 0.09);
@@ -2423,36 +2777,54 @@ scene.fog = new THREE.FogExp2(0xffffff, 0.015);
     update();
   }
 
-var  currentblock = 'stone'
+var  currentblock = ''
 var  blockClickEnabled = false
 
  switchi =  function(data) {
+   
     if (data == "stone") {
 
-      canv.removeEventListener('click', deleteBlockOnClick);
+ //    canv.removeEventListener('click', deleteBlockOnClick);
       canv.addEventListener('click', buildBlockOnClick);
 
       currentblock = 'stone'
     } else if (data == "wood") {
 
-      canv.removeEventListener('click', deleteBlockOnClick);
+     // canv.removeEventListener('click', deleteBlockOnClick);
       canv.addEventListener('click', buildBlockOnClick);
 
       currentblock = 'wood'
     } else if (data == "grass") {
 
-      canv.removeEventListener('click', deleteBlockOnClick);
+    //  canv.removeEventListener('click', deleteBlockOnClick);
       canv.addEventListener('click', buildBlockOnClick);
 
       currentblock = 'grass'
     } else if (data == "pickaxe") {
 
-      canv.removeEventListener('click', buildBlockOnClick);
-      canv.addEventListener('click', deleteBlockOnClick);
-
+      //canv.removeEventListener('click', buildBlockOnClick);
+  //    canv.addEventListener('click', deleteBlockOnClick);
+  
+currentblock=''
+    }else if (data == "wooden_pickaxe") {
+    
+     canv.removeEventListener('click', buildBlockOnClick);
+   //   canv.addEventListener('click', deleteBlockOnClick);
+   
+   
+   
+    currentblock = 'wooden_pickaxe'
+    }else if (data == "stone_pickaxe") {
+    
+        canv.removeEventListener('click', buildBlockOnClick);
+      //   canv.addEventListener('click', deleteBlockOnClick);
+    
+    
+    
+      currentblock = 'stone_pickaxe'
     } else {
 
-      canv.removeEventListener('click', deleteBlockOnClick);
+   //   canv.removeEventListener('click', deleteBlockOnClick);
       canv.addEventListener('click', buildBlockOnClick);
 
       currentblock = data
@@ -2481,11 +2853,11 @@ var  blockClickEnabled = false
     if (dotProduct > 0.99) {
 
       block.material.color.set(0xffffff);
-     
+     // block.material.emissive.set(0xffffff);
     } else {
 
       block.material.color.set(0x00ff00);
-      
+      //block.material.emissive.set(0x000000);
     }
   }
 
@@ -2508,6 +2880,7 @@ var  blockClickEnabled = false
       document.getElementById('game').classList.remove('dead');
     }, 10000);
 
+    
     if (timeSinceLastHurt >= 100) {
 
       const heartsContainer = document.getElementById("hearts");
@@ -2516,6 +2889,9 @@ var  blockClickEnabled = false
 heartsContainer.removeChild(lastHeart);
       setTimeout(function() {
         if (heartsContainer.children.length > 0) {
+
+          
+          
 
           if (heartsContainer.children.length === 0) {
 
@@ -2535,7 +2911,7 @@ heartsContainer.removeChild(lastHeart);
 
       lastHurtTime = currentTime;
       var audio = new Audio('hurt.ogg');
-
+      
       audio.play();
     }
   }
@@ -2619,21 +2995,25 @@ heartsContainer.removeChild(lastHeart);
     }
 
     function recipesadd(recipe, img) {
-
+        
         if (isRecipeAdded(recipe)) {
             console.log("Receptura już dodana");
             return;
         }else{
 
+        
         unlockedRecipes.push(recipe);
 
+        
         const recipeBar = document.getElementById("recipeBar");
         recipeBar.innerHTML = `<img src="${img}" alt="${recipe}">${recipe}            `;
 
+        
         setTimeout(() => {
             recipeBar.style.right = "-5px";
         }, 200);
 
+        
         setTimeout(() => {
             recipeBar.style.right = "-400px";
         }, 5000);
