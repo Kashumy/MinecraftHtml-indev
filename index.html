@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -2717,7 +2718,7 @@ audio.play();
           }
         }else if (blockName === "iron_ore") {
           if (currentblock == 'stone_pickaxe' || currentblock == 'iron_pickaxe'|| currentblock == 'diamond_pickaxe') {
-            addblock("iron");
+            addblock("iron_ore");
             recipesadd("Iron !", "./iron_ore.png");
           }
         }else if (blockName === "chest") {
@@ -3164,7 +3165,7 @@ heartsContainer.removeChild(lastHeart);
 var craftingRecipes = {
     "wooden_pickaxe": [["wood", "wood", "wood",null, "wood", null, null, "wood", null]],
     "stone_pickaxe": [["stone", "stone", "stone",null, "wood", null, null, "wood", null]],
-    "iron_pickaxe": [["iron", "iron", "iron",null, "wood", null, null, "wood", null]],
+    "iron_pickaxe": [["iron_ore", "iron_ore", "iron_ore",null, "wood", null, null, "wood", null]],
     "diamond_pickaxe": [["diamond_ore", "diamond_ore", "diamond_ore",null, "wood", null, null, "wood", null]],
 };
 
